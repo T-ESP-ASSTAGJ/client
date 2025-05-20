@@ -21,11 +21,16 @@ First, install the dependencies:
 pnpm install
 ```
 
-
-Then, run the development server:
+Run the web server
 
 ```bash
-pnpm dev
+pnpm dev:web
+```
+
+Run the doc server
+
+```bash
+pnpm dev:docs
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the web application.
@@ -44,5 +49,6 @@ client/
 - `pnpm dev`: Start all applications in development mode
 - `pnpm build`: Build all applications
 - `pnpm dev:web`: Start only the web application
+- `pnpm dev:docs`: Start only the web application
 - `pnpm check-types`: Check TypeScript types across all apps
 - `pnpm check`: Run Biome formatting and linting
