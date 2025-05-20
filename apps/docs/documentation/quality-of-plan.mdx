@@ -1,0 +1,158 @@
+---
+title: 'Plan de qualité'
+description: "Vue d'ensemble de l'organisation de l'équipe et de la répartition des responsabilités"
+---
+
+<br/>
+
+## Organisation structurelle (OBS)
+
+---
+
+<Warning>
+  Les collaborateurs sont amenés à changer d’équipe selon les besoins et envie, mais ont une appétence particulière d’un aspect de l’application.
+</Warning>
+
+### Par poste
+
+* Développeur Frontend: Gaël, Jonathan, Alexandre
+* Développeurs Backend: Timothée, Sergio, Samir
+* DevOps: Antoine, Mathieu
+* Designer: Gaël
+
+### Par responsabilité
+
+* Chef de projet: Timothée, Antoine
+* Chef d’équipe: Gaël, Timothée, Antoine
+* Testeurs: Gaël, Timothée, Antoine
+
+<br/>
+
+## Méthode de développement
+
+---
+
+### Outils de gestion
+* Gestion & Suivi de projet: Notion, Gitlab, Google Docs, Discord
+* Suivi des tickets: Gitlab
+
+### Méthodologie
+* 1 réunion par mois en présentiel pour voir l’avancement global
+* Des réunions ponctuelles au besoin (après follow-up, avant un rendu)
+* En phase de développement:
+     - Réunion toute les 2 semaines par équipe (présentiel ou distanciel) pour l’avancement des tickets
+
+<br/>
+
+## Normes et conventions de développement
+
+---
+
+### DevOps
+* Base de donnée: [PostgreSQL](https://www.postgresql.org/)
+* [Gitlab Runner](https://docs.gitlab.com/runner/)
+* [AWS](https://aws.amazon.com/)
+* [Kubernetes](https://kubernetes.io/)
+* [Terraform](https://www.terraform.io/)
+
+### Backend
+* Langage: [PHP Symfony 7.2](https://symfony.com/) : framework et langage avec lesquels l’équipe à le plus d’expérience, convient au besoin d’une API Rest. Pas forcément le plus adapté pour du mobile asynchrone par rapport à du JS par exemple mais convenable quand même.
+* Librairies: Mercure et Messenger pour l’asynchrone
+* Normes: [PSR-1](https://www.php-fig.org/psr/psr-1/), [PSR-2](https://www.php-fig.org/psr/psr-2/), [PSR-4](https://www.php-fig.org/psr/psr-4/), [PSR-12](https://www.php-fig.org/psr/psr-12/) (convention standard de Symfony)
+
+### Frontend
+* Application Mobile & Web: [React Native 0.77.0](https://reactnative.dev/) (latest)
+* Site Vitrine: [NextJS 15.1.6](https://nextjs.org/) (latest), [Tailwind 4.0](https://tailwindcss.com/), [Lucide](https://lucide.dev/)
+* Librairies: Shadcn, HeroUI, RNR, Zustand
+* CMS: [EasyAdmin](https://symfony.com/bundles/EasyAdminBundle/current/index.html) (Symfony & [Twig](https://twig.symfony.com/))
+* Normes: [ESLint](https://eslint.org/) pour NextJS et React Native, [TwigCS](https://github.com/friendsoftwig/twigcs) pour le CMS
+
+<br/>
+
+## Gestion de version
+
+---
+
+* Outil: Gitlab
+
+### Nommage des branches
+> **release**/fonctionnalité-groupée
+
+> **feat**/nouvelle-fonctionnalité
+
+> **fix**/correctif-léger
+
+> **chore**/tache-pénible
+
+> **hotfix**/correctif-urgent
+
+### Nommage des commits
+> **feat**: ma nouvelle fonctionnalité
+
+> **fix**: la fonction trie maintenant en sens inverse
+
+> **chore**: typo dans un texte, refactoring d’une fonction
+
+> **hotfix**: modif cors pour que l’auth marche
+
+<Warning>
+    * Taggage des commit sur __master__ pour versionner: **(0.5; 1.0)**
+    * Faire des **merge request**
+    * Mentionner le ticket associé à sa feature sur la **merge request**
+</Warning>
+
+<br/>
+
+## Plan de tests
+
+---
+
+### Couverture de test
+<Check>**100%** - Frontend & Backend</Check>
+
+### Types de tests
+* Unitaires: vérifient une fonction ou composant isolé
+* Intégration: vérifient si plusieurs modules fonctionnent ensemble
+* Fonctionnels: vérifient que le système répond aux attentes
+
+### Outils
+* Analyse de code: SonarQube, PHPStan, PHPCS
+* Couverture de tests: PHPUnit, Vitest, etc
+* Sécurité: Trivy
+
+<br/>
+
+## Processus de livraison
+
+---
+
+### Workflow
+<Steps>
+    <Step title="Assignation d'un ticket"/>
+
+    <Step title="Développement dans une branche personnalisée"/>
+
+    <Step title="Création d'une merge request"/>
+
+    <Step title="Revue de code"/>
+
+    <Step title="Pipeline de tests"/>
+
+    <Step title="Merge dans la branche de préprod"/>
+
+    <Step title="Déploiement dans l'environnement test de préprod"/>
+
+    <Step title="Validation en préprod et documentation de la feature"/>
+
+    <Step title="Merge sur master et déploiement automatique"/>
+
+    <Step title="Vérification de la production et fermeture du ticket"/>
+</Steps>
+
+### Déploiement
+* Déploiement automatique
+* Validation de la production
+* Validation de la documentation
+
+### Conventions
+Implémenter les tests associés à sa fonctionnalité en même temps que celle-ci

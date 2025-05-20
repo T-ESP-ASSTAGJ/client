@@ -1,0 +1,78 @@
+{
+	"$schema": "https://mintlify.com/schema.json",
+	"name": "420 Music",
+	"logo": {
+		"dark": "/src/assets/logo/dark.svg",
+		"light": "/src/assets/logo/light.svg"
+	},
+	"favicon": "/favicon.svg",
+	"colors": {
+		"primary": "#0D9373",
+		"light": "#0D9373",
+		"dark": "#0D9373",
+		"anchors": {
+			"from": "#0D9373",
+			"to": "#07C983"
+		}
+	},
+	"tabs": [
+		{
+			"name": "Documentation",
+			"url": "documentation"
+		},
+		{
+			"name": "Mintlify (How it works)",
+			"url": "mintlify"
+		}
+	],
+	"navigation": [
+		{
+			"group": "Guides",
+			"pages": [
+				"documentation/quality-of-plan",
+				"documentation/functional-description",
+				"documentation/definition-of-done",
+				"documentation/mermaid"
+			]
+		},
+		{
+			"group": "Front-end",
+			"pages": ["documentation/front-end/technical-doc"]
+		},
+		{
+			"group": "Back-end",
+			"pages": ["documentation/back-end/technical-doc"]
+		},
+		{
+			"group": "Dev-ops",
+			"pages": ["documentation/dev-ops/technical-doc"]
+		},
+		{
+			"group": "Endpoint Examples",
+			"pages": [
+				"mintlify/endpoint/get",
+				"mintlify/endpoint/create",
+				"mintlify/endpoint/delete"
+			]
+		},
+		{
+			"group": "Get Started",
+			"pages": [
+				"mintlify/get-started/introduction",
+				"mintlify/get-started/quickstart",
+				"mintlify/get-started/development"
+			]
+		},
+		{
+			"group": "Essentials",
+			"pages": [
+				"mintlify/essentials/markdown",
+				"mintlify/essentials/code",
+				"mintlify/essentials/images",
+				"mintlify/essentials/settings",
+				"mintlify/essentials/navigation",
+				"mintlify/essentials/reusable-snippets"
+			]
+		}
+	]
+}

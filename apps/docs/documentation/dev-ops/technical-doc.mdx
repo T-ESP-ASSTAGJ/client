@@ -1,0 +1,503 @@
+---
+title: 'Documentation technique'
+description: "Vue d'ensemble de l'organisation de l'équipe et de la répartition des responsabilités"
+---
+
+<br/>
+
+## Vue d’ensemble
+
+---
+
+### Objectif
+Cette infrastructure supporte trois composants principaux :
+
+* Application Web/Mobile (React Native)
+* Site Vitrine (Next.js)
+* API Backend (Symfony)
+
+### Stack Technique
+* Container Orchestration: [Kubernetes (EKS)](https://aws.amazon.com/eks/)
+* Infrastructure as Code: [Terraform](https://www.terraform.io/)
+* Cloud Provider: [AWS](https://aws.amazon.com/)
+* CI/CD: [GitHub Actions](https://github.com/features/actions)
+* Container Registry: [Amazon ECR](https://aws.amazon.com/ecr/)
+* Monitoring: [Prometheus](https://prometheus.io/) + [Grafana](https://grafana.com/)
+* GitOps: [ArgoCD](https://argo-cd.readthedocs.io/en/stable/)
+
+<br/>
+
+## Architecture
+
+---
+
+### Diagramme d’infrastructure
+Notre infrastructure suit une architecture cloud native sur AWS, organisée en plusieurs couches. Le trafic externe est d'abord géré par un Application Load Balancer qui distribue les requêtes, protégé par AWS WAF pour la sécurité applicative. Ce trafic est ensuite dirigé vers notre cluster EKS situé dans des sous-réseaux privés. Les données persistantes sont stockées dans RDS (bases de données) et S3 (objets), avec CloudFront servant de CDN pour optimiser la distribution des assets statiques. Pour les environnements critiques comme la production, nous utilisons une architecture multi-AZ pour garantir la haute disponibilité.
+
+### Composants clés
+* VPC: Architecture réseau isolée
+* EKS: Gestion des conteneurs
+* RDS: Bases de données managées
+* S3: Stockage d'objets
+* CloudFront: CDN pour les assets statiques
+
+<br/>
+
+# Organisation du repository
+
+<Tabs>
+    <Tab title="Structure Globale">
+        ```
+        infra/
+        ├── kubernetes/    # Configurations K8s
+        ├── terraform/     # IaC
+        ├── docker/        # Dockerfiles de production
+        └── scripts/       # Scripts d'automatisation
+        ```
+    </Tab>
+</Tabs>
+
+## Détails des Dossiers
+
+<AccordionGroup>
+    <Accordion title=".github/workflows/ - Pipeline CI/CD" icon="github">
+        ```
+        .github/workflows/
+        ├── terraform-plan.yml    # Pipeline pour les plans Terraform
+        ├── terraform-apply.yml   # Pipeline pour l'application Terraform
+        └── kubernetes-deploy.yml # Pipeline pour les déploiements K8s
+        ```
+        **Objectif:** Automatisation des déploiements et validations
+    </Accordion>
+
+    <Accordion title="kubernetes/ - Configurations Kubernetes" icon="cube">
+        ```
+        kubernetes/
+        ├── base/                 # Configurations K8s de base
+        │   ├── api/              # Configuration API Symfony
+        │   │   ├── deployment.yaml   # Déploiement des pods
+        │   │   ├── service.yaml      # Service pour exposer l'API
+        │   │   ├── ingress.yaml      # Configuration de l'entrée
+        │   │   ├── configmap.yaml    # Variables d'environnement
+        │   │   └── secrets.yaml      # Template pour les secrets
+        │   ├── webapp/               # Configuration React Native
+        │   │   ├── deployment.yaml
+        │   │   ├── service.yaml
+        │   │   └── ingress.yaml
+        │   └── website/             # Configuration Next.js
+        │       ├── deployment.yaml
+        │       ├── service.yaml
+        │       └── ingress.yaml
+        └── overlays/                # Configurations spécifiques par env
+        ├── production/
+        │   ├── kustomization.yaml
+        │   └── patches/         # Modifications pour la prod
+        │       ├── api/
+        │       ├── webapp/
+        │       └── website/
+        └── pré-prod/
+        ├── kustomization.yaml
+        └── patches/         # Modifications pour le pré-prod
+        ```
+        **Objectif:** Gestion des déploiements Kubernetes
+    </Accordion>
+
+    <Accordion title="terraform/ - Infrastructure as Code" icon="code">
+        ```
+        terraform/
+        ├── environments/        # Configurations par environnement
+        │   ├── production/
+        │   │   ├── main.tf     # Configuration principale
+        │   │   ├── variables.tf # Définition des variables
+        │   │   └── outputs.tf  # Sorties Terraform
+        │   └── pré-prod/
+        │       ├── main.tf
+        │       ├── variables.tf
+        │       └── outputs.tf
+        └── modules/            # Modules réutilisables
+        ├── kubernetes/     # Module EKS
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        ├── networking/     # Module VPC/Network
+        │   ├── main.tf
+        │   ├── variables.tf
+        │   └── outputs.tf
+        └── databases/      # Module RDS
+        ├── main.tf
+        ├── variables.tf
+        └── outputs.tf
+        ```
+        **Objectif:** Infrastructure as Code
+    </Accordion>
+
+    <Accordion title="scripts/ - Scripts d'automatisation" icon="terminal">
+        ```
+        scripts/
+        ├── bootstrap.sh           # Script d'initialisation
+        ├── deploy.sh             # Script de déploiement
+        ├── backup.sh             # Gestion des backups
+        ├── monitoring/
+        │   ├── setup-grafana.sh  # Configuration Grafana
+        │   └── setup-prometheus.sh
+        └── security/
+        ├── audit.sh         # Scripts d'audit
+        └── cleanup.sh       # Nettoyage des ressources
+        ```
+        **Objectif:** Automatisation des tâches courantes
+    </Accordion>
+
+    <Accordion title="docs/ - Documentation technique" icon="book">
+        ```
+        docs/
+        ├── architecture/
+        │   ├── diagrams/    # Diagrammes d'architecture
+        │   └── decisions/   # Documents de décisions
+        ├── runbooks/        # Procédures d'exploitation
+        │   ├── incidents/
+        │   └── maintenance/
+        └── api/            # Documentation API infrastructure
+        ```
+        **Objectif:** Documentation technique
+    </Accordion>
+
+    <Accordion title="tests/ - Tests d'infrastructure" icon="vials">
+        ```
+        tests/
+        ├── terraform/      # Tests Terraform
+        │   └── integration/
+        ├── kubernetes/     # Tests Kubernetes
+        │   └── integration/
+        └── scripts/        # Tests des scripts
+        ```
+        **Objectif:** Tests d'infrastructure
+    </Accordion>
+
+    <Accordion title=".config/ - Configuration" icon="gear">
+        ```
+        .config/
+        ├── lint/          # Configurations des linters
+        │   ├── tflint.hcl
+        │   └── yamllint.yml
+        ├── git/           # Templates Git
+        │   └── hooks/
+        └── ide/           # Configurations IDE
+        ```
+        **Objectif:** Configuration des outils de développement
+    </Accordion>
+
+    <Accordion title="Racine du projet" icon="folder">
+        ```
+        ./
+        ├── .gitignore       # Fichiers à ignorer
+        ├── .editorconfig    # Configuration éditeur
+        ├── README.md        # Documentation principale
+        ├── Makefile         # Commandes make
+        ├── .env.example     # Template variables d'environnement
+        └── LICENSE          # Licence du projet
+        ```
+    </Accordion>
+</AccordionGroup>
+
+
+## Guide de démarrage
+
+---
+
+### Prérequis
+* AWS CLI configuré
+* kubectl installé
+* Terraform >= 1.0.0
+* Docker
+
+### Installation Locale
+<Steps>
+    <Step title="Cloner le repository">
+        ```bash
+        git clone git@github.com:organisation/infra.git
+        ```
+    </Step>
+    <Step title="Installer les dépendances">
+        ```bash
+        make setup
+        ```
+    </Step>
+    <Step title="Configurer les variables d'environnement">
+        ```bash
+        cp .env.example .env
+        ```
+    </Step>
+    <Step title="Initialiser Terraform">
+        ```bash
+        make terraform-init
+        ```
+    </Step>
+</Steps>
+
+
+
+## Environnements
+
+---
+
+### Production
+Notre environnement de production est conçu pour une haute disponibilité et des performances optimales. La région eu-west-3 (Paris) a été choisie pour sa proximité avec nos utilisateurs européens et sa conformité avec les réglementations de données.
+<br/>
+<Note>
+    Infrastructure : Le VPC dédié est configuré avec des sous-réseaux privés et publics répartis sur trois zones de disponibilité. Notre cluster EKS hautement disponible maintient un minimum de trois nœuds workers, avec capacité d'autoscaling jusqu'à dix nœuds selon la charge. La base de données RDS en multi-AZ assure une réplication synchrone et un basculement automatique en cas de défaillance.
+</Note>
+
+<br/>
+
+**Dimensionnement :**
+* Nœuds EKS : instances t3.large (2 vCPU, 8GB RAM)
+* RDS : instance db.r6g.large avec 200GB de stockage
+* Mise à l'échelle automatique : 3-10 nœuds
+* Réplicas minimum par service : 3
+
+**Monitoring :**
+* Rétention des logs : 30 jours
+* Métriques détaillées toutes les 30 secondes
+* Alertes proactives sur tous les services
+* Dashboards dédiés par service
+
+### Pré-Prod
+L'environnement de pré-prod est configuré pour refléter la production tout en optimisant les coûts. Il sert à la validation finale des changements avant leur déploiement en production.
+<br/>
+
+<Note>
+    Infrastructure : Situé dans la même région que la production (eu-west-3), l'environnement utilise des ressources réduites mais conserve une architecture similaire. La base de données RDS single-AZ offre un bon compromis entre coûts et performances pour les tests.
+</Note>
+
+<br/>
+
+**Dimensionnement :**
+* Nœuds EKS : instances t3.medium (2 vCPU, 4GB RAM)
+* RDS : instance db.t3.medium avec 100GB de stockage
+* Mise à l'échelle automatique : 2-5 nœuds
+* Réplicas minimum par service : 2
+
+**Monitoring :**
+* Rétention des logs : 7 jours
+* Métriques détaillées toutes les minutes
+* Alertes sur les services critiques
+* Dashboards partagés entre services
+
+
+### Développement local
+L'environnement de développement local permet aux développeurs de travailler efficacement sans dépendre des ressources cloud. Il utilise docker-compose pour reproduire localement l'architecture des services.
+
+**Configuration :**
+<span/>
+La configuration locale reproduit les services essentiels tout en simplifiant certains aspects :
+
+* Base de données PostgreSQL locale
+* Services AWS simulés via LocalStack
+* Configuration simplifiée pour le développement
+* Volumes Docker pour la persistance des données
+
+**Monitoring :**
+* Logs disponibles via docker-compose logs
+* Métriques basiques via cAdvisor
+* Pas d'alerting automatique
+* Dashboard de développement local
+
+## Gestion des déploiements
+
+---
+
+### Pipeline CI/CD
+**Build**
+* Construction des images Docker
+* Tests d'infrastructure avec Terratest
+* Scan de sécurité
+
+**Deploy**
+* Application des changements Terraform
+* Déploiement Kubernetes via ArgoCD
+* Tests de smoke
+
+**ArgoCD (GitOps)**
+* Déploiement déclaratif depuis Git
+* Synchronisation automatique
+* Interface de visualisation des déploiements
+* Gestion des rollbacks simplifiée
+
+**Validation**
+* Tests de sécurité (SAST/DAST)
+* Tests de configuration IaC
+* Validation des manifests Kubernetes
+
+<br/>
+
+<Tip>**Commandes Courantes**</Tip>
+
+**Déployer en pré-prod**
+```bash
+make deploy-pré-prod
+```
+**Déployer en production**
+```bash
+make deploy-prod
+```
+**Voir les logs**
+```bash
+make logs service=api
+```
+**Accéder au shell d'un pod**
+```bash
+make shell service=api
+```
+
+<br/>
+
+## Sécurité
+
+---
+
+### Gestion des Secrets
+* AWS Secrets Manager pour les secrets de production
+* Sealed Secrets pour Kubernetes
+* Vault pour les secrets applicatifs
+
+### Accès et Permissions
+* RBAC Kubernetes
+* IAM AWS avec principe du moindre privilège
+* Network Policies restrictives
+
+### Maintenance sécurité
+* Rotation régulière des secrets
+* Revue trimestrielle des accès
+* Audit des configurations
+
+## Monitoring et Logging
+
+---
+
+### Stack de Monitoring
+* Prometheus pour la collecte de métriques
+* Grafana pour la visualisation
+* AlertManager pour les alertes
+
+### Logging
+* LK Stack
+* CloudWatch Logs
+* Loki pour les logs Kubernetes
+
+### Observabilité
+* Jaeger pour le distributed tracing
+* Visualisation des requêtes
+* Performance monitoring
+
+## Performance et Optimisation
+
+---
+
+### Métriques Clés
+Nous surveillons en permanence les indicateurs suivants :
+
+* Latence moyenne des requêtes par service
+* Taux d'erreur global et par service
+* Utilisation des ressources (CPU, mémoire, stockage)
+* Temps de réponse des bases de données
+
+### Seuils et alertes
+Chaque métrique dispose de seuils d'alerte configurés :
+
+* Warning : Premier niveau d'alerte pour investigation
+* Critical : Nécessite une intervention immédiate
+* Business : Impacts sur les KPIs métier
+
+### Optimisation des coûts
+Nous optimisons les coûts via plusieurs stratégies :
+
+* Scaling automatique basé sur l'utilisation
+* Utilisation d'instances Spot pour les workloads non critiques
+* Politique de rétention des données adaptative
+* Suivi des coûts par service et par équipe
+
+## Stratégie de Tests
+
+---
+
+### Tests d'infrastructure
+Nous validons notre infrastructure via :
+
+* Tests des modules Terraform
+* Validation des configurations Kubernetes
+* Tests d'intégration des déploiements
+
+### Tests de charge
+Réalisés régulièrement pour :
+
+* Valider les limites de scalabilité
+* Identifier les goulots d'étranglement
+* Confirmer les capacités de résilience
+
+### Tests de résilience
+Nous pratiquons le chaos engineering de manière contrôlée :
+
+* Simulation de pannes de services
+* Tests de basculement
+* Validation des procédures de reprise
+
+## Guide de contribution
+
+---
+
+### Workflow de Développement
+* Créer une branche depuis main
+* Développer et tester localement
+* Créer une PR avec les changements
+* Attendre la validation des pipelines
+* Review et merge
+
+### Standards
+* Suivre les conventions de nommage
+* Documenter les changements
+* Ajouter des tests
+* Mettre à jour la documentation
+
+## Interaction avec les Autres Services
+
+---
+
+### API (Symfony)
+* Communication via Service Kubernetes
+* Variables d'environnement injectées via ConfigMaps
+* Gestion des migrations de base de données
+
+### Web App (React Native)
+* Déploiement web via Kubernetes
+* Configuration des routes API
+* Gestion du CORS
+
+### Website (Next.js)
+* Déploiement statique sur S3/CloudFront
+* Configuration des redirections
+* Cache-Control optimisé
+
+## Maintenance
+
+---
+
+### Tâches périodiques
+* Mise à jour des dépendances (bimensuelle)
+* Optimisation des ressources (mensuelle)
+* Revue des métriques (hebdomadaire)
+* Nettoyage des ressources inutilisées (mensuelle)
+
+## Stratégie de backup
+
+---
+
+### Production
+* Snapshots RDS automatiques toutes les 6 heures
+* Rétention des sauvegardes pendant 30 jours
+* Réplication cross-region des données critiques
+
+### Pré-Prod
+* Snapshots quotidiens
+* Rétention de 7 jours
+* Pas de réplication cross-region
+

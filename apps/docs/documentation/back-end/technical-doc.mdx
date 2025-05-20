@@ -1,0 +1,128 @@
+---
+title: 'Documentation technique'
+description: "Vue d'ensemble de l'organisation de l'équipe et de la répartition des responsabilités"
+---
+
+<br/>
+
+## Vue d'ensemble
+
+---
+
+### Objectifs
+
+Créer une API Restful qui permet de lier des comptes Spotify/Deezer/Soundcloud, utiliser les données de ces comptes (playlists, temps d’écoute..), les traiter. Pouvoir avoir un compte utilisateur, se connecter, avoir des amis, faire des publications, commentaires, likes.
+
+Gérer les contenus que les gens peuvent voir, écouter une preview des musiques, importer/exporter ses playlists, faire des collaborations, avoir des recommandations de genres etc.
+
+
+### Stack Technique
+
+- Symfony 7.2
+- Api platform 4.0
+- Psql
+- Api Spotify
+- Api Deezer
+
+
+## Sécurité
+
+---
+
+### JWT
+
+- `lexik/jwt-authentication-bundle` pour gérer l'authentification JWT.
+
+- Configure les routes protégées et les rôles.
+
+
+`config/packages/security.yaml`
+```
+security:
+    firewalls:
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+```
+
+### OAuth2
+
+- `knpuniversity/oauth2-client-bundle` [Documentation](https://github.com/knpuniversity/oauth2-client-bundle)
+
+
+### CSRF Protection
+
+- `symfony/security-csrf` [Documentation](https://symfony.com/doc/current/security/csrf.html)
+
+### Role Based Permissions
+
+- Restreindre les endpoints de certaines routes par rôle[Doccumentation](https://symfony.com/doc/current/security.html#access-control-authorization)
+
+
+## Services externes
+
+- Oauth2 `kerox/oauth2-spotify`
+- [Api Spotify](https://developer.spotify.com/documentation/web-api)
+- [Api Deezer](https://developers.deezer.com/api)
+- [Api Soundcloud](https://developers.soundcloud.com/docs/api/guide)
+- Stocker les tokens Api en base
+
+## Gestion des requêtes
+
+- Valider les en-têtes:
+<pre>
+Content-Type:
+Authorization: Bearer <b>{token}</b>
+</pre>
+
+- Valider les données entrantes avec des validators
+
+## Mailer & Message handler
+
+- [Mailer symfony](https://symfony.com/doc/current/mailer.html), permet l'envoie de mail pour confirmer son compte, réinitialiser son mot de passe
+- [Notifier symfony](https://symfony.com/doc/current/notifier.html), pour envoyer les notifications push à l'app mobile
+
+## Tests & Documentation
+
+- `nelmio/api-doc-bundle`: Swagger qui génèrent les endpoints à tester [Documentation](https://github.com/nelmio/NelmioApiDocBundle)
+- Environnement Insomnia avec variables, token, etc.
+
+## Base de données
+
+- Doctrine ORM pour intéragir avec la BDD Psql
+
+## Gestion d'erreur & logs
+
+- Format d'erreur généralisé:
+```
+{
+    "status": "error",
+    "message": "Resource not found",
+    "code": 404
+}
+```
+
+- Logging avec `symfony/monolog-bundle` [Documentation](https://symfony.com/doc/current/logging.html)
+
+- Encadrer les opérations critiques avec des try/catch
+```
+try {
+    // Code critique
+} catch (\Exception $e) {
+    // Gestion de l'erreur
+}
+```
+
+## Performance & Cache
+
+- Cache HTTP avec les en-têtes `Cache-Control`
+- Cache Symfony
+- Cache Symfony [Documentation](https://symfony.com/doc/current/cache.html)
+
+## Tests & Qualité de code
+
+- Unitaires avec [`PHPUnit`](https://symfony.com/doc/current/testing.html), on test chaque fonctionnalité pour s'assurer de leur bon fonctionnement
+
+- [`PHPStan`](https://github.com/phpstan/phpstan) pour de l'analyse statique de code
+
