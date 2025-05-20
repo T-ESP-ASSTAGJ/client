@@ -31,8 +31,8 @@
 			"pages": [
 				"documentation/quality-of-plan",
 				"documentation/functional-description",
-				"documentation/definition-of-done",
-				"documentation/mermaid"
+				"documentation/functional-specifications",
+				"documentation/definition-of-done"
 			]
 		},
 		{

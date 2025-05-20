@@ -35,9 +35,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the w
 ```
 client/
 ├── apps/
-│   ├── web/         # Frontend application (Next.js)
-│   ├── native/      # Mobile application (React Native, Expo)
-│   └── server/      # Backend API (None, NONE)
+│   ├── web/         # Landing page (Next.js)
+│   └── docs/        # Documentation (Mintlify)
 ```
 
 ## Available Scripts
@@ -45,7 +44,5 @@ client/
 - `pnpm dev`: Start all applications in development mode
 - `pnpm build`: Build all applications
 - `pnpm dev:web`: Start only the web application
-- `pnpm dev:server`: Start only the server
 - `pnpm check-types`: Check TypeScript types across all apps
-- `pnpm dev:native`: Start the React Native/Expo development server
 - `pnpm check`: Run Biome formatting and linting
