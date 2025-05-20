@@ -1,2 +1,9 @@
 node_modules
+
+# turbopack
 .turbo
+
+
+# IDE
+.idea
+.vscode
