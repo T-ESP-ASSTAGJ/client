@@ -3,116 +3,738 @@ title: 'Spécifications fonctionnelle'
 description: ""
 ---
 
-<br/>
+## Gestion des utilisateurs
 
-### Gestion des Utilisateurs
-<Accordion title="Profils Utilisateurs">
-    - Gérer son profil avec une description & une photo de profil
-    - Afficher ses genres musicaux préférés (suggestions basées sur ses écoutes)
-    - Afficher ses artistes favoris directement sur son profil
+<Accordion title={"Création de compte"}>
+**Acteur** : Utilisateur de l'application.
 
-    - Connecter plusieurs plateformes de streaming musical
-    - Choisir sa plateforme favorite (en fonction des connexions disponibles)
-    - Écoute en temps réel (Uniquement disponible pour Spotify)
+**Préconditions** : L’utilisateur n’est pas connecté à l’application et n’a pas de compte.
 
-    - Consulter un fil privé montrant son activité (posts likés, posts publiés, commentaires…)
-    - Paramètres de confidentialité pour contrôler la visibilité des activités
+**Déclencheur** : L’utilisateur souhaite se créer un compte.
 
-    - Obtenir des badges et succès liés à l'activité musicale et sociale (ex. : "Explorateur musical", "Créateur de playlists")
+**Scénario principal :**
+  1. L’utilisateur clique sur “Inscription”.
+  2. Il doit/peut remplir les champs suivant :
+      - Nom d’utilisateur
+      - Email
+      - Mot de passe
+      - Pays
+      - Âge
+      - Nom, prénom (optionnel)
+      - Photo de profil (optionnel)
+  3. Il clique sur inscription et il reçoit par mail un code de vérification ou un lien de validation.
+     Après celui-ci validé, l’utilisateur a accès à la plateforme.
+
+**Règles métier :**
+    - L’email donné doit être valide.
+    - Nom d’utilisateur disponible et avec plus de 3 caractères.
+    - Mot de passe avec au moins 8 caractères.
 </Accordion>
 
-<Accordion title={"Statistiques"}>
-    - Suivre et afficher ses habitudes d'écoute
-    - Générer des insights sur ses genres, artistes et chansons favoris
-    - Afficher les tendances d'activité dans le temps
-    - Comparer ses statistiques avec celles de ses amis
+<Accordion title={"Connexion"}>
+**Acteur** : Utilisateur de l’application.
+
+**Préconditions** : L’utilisateur possède un compte et n’est pas connecté.
+
+**Déclencheur** : L’utilisateur souhaite se connecter à l’application.
+
+**Scénario principal :**
+  1. L’utilisateur clique sur le bouton connexion.
+  2. Il doit remplir les champs suivants :
+      - Adresse mail / nom d’utilisateur
+      - Mot de passe
+  3. Il clique sur connexion.
+
+**Règles métier :**
+    - L'utilisateur doit avoir vérifié son email.
 </Accordion>
 
-<Accordion title={"Système d’Amis & Réseau Social"}>
-    - Se connecter avec d'autres utilisateurs
-    - Accepter ou refuser des demandes d’amis
-    - Suggérer des amis basés sur la compatibilité musicale ("Match musical")
+<Accordion title={"Déconnexion"}>
+**Acteur** : Utilisateur de l’application.
+
+**Préconditions** : L’utilisateur possède un compte et est connecté.
+
+**Déclencheur** : L’utilisateur souhaite se déconnecter de l’application.
+
+**Scénario principal :**
+  1. L’utilisateur clique sur le bouton déconnexion.
+  2. Une modale apparaît lui demandant s’il souhaite vraiment se déconnecter.
+  3. L’utilisateur clique sur oui et il se retrouve déconnecté.
 </Accordion>
 
----
+<Accordion title={"Modifier son profil"}>
+**Acteur** : Utilisateur inscrit.
 
-### Intégration Musicale & Playlists
-<Accordion title={"Intégration des Plateformes"}>
-    - Connexion aux principales plateformes de streaming (Spotify, Apple Music, YouTube Music, etc.)
-    - Synchronisation des playlists entre plateformes
-    - Gestion unifiée des métadonnées pour une identification musicale cohérente
-    - Suivi des nouveautés des artistes écoutés
-    - Affichage des liens directs vers les plateformes pour écouter les morceaux en entier
+**Préconditions** : L’utilisateur est connecté à l’application.
+
+**Déclencheur** : L’utilisateur souhaite modifier son profil.
+
+**Scénario principal :**
+  1. L’utilisateur accède à son profil et clique sur "Modifier le profil".
+  2. Il peut modifier les champs suivants :
+      - Photo de profil
+      - Description (limite de 200 caractères)
+      - Genres musicaux favoris (ajout/suppression)
+  3. Il enregistre les modifications.
+  4. Les changements sont immédiatement appliqués et visibles par les autres utilisateurs
+  (si le profil est public).
+
+**Règles métier :**
+    - Un utilisateur doit avoir une photo de profil par défaut s’il n’en télécharge pas.
+    - La description est optionnelle.
+    - Les genres musicaux favoris sont limités à 5 choix maximum.
 </Accordion>
 
-<Accordion title={"Gestion des Playlists"}>
-    - Playlists multi-plateformes (précision pour chaque titre s’ils sont dispo sur la plateforme voulue)
-    - Importer des playlists depuis ses plateformes connectées
-    - Exporter ses playlists sur ses plateformes connectées
-    - Création de playlists collaboratives avec rôles (admin, contributeur, spectateur)
-    - Système de votes pour ajouter/supprimer des morceaux d'une playlist collaborative
-    - Génération automatique de playlists basées sur : (**Les titres aimés**, **les genres favoris**, **les tendances d’activité**)
-    - Affichage des playlists publiques tendances de la communauté
-    - Partage de playlists sur le feed social
+<Accordion title={"Afficher ses genres musicaux préférés"}>
+**Acteur** : Utilisateur inscrit ou visiteur.
+
+**Préconditions** : L’utilisateur a défini au moins un genre musical favori.
+
+**Déclencheur** : L’utilisateur souhaite connaître ses genres musicaux préférés.
+
+**Scénario principal :**
+  1. L’utilisateur accède au profil d’un utilisateur.
+  2. Une section affiche les genres favoris sous forme de tags interactifs.
+  3. Cliquer sur un genre affiche une liste de morceaux et playlists correspondants.
 </Accordion>
 
----
+<Accordion title={"Connecter plusieurs plateformes de streaming"}>
+**Acteur** : Utilisateur inscrit.
 
-### Expérience Sociale & Feed
-<Accordion title={"Feed Social & Interactions"}>
-    - Créer un post avec une musique associée (photo/description optionnelle)
-    - Créer une story musicale avec 1 musique, un message et 1 photo
-    - Voir les posts, leurs commentaires et leur nombre de likes
-    - Liker et commenter un post
-    - Taguer un utilisateur dans un post ou un commentaire (envoi d'une notification)
-    - Suggestion de posts en fonction : (**Du nombre de likes**, **de la catégorie du post**, **de la date de publication**)
-    - Filtrage des contenus : afficher uniquement certains types de posts (ex. : découvertes musicales, discussions, playlists)
-    - Reposter le post d’un ami sur son propre feed ou en story
-    - Épingler un post sur son profil
-    - Signaler un post, commentaire ou story
+**Préconditions** : L’utilisateur possède un compte sur une
+plateforme de streaming (Spotify, Apple Music, YouTube Music).
+
+**Déclencheur** : L’utilisateur souhaite connecter plusieurs plateformes de streaming sur l’application.
+
+**Scénario principal :**
+  1. L’utilisateur accède aux paramètres de son compte.
+  2. Il sélectionne "Gérer les plateformes de streaming"
+  3. Il clique sur "Connecter une nouvelle plateforme".
+  4. Il est redirigé vers l’authentification de la plateforme choisie.
+  5. Il autorise l’accès aux données musicales.
+  6. La connexion est validée et la plateforme apparaît dans la liste des services connectés.
+
+**Règles métier :**
+    - Un utilisateur peut connecter plusieurs plateformes mais doit choisir une plateforme principale.
+    - Les données des plateformes sont synchronisées toutes les 24h pour mettre à jour les playlists
+    et morceaux favoris.
 </Accordion>
 
-<Accordion title={"Commentaires & Interactions"}>
-    - Épingler un commentaire sous un post
-    - Filtrage des commentaires : (**Les plus likés en premier**, **les plus récents**, **amis seulement**)
+<Accordion title={"Suivre ses habitudes d’écoute"}>
+**Acteur** : Utilisateur inscrit.
+
+**Préconditions** : L’utilisateur a au moins une semaine d’historique d’écoute.
+
+**Déclencheur** : L’utilisateur veut savoir ses habitudes d’écoute.
+
+**Scénario principal :**
+  1. L’utilisateur accède à la section "Statistiques" de son profil.
+  2. Il peut voir :
+    - Son nombre de morceaux écoutés par jour/semaine/mois.
+    - Ses artistes les plus écoutés.
+    - Son genre musical dominant sur la période sélectionnée.
+  3. Il peut changer la période d’analyse (dernières 24h, 7 jours, 1 mois, 1 an).
 </Accordion>
 
----
+<Accordion title={"Comparer ses statistiques avec ses amis"}>
+**Acteur** : Utilisateur inscrit.
 
-### Lecteur de Musique Intégré
-- Lecteur de musique fixe en bas de l’écran
-- Lecture des extraits musicaux (prévisualisation 30 sec selon la plateforme)
-- Contrôles classiques : play/pause, suivant/précédent
+**Préconditions** : L’utilisateur a au moins un ami sur la plateforme et des écoutes enregistrées.
 
-### Messagerie
-- Système de messagerie en temps réel
-- Création de discussions de groupe autour d’un artiste, d’un genre ou d’une playlist
-- Possibilité d'envoyer des messages textuels et des musiques ( + photo vidéo pj ?)
-- Deux sections distinctes dans chaque conversation de groupe :
-* Discussions : Espace classique d'échange en temps réel (messages, réactions, emojis)
-* Médiathèque (ou un autre nom plus pertinent, à définir) : Regroupe tout le contenu multimédia partagé dans la conversation
-+ Historique des musiques partagées (titres, albums, playlists)
-+ Images et vidéos envoyées dans le groupe
-+ Playlists collaboratives créées ou partagées dans la discussion
-+ Accès rapide aux anciens contenus sans avoir à remonter dans le chat
-+ Accès aux anciens messages par recherche de mots clés
-- Notifications de nouveaux messages et mentions
+**Déclencheur** : L’utilisateur veut connaître les statistiques entre lui et ses amis.
 
-### Recherche & Découverte
-- Recherche avancée d’utilisateurs
-- Recherche de morceaux, albums et artistes
-- Filtres avancés (genre, durée, popularité, date de sortie…)
-- Suggestions intelligentes lors de la saisie
-- Découverte de musique via indexation avancée (tags, tendances)
+**Scénario principal :**
+  1. L’utilisateur accède à la section "Statistiques" et clique sur "Comparer avec un ami".
+  2. Il sélectionne un ami dans la liste.
+  3. Un tableau comparatif affiche :
+    - Artistes communs
+    - Nombre de morceaux écoutés
+    - Genres les plus écoutés
+  4. Un score de compatibilité musicale est calculé
+  (% de similarité entre les écoutes des deux utilisateurs).
+</Accordion>
 
-### Administration & Modération
-- Monitoring des utilisateurs actifs et des tendances d’utilisation
-- Analytiques détaillées des tendances musicales et sociales
-- Gestion des contenus signalés
-- Gestion des utilisateurs bannis et restrictions de compte
+<Accordion title={"Paramètres du compte"}>
+**Acteur** : Utilisateur de l’application.
 
-## Spécification Techniques
+**Préconditions** : L’utilisateur possède un compte.
 
+**Déclencheur** : L'utilisateur souhaite modifier ses paramètres de compte.
 
+**Scénario principal :**
+  1. L’utilisateur va dans la section “Paramètres” de son profil.
+  2. Il peut ainsi modifier la langue de son profil, gérer s’il souhaite ou non recevoir des
+  notifications de l’application.
+  Il peut également choisir de mettre son profil en privé ou non, désactiver la possibilité de
+  recevoir des messages privés.
+</Accordion>
 
+<Accordion title={"Paramètres du compte"}>
+**Acteur** : Utilisateur de l’application.
 
+**Préconditions** : L’utilisateur possède un compte.
+
+**Déclencheur** : L'utilisateur souhaite visualiser ses badges et succès.
+
+**Scénario principal :**
+  1. L’utilisateur va dans son profil et clique sur la section “Badges & succès”.
+  2. Il aura la possibilité de voir la date d’obtention du badge ou du succès ainsi qu’un petit texte
+  accompagnant celui-ci.
+  De plus, si on clique dessus on aura un petit texte expliquant comment ce qu’il fallait faire pour
+  l’obtenir.
+</Accordion>
+
+## Abonnements
+
+<Accordion title={"Suivre"}>
+**Acteur** : Utilisateur inscrit et connecté.
+
+**Préconditions** : L’utilisateur connaît le pseudonyme ou a trouvé un profil via la recherche.
+
+**Déclencheur** : L’utilisateur souhaite veut suivre un compte.
+
+**Scénario principal :**
+  1. L’utilisateur accède au profil d’une personne.
+  2. Il clique sur le bouton "Suivre".
+  3. Une notification est envoyée à l’autre utilisateur.
+  4. S’il le souhaite, l’autre utilisateur peut choisir de le suivre en retour et l'utilisateur recevra
+  également une notification.
+</Accordion>
+
+<Accordion title={"Se désabonner"}>
+**Acteur** : Utilisateur inscrit et connecté.
+
+**Préconditions** : L’utilisateur est actuellement en train de suivre l’autre utilisateur.
+
+**Déclencheur** : L’utilisateur veut arrêter de suivre un compte.
+
+**Scénario principal :**
+  1. L’utilisateur accède au profil de l’autre utilisateur.
+  2. Il clique sur le bouton "Ne plus suivre".
+</Accordion>
+
+<Accordion title={"Suggestions d’abonnement"}>
+**Acteur** : Utilisateur inscrit et connecté.
+
+**Préconditions** : L’utilisateur est connecté à l’application.
+
+**Déclencheur** : L’utilisateur veut avoir des suggestions d’abonnement.
+
+**Scénario principal :**
+  1. L’utilisateur se rend dans la section “Abonnements”.
+  2. En plus de ses abonnements, il a en tête de page une suggestion de 3 comptes.
+  3. Si l’utilisateur n’a aucun abonnement, il aura un bouton lui rendant sur la page de suggestion
+  d’abonnements.
+</Accordion>
+
+<Accordion title={"Suggestions d’abonnement"}>
+**Acteur** : Utilisateur inscrit et connecté.
+
+**Préconditions** : L’utilisateur est connecté à l’application.
+
+**Déclencheur** : L’utilisateur souhaite connaître les comptes auxquels il est abonné.
+
+**Scénario principal :**
+  1. L’utilisateur se rend dans la section “Abonnements”.
+  2. Il pourra ainsi visualiser tous les utilisateurs auxquels il est abonné.
+  3. L’utilisateur se rend dans la section “Abonnés”.
+  4. Il pourra visualiser tous les utilisateurs qui sont abonnés à lui.
+  5. S’il n’a aucun abonnement, il aura un bouton pour commencer à suivre des utilisateurs et il sera
+  redirigé,
+  s’il clique sur le bouton, sur la page de suggestions d’abonnement. Également,
+  s’il n’a aucuns abonnés il aura juste un message sur la page lui indiquant qu’il n’a pas d’abonnés.
+</Accordion>
+
+<Accordion title={"Liste des abonnements / abonnés"}>
+**Acteur** : Utilisateur inscrit et connecté.
+
+**Préconditions** : L’utilisateur est connecté à l’application.
+
+**Déclencheur** : L’utilisateur souhaite connaître les comptes auxquels il est abonné.
+
+**Scénario principal :**
+  1. L’utilisateur se rend dans la section “Abonnements”.
+  2. Il pourra ainsi visualiser tous les utilisateurs auxquels il est abonné.
+  3. L’utilisateur se rend dans la section “Abonnés”.
+  4. Il pourra visualiser tous les utilisateurs qui sont abonnés à lui.
+  5. S’il n’a aucun abonnement, il aura un bouton pour commencer à suivre des utilisateurs et il sera redirigé,
+  s’il clique sur le bouton, sur la page de suggestions d’abonnement. Également,
+  s’il n’a aucuns abonnés il aura juste un message sur la page lui indiquant qu’il n’a pas d’abonnés.
+</Accordion>
+
+## Publication de contenu
+
+<Accordion title={"Création de post"}>
+**Acteur** : Utilisateur de l’application.
+
+**Préconditions** : L'utilisateur est connecté à l'application.
+
+**Déclencheur** : L'utilisateur souhaite créer un nouveau post musical.
+
+**Scénario principal :**
+  1. L'utilisateur clique sur le bouton "+" ou "Nouveau post" dans l'application.
+  Un formulaire de création de post s'affiche avec les champs suivants :
+    - Sélection de musique (obligatoire)
+    - Description (optionnel, limite de 500 caractères)
+    - Photo/image d'accompagnement (optionnel)
+    - Localisation (optionnel)
+  2. L'utilisateur sélectionne une musique depuis sa plateforme de streaming connectée.
+  3. Il ajoute une description et éventuellement une photo et/ou localisation.
+  4. Il clique sur "Publier".
+  5. Le post est créé et apparaît dans son fil d'actualité et celui de ses abonnés.
+
+**Règles métier :**
+    - Un post doit obligatoirement contenir une référence musicale.
+    - Les descriptions sont limitées à 500 caractères.
+    - Les formats d'image acceptés sont JPG, PNG et GIF.
+</Accordion>
+
+<Accordion title={"Modification de post"}>
+**Acteur** : Utilisateur de l’application.
+
+**Préconditions** : L'utilisateur est connecté et est l'auteur du post.
+
+**Déclencheur** : L'utilisateur souhaite modifier un de ses posts.
+
+**Scénario principal :**
+  1. L'utilisateur accède au post qu'il souhaite modifier.
+  2. Il clique sur l'icône "..." (options).
+  3. Il sélectionne "Modifier".
+  4. Le formulaire de modification s'affiche avec les champs pré remplis.
+  5. L'utilisateur peut modifier :
+    - La description
+    - La photo
+    - La localisation
+  6. Il ne peut pas modifier la musique associée au post.
+  7. Il clique sur "Enregistrer les modifications".
+  8. Le post est mis à jour.
+
+**Règles métier :**
+    - La musique associée à un post ne peut pas être modifiée après publication.
+    - Un historique des modifications est conservé dans le système.
+</Accordion>
+
+<Accordion title={"Suppression de post"}>
+**Acteur** : Utilisateur de l’application.
+
+**Préconditions** : L'utilisateur est connecté et est l'auteur du post.
+
+**Déclencheur** : L'utilisateur souhaite supprimer un de ses posts.
+
+**Scénario principal :**
+  1. L'utilisateur accède au post qu'il souhaite supprimer.
+  2. Il clique sur l'icône "..." (options).
+  3. Il sélectionne "Supprimer".
+  4. Une modale de confirmation apparaît.
+  5. L'utilisateur confirme la suppression.
+  6. Le post est supprimé de l'application et n’est plus disponible nulle part.
+</Accordion>
+
+<Accordion title={"Publication de playlist publique"}>
+**Acteur** : Utilisateur de l’application.
+
+**Préconditions** : L'utilisateur a créé ou importé au moins une playlist.
+
+**Déclencheur** : L'utilisateur souhaite partager une playlist avec la communauté.
+
+**Scénario principal :**
+  1. L'utilisateur accède à la section "Mes playlists".
+  2. Il sélectionne la playlist qu'il souhaite publier.
+  3. Il clique sur "Publier la playlist".
+  4. Un formulaire s'affiche avec les champs :
+    - Titre de la publication (prérempli avec le nom de la playlist)
+    - Description (optionnel)
+    - Image de couverture (optionnel, la couverture de la playlist par défaut)
+    - Tags (optionnel)
+  5. L'utilisateur remplit les informations et clique sur "Publier".
+  6. La playlist est publiée et apparaît dans son profil et dans le fil d'actualité de ses abonnés.
+
+**Règles métier :**
+    - Une playlist doit contenir au moins 3 titres pour être publiée.
+    - L'utilisateur peut choisir de recevoir ou non des notifications sur les interactions avec sa
+    playlist.
+    - L'utilisateur peut définir si les autres utilisateurs peuvent suggérer des titres à ajouter à
+    sa playlist.
+</Accordion>
+
+## Fil d'actualité
+
+<Accordion title={"Feed utilisateur"}>
+**Acteur** : Utilisateur de l’application.
+
+**Préconditions** : L'utilisateur est connecté à l'application.
+
+**Déclencheur** : L'utilisateur souhaite parcourir le feed.
+
+**Scénario principal :**
+  1. L’utilisateur ouvre l’application et accède à l'écran principal, où le feed d'actualités est affiché.
+  2. Le feed présente une série de posts récents provenant des utilisateurs suivis, dans un ordre
+  chronologique inversé.
+  3. L’utilisateur peut faire défiler le feed pour voir davantage de posts.
+    - Si l’utilisateur atteint le bas de l’écran, de nouveaux posts sont automatiquement chargés et
+    apparaissent sans qu’il ait besoin d’appuyer sur un bouton.
+  4. Chaque post dans le feed comprend les éléments suivants :
+    - Musique associée (avec un extrait ou un lien vers la plateforme de streaming).
+    - Description (si l’auteur du post en a ajouté une).
+</Accordion>
+
+## Intéraction sociale
+
+<Accordion title={"Like"}>
+**Acteur** : Utilisateur de l'application.
+
+**Préconditions** : L'utilisateur est connecté à l'application.
+
+**Déclencheur** : L’utilisateur veut liker un post.
+
+**Scénario principal :**
+  1. L’utilisateur a un post qui l’intéresse.
+  2. Il clique sur  “Like” (icône cœur) et celle-ci a une animation
+  (cœur qui devient rouge) pour signifier à l’utilisateur que le post a été liké.
+  3. L’utilisateur qui a mis le post reçoit une notification du like.
+</Accordion>
+
+<Accordion title={"Commentaire"}>
+**Acteur** : Utilisateur de l'application.
+
+**Préconditions** : L'utilisateur est connecté à l'application.
+
+**Déclencheur** : L’utilisateur veut poster un commentaire sur un post.
+
+**Scénario principal :**
+  1. L’utilisateur a un post qui l’intéresse.
+  2. Il clique sur “Commentaires” (icône de bulle) lui faisant apparaître une section sur sa partie
+  inférieure de l’écran avec une zone de texte où il peut écrire un commentaire et le publier mais
+  également il a la possibilité de voir les commentaires d’autres utilisateurs.
+</Accordion>
+
+<Accordion title={"Partage"}>
+**Acteur** : Utilisateur de l'application.
+
+**Préconditions** : L'utilisateur est connecté à l'application.
+
+**Déclencheur** : L’utilisateur veut partager un post à ses amis.
+
+**Scénario principal :**
+  1. L’utilisateur a un post qui l’intéresse.
+  2. Il clique sur “Partager” (icône de téléchargement) lui faisant apparaître une section sur sa
+  partie inférieure de l’écran où il peut envoyer le post à un des contacts où bien en copiant le
+  lien du post et en l’envoyant à une personne n’ayant pas l’application.
+</Accordion>
+
+<Accordion title={"Favori"}>
+**Acteur** : Utilisateur de l'application.
+
+**Préconditions** : L'utilisateur est connecté à l'application.
+
+**Déclencheur** : L’utilisateur souhaite mettre en favori un post.
+
+**Scénario principal :**
+  1. L’utilisateur a un post qui l’intéresse.
+  2. Il clique sur “Favori” (icône étoile) et celle-ci a une animation (étoile qui devient jaune).
+</Accordion>
+
+<Accordion title={"Signalement"}>
+**Acteur** : Utilisateur de l'application.
+
+**Préconditions** : L'utilisateur est connecté à l'application.
+
+**Déclencheur** :  L’utilisateur souhaite signaler un post.
+
+**Scénario principal :**
+  1. L’utilisateur est sur un post.
+  2. Cliquer un bouton pour signaler, lui faire apparaître une modale où il peut choisir la raison du
+  signalement, après cette étape il peut ajouter du texte pour expliquer un peu plus la raison du
+  signalement.
+  3. Après la raison validée et rédigée il peut valider son signalement et il aura un message lui indiquant
+  que le signalement a bien été pris en compte.
+
+**Déclencheur** : L’utilisateur souhaite signaler un utilisateur.
+
+**Scénario principal** :
+  1. L’utilisateur va sur le profil d’un utilisateur.
+  2. Cliquer un bouton pour signaler, lui faire apparaître une modale où il peut choisir la raison du
+  signalement, après cette étape il peut ajouter du texte pour expliquer un peu plus la raison du
+  signalement.
+  3. Après la raison validée et rédigée il peut valider son signalement et il aura un message lui
+  indiquant que le signalement a bien été pris en compte.
+</Accordion>
+
+## Lecture de musique
+
+<Accordion title={"Lecture d’extraits musicaux"}>
+**Acteur** : Utilisateur de l'application.
+
+**Déclencheur** :  L’utilisateur souhaite écouter l’extrait d'une musique.
+
+**Scénario principal :**
+  1. L’utilisateur a un post contenant un extrait musical.
+  2. Cet extrait se lance automatiquement lorsqu’il se trouve sur le post, celui-ci commence forcément
+  au début de la musique et il a une durée de 30 secondes.
+</Accordion>
+
+<Accordion title={"Lecture d’extraits musicaux"}>
+**Acteur** : Utilisateur de l'application.
+
+**Déclencheur** :  L’utilisateur souhaite utiliser les contrôles de lecture de base.
+
+**Scénario principal :**
+  1. L’utilisateur se trouve sur un post contenant un extrait musical.
+  2. L’utilisateur peut cliquer sur l’extrait musical pour faire apparaître les contrôles de base,
+  l’utilisateur a alors la possibilité de mettre en pause ou en play l’extrait, d’avancer ou
+  reculer l’extrait (drag & drop) ou alors de gérer le son de la musique. (drag & drop)
+</Accordion>
+
+<Accordion title={"Lecture d’extraits musicaux"}>
+**Acteur** : Utilisateur de l'application.
+
+**Déclencheur** :  L’utilisateur souhaite écouter l’extrait d'une musique.
+
+**Scénario principal :**
+  1. L’utilisateur a un post contenant un extrait musical.
+  2. Cet extrait se lance automatiquement lorsqu’il se trouve sur le post, celui-ci commence forcément
+  au début de la musique et il a une durée de 30 secondes.
+</Accordion>
+
+<Accordion title={"Interface persistante"}>
+**Acteur** : Utilisateur de l'application.
+
+** Préconditions** : Être sur un post contenant un extrait musical.
+
+**Déclencheur** :  L’utilisateur souhaite mettre l’extrait musical en réduit.
+
+**Scénario principal :**
+  1. L’utilisateur se l’icône de lecteur réduit.
+  2. L’extrait musical se met en réduit sur son écran et s’il scroll il aura toujours le
+  lecteur de la musique qui tourne.
+  3. L’utilisateur a la possibilité de mettre en pause et en play l’extrait et il a également
+  la possibilité d’enlever le lecteur réduit en cliquant sur la croix sur le lecteur.
+</Accordion>
+
+## Système de messagerie
+
+<Accordion title={"Messages textuels"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L'utilisateur est connecté à l'application et a accès à une conversation.
+
+**Déclencheur** : L'utilisateur souhaite envoyer un message textuel.
+
+**Scénario principal :**
+  1. L'utilisateur accède à une conversation existante ou en créer une nouvelle.
+  2. Il saisit son message dans la zone de texte prévue à cet effet.
+  3. Il envoie le message en cliquant sur le bouton d'envoi.
+  4. Le message apparaît dans la conversation avec l'horodatage et le nom d’utilisateur.
+
+**Règles métier :**
+    - Possibilité d'éditer le message après son envoi
+    - Possibilité de supprimer son propre message à tout moment
+</Accordion>
+
+<Accordion title={"Message musical"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L'utilisateur est connecté et a au moins une plateforme de streaming associée à
+son compte.
+
+**Déclencheur** : L'utilisateur souhaite partager un morceau de musique.
+
+**Scénario principal :**
+  1. L'utilisateur accède à une conversation.
+  2. Il clique sur l'icône de partage musical.
+  3. Il sélectionne un morceau depuis sa bibliothèque ou recherche un titre.
+  4. Il peut ajouter un commentaire optionnel au partage.
+  5. Le morceau est partagé sous forme d'aperçu interactif dans la conversation.
+
+**Règles métier :**
+    - Les aperçus musicaux affichent la pochette, le titre, l'artiste et un extrait de 30 secondes
+    - Les utilisateurs peuvent écouter l'extrait directement dans l'application
+    - Un lien vers la plateforme associée permet d'écouter le morceau complet
+</Accordion>
+
+<Accordion title={"Message photo"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L'utilisateur est connecté à l'application.
+
+**Déclencheur** : L'utilisateur souhaite partager une photo.
+
+**Scénario principal :**
+  1. L'utilisateur accède à une conversation.
+  2. Il clique sur l'icône de partage de photos.
+  3. Il sélectionne une photo depuis sa galerie ou prend une nouvelle photo.
+  4. Il peut ajouter une légende optionnelle.
+  5. La photo est partagée dans la conversation avec possibilité d'affichage plein écran.
+</Accordion>
+
+<Accordion title={"Liste des conversations"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L'utilisateur possède au moins une conversation.
+
+**Déclencheur** : L'utilisateur souhaite accéder à ses conversations.
+
+**Scénario principal :**
+  1. L'utilisateur accède à l'onglet "Conversations" depuis la navigation principale.
+  2. Une liste de ses conversations actives s'affiche, triée par date de dernier message.
+  3. Chaque entrée affiche le nom du contact ou du groupe, un aperçu du dernier message et son horodatage.
+  4. Les conversations non lues sont mises en évidence visuellement.
+  5. L'utilisateur sélectionne une conversation pour y accéder.
+
+**Règles métier :**
+    - Possibilité de marquer des conversations comme favorites pour les épingler en haut de liste
+</Accordion>
+
+<Accordion title={"Discussions de groupe"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L'utilisateur est connecté et suit au moins un autre utilisateur.
+
+**Déclencheur** : L'utilisateur souhaite créer ou participer à une discussion de groupe.
+
+**Scénario principal pour la création :**
+  1. L'utilisateur accède à l'onglet "Conversations" depuis la navigation principale.
+  2. Il clique sur "Nouvelle conversation de groupe".
+  3. Il sélectionne les participants parmi ses abonnements/abonnés.
+  4. Il définit un nom pour le groupe et une photo optionnelle.
+  5. Le groupe est créé et tous les membres en sont notifiés.
+
+** Scénario principal pour la participation :**
+  1. L'utilisateur reçoit une notification d'invitation à un groupe.
+  2. Il accepte l'invitation et accède à la conversation.
+  3. Il peut consulter l'historique des messages et participer aux échanges.
+  4. Il peut consulter la liste des membres et leur statut (en ligne/hors ligne).
+
+**Règles métier :**
+    - Le créateur du groupe est administrateur par défaut et peut nommer d'autres administrateurs
+    - Les administrateurs peuvent ajouter/retirer des membres et modifier les informations du groupe
+    - Les membres peuvent quitter le groupe à tout moment
+    - Le groupe est automatiquement supprimé si tous les membres l'ont quitté
+</Accordion>
+
+<Accordion title={"Médiathèque des contenus partagés"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L'utilisateur a partagé ou reçu du contenu dans ses conversations.
+
+**Déclencheur** : L'utilisateur souhaite accéder à l'ensemble des médias partagés.
+
+**Scénario principal :**
+  1. L'utilisateur accède à une conversation et clique sur "Médias partagés".
+  2. Une interface organisée par type de contenu (photos, musique) s'affiche.
+  3. L'utilisateur peut filtrer par date ou type de contenu.
+  4. Il peut sélectionner un élément pour le visualiser, l'écouter ou le télécharger.
+    - Icônes interactives pour liker, commenter ou partager le post.
+  5. Une recherche par mot-clé est disponible pour retrouver des contenus spécifiques.
+
+**Règles métier :**
+    - Le créateur du groupe est administrateur par défaut et peut nommer d'autres administrateurs
+    - Les administrateurs peuvent ajouter/retirer des membres et modifier les informations du groupe
+    - Les membres peuvent quitter le groupe à tout moment
+    - Le groupe est automatiquement supprimé si tous les membres l'ont quitté
+
+**Extensions :**
+    - L’utilisateur peut accéder à un bouton de rafraîchissement manuel en haut du feed pour recharger
+    la liste de posts si nécessaire.
+    - Si l’utilisateur interagit avec un post, celui-ci est mis à jour instantanément
+    (par exemple, un like ou un commentaire ajouté s’affiche en temps réel).
+</Accordion>
+
+<Accordion title={"Notifications"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L'utilisateur reçoit un message.
+
+**Déclencheur** : Un message est envoyé à l’utilisateur.
+
+**Scénario principal :**
+  1. L'utilisateur accède à une conversation et clique sur "Médias partagés".
+  2. Une interface organisée par type de contenu (photos, musique) s'affiche.
+  3. L'utilisateur peut filtrer par date ou type de contenu.
+  4. Il peut sélectionner un élément pour le visualiser, l'écouter ou le télécharger.
+  5. Une recherche par mot-clé est disponible pour retrouver des contenus spécifiques.
+
+** Scénario principal pour la participation :**
+  1. Sur son téléphone une notification apparaît avec le nom de l’utilisateur et en dessous de son
+  nom il y a d’écrit “Vous a envoyé un message”.
+</Accordion>
+
+## Système de recherche
+
+<Accordion title={"Recherche"}>
+**Acteur** : Utilisateur connecté ou non.
+
+**Préconditions** : L’utilisateur est sur l’onglet “Pour vous”.
+
+**Scénario principal :**
+  1. L’utilisateur clique sur la loupe en haut de l’écran.
+  2. Une barre de recherche va alors s’ouvrir et l’utilisateur pourra renseigner ce qu’il souhaite.
+  3. Lorsqu’il valide et qu’il lance la recherche, des posts liés à sa recherche vont lui être affichés.
+</Accordion>
+
+<Accordion title={"Suggestions"}>
+**Acteur** : Utilisateur connecté ou non.
+
+**Préconditions** : L’utilisateur est sur l’onglet “Pour vous”.
+
+**Déclencheur** : L'utilisateur clique sur l’icône de recherche.
+
+**Scénario principal :**
+  1. En dessous de sa barre de recherche, il y a des suggestions en fonction de ses préférences.
+
+**Règles métiers :**
+  - Si l'utilisateur n’est pas connecté, les suggestions seront sur les tendances sur la plateforme et
+  non ses suggestions personnalisées.
+</Accordion>
+
+## Système de notifications
+
+<Accordion title={"Notifications push"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L’application est installée sur son téléphone.
+
+**Scénario principal :**
+  1. Il peut recevoir différentes notifications push, lorsqu’il est mentionné dans une storie,
+  lorsqu’il reçoit un message privé, lorsqu' une personne répond au commentaire de l’utilisateur,
+  lorsqu’il reçoit un commentaire sur sa publication ou encore lorsqu’un utilisateur like sa publication.
+  2. Ces notifications sont un deep-link qui amène l’utilisateur directement sur l’évènement.
+
+**Règles métiers :**
+  - Si l'utilisateur n’est pas connecté, les suggestions seront sur les tendances sur la plateforme et
+  non ses suggestions personnalisées.
+</Accordion>
+
+<Accordion title={"Notifications in-app"}>
+**Acteur** : Utilisateur connecté.
+
+**Préconditions** : L’utilisateur est actuellement sur l’application.
+
+**Scénario principal :**
+  1. L’utilisateur peut recevoir une notification pour lui informer qu’il a reçu un message privé.
+  2. L’utilisateur peut recevoir une notification lorsqu’une erreur s’est produite, par exemple
+  s’il a voulu créer un post et qu’une erreur a été rencontrée, alors une notification lui sera envoyé.
+</Accordion>
+
+<Accordion title={"Notifications in-app"}>
+**Acteur** : Utilisateur connecté.
+
+**Scénario principal :**
+  1. L’utilisateur a la possibilité de désactiver en détail les notifications push.
+</Accordion>
+
+## Administration
+
+<Accordion title={"Gestion du dashboard admin"}>
+**Acteur** : Utilisateur administrateur.
+
+**Préconditions** : L’utilisateur est sur le dashboard administrateur via un navigateur internet.
+
+**Scénario principal :**
+  1. Sur le tableau de bord administrateur il y a possibilité de consulter diverses KPI comme par
+  exemple le nombre d’utilisateurs inscrits sur l’application, le nombre d’utilisateurs connectés
+  par jour, le nombre de posts etc.
+  2. Il est également possible de modérer l’application en bannissant ou suspendant un utilisateur,
+  ou en supprimant un post. Il a également la possibilité de voir les signalements des utilisateurs
+  sur un post ou un utilisateur et de le traiter.
+</Accordion>
