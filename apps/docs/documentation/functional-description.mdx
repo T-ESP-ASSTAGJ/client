@@ -6,53 +6,198 @@ description: "Vue d'ensemble de l'organisation de l'équipe et de la répartitio
 <br/>
 
 ## Product Breakdown Structure
+---
+
+<img
+    style={{ borderRadius: '0.5rem' }}
+    height="200"
+    src="/src/assets/images/pbs.png"
+/>
 
 ---
 
-### Application Web & Mobile
-* Interface utilisateur
-* Système d’authentification & gestion des utilisateurs
-* Paramètres et préférences
+### Gestion des utilisateurs
+- Inscription
+- Connexion / Déconnexion
+- Profil utilisateur
+    * Photo
+    * Description
+    * Préférences musicales
+    * Statistiques
+    * Paramètres du compte
+    * Badges & succès
 
-### Module Utilisateurs & Réseau Social
-* Profils utilisateurs (photo, description, préférences musicales)
-* Statistiques personnelles et comparatives
-* Système d’amis & suggestions
-* Badges & succès
+### Abonnements
+- Suivre / se désabonner
+- Suggestions d’abonnement
+- Liste des abonnements / abonnés
 
-### Intégration Musicale & Playlists
-* Connexion aux plateformes de streaming
-* Synchronisation & gestion des playlists
-* Playlists collaboratives & génération automatique
-* Système de partage de playlists
+### Publication de contenu
+- Création d’un post
+    * Sélection de musique
+    * Description & Photo
+    * Localisation
+- Suppression et modification d’un post
+- Partage d’une playlist publique
 
-### Expérience Sociale & Interactions
-* Feed social (posts, stories, commentaires, likes)
-* Système de tagging et notifications
-* Algorithme de suggestion de contenu
-* Système de signalement et modération des contenus
+### Fil d’actualité (Feed)
+- Affichage des posts
+- Scroll infini
+- Rafraîchissement automatique
+- Suggestion de contenus
 
-### Lecteur de Musique Intégré
-* Lecture d'extraits musicaux
-* Contrôles de lecture de base
-* Interface persistante
+### Interaction sociale
+- Like
+- Commentaire
+- Partage
+- Favori
+- Signalement
 
-### Messagerie & Groupes
-* Messagerie instantanée (textes, fichiers, musiques)
-* Discussions de groupe par thématique
-* Historique et médiathèque des partages
-* Notifications et mentions
+### Lecteur de Musique
+- Lecture d'extraits musicaux
+- Contrôles de lecture de base
+- Interface persistante
 
-### Recherche & Découverte
-* Moteur de recherche avancé (utilisateurs, musiques, playlists)
-* Filtres et suggestions intelligentes
+### Système de messagerie
+- Liste de conversations
+- Envoi de messages
+    * Textuel
+    * Musique
+    * Photo
+- Discussions de groupe
+- Médiathèque des contenus partagés
+- Notifications
 
-### Administration & Modération
-* Tableau de bord administrateur
-* Modération des utilisateurs et contenus
-* Gestion des tendances et statistiques globales
+### Système de recherche
+- Recherche
+    * Utilisateurs
+    * Musiques
+    * Genres
+    * Hashtag
+- Suggestions
 
+### Système de notifications
+- Notifications push
+- Notifications in-app
+- Paramétrage de ses notifications
+
+### Administration
+- Tableau de bord administrateur
+- Modération des utilisateurs et contenus
+- Visualisation des tendances et statistiques globales
+
+---
 
 ## Work Breakdown Structure
+<Warning>
+    Les informations en vert sont des bonus, c'est-à-dire qu’ils seront implémentés en cas d’avancement convenable.
+</Warning>
+
+### Gestion des Utilisateurs
+<Accordion title="Profils Utilisateurs">
+    - Gérer son profil avec une description & une photo de profil
+    - Afficher ses genres musicaux préférés (suggestions basées sur ses écoutes)
+    - Afficher ses artistes favoris directement sur son profil
+    - Connecter plusieurs plateformes de streaming musical
+    - Choisir sa plateforme favorite (en fonction des connexions disponibles)
+    - Consulter un fil privé montrant son activité (posts likés, posts publiés, commentaires…)
+
+    - <span className="text-green-400">Obtenir des badges et succès liés à l'activité musicale et sociale (ex. : "Explorateur musical", "Créateur de playlists")</span>
+    - <span className="text-green-400">Paramètres de confidentialité pour contrôler la visibilité des activités</span>
+    - <span className="text-green-400">Écoute en temps réel (Uniquement disponible pour Spotify)</span>
+</Accordion>
+
+<Accordion title={"Statistiques"}>
+    - Suivre et afficher ses habitudes d'écoute
+    - Générer des insights sur ses genres, artistes et chansons favoris
+    - Afficher les tendances d'activité dans le temps
+    - <span className="text-green-400">Comparer ses statistiques avec celles de ses amis</span>
+</Accordion>
+
+<Accordion title={"Système d’Amis & Réseau Social"}>
+    - Se connecter avec d'autres utilisateurs
+    - Accepter ou refuser des demandes d’amis
+    - <span className="text-green-400">Suggérer des amis basés sur la compatibilité musicale ("Match musical")</span>
+</Accordion>
+
+---
+
+### Intégration Musicale & Playlists
+<Accordion title={"Intégration des Plateformes"}>
+    - Connexion aux principales plateformes de streaming (Spotify, Apple Music, YouTube Music, etc.)
+    - Synchronisation des playlists entre plateformes
+    - Gestion unifiée des métadonnées pour une identification musicale cohérente
+    - Suivi des nouveautés des artistes écoutés
+    - Affichage des liens directs vers les plateformes pour écouter les morceaux en entier
+</Accordion>
+
+<Accordion title={"Gestion des Playlists"}>
+    - Playlists multi-plateformes (précision pour chaque titre s’ils sont dispo sur la plateforme voulue)
+    - Importer des playlists depuis ses plateformes connectées
+    - Exporter ses playlists sur ses plateformes connectées
+    - <span className="text-green-400">Création de playlists collaboratives avec rôles (admin, contributeur, spectateur)</span>
+    - <span className="text-green-400">Système de votes pour ajouter/supprimer des morceaux d'une playlist collaborative</span>
+    - Génération automatique de playlists basées sur : (**Les titres aimés**, **les genres favoris**, **les tendances d’activité**)
+        * Les titres aimés
+        * Les genres favoris
+        * Les tendances d’activité
+    - <span className="text-green-400">Affichage des playlists publiques tendances de la communauté</span>
+    - Partage de playlists sur le feed social
+</Accordion>
+
+---
+
+### Expérience Sociale & Feed
+<Accordion title={"Feed Social & Interactions"}>
+    - Créer un post avec une musique associée (photo/description optionnelle)
+    - Créer une story musicale avec 1 musique, un message et 1 photo
+    - Voir les posts, leurs commentaires et leur nombre de likes
+    - Liker et commenter un post
+    - Taguer un utilisateur dans un post ou un commentaire (envoi d'une notification)
+    - Suggestion de posts en fonction : (**Du nombre de likes**, **de la catégorie du post**, **de la date de publication**)
+    - <span className="text-green-400">Filtrage des contenus : afficher uniquement certains types de posts (ex. : découvertes musicales, discussions, playlists)</span>
+    - <span className="text-green-400">Reposter le post d’un ami sur son propre feed ou en story</span>
+    - <span className="text-green-400">Épingler un post sur son profil</span>
+    - <span className="text-green-400">Signaler un post, commentaire ou story</span>
+</Accordion>
+
+<Accordion title={"Commentaires & Interactions"}>
+    - <span className="text-green-400">Épingler un commentaire sous un post</span>
+    - Filtrage des commentaires : (**Les plus likés en premier**, **les plus récents**, **amis seulement**)
+</Accordion>
+
+---
+
+### Lecteur de Musique Intégré
+- Lecteur de musique fixe en bas de l’écran
+- Lecture des extraits musicaux (prévisualisation 30 sec selon la plateforme)
+- Contrôles classiques : play/pause, suivant/précédent
+
+### Messagerie
+- Système de messagerie en temps réel
+- Création de discussions de groupe autour d’un artiste, d’un genre ou d’une playlist
+- Possibilité d'envoyer des messages textuels et des musiques ( + photo vidéo pj ?)
+- Deux sections distinctes dans chaque conversation de groupe :
+    * Discussions : Espace classique d'échange en temps réel (messages, réactions, emojis)
+    * <span className="text-green-400">Médiathèque (ou un autre nom plus pertinent, à définir)</span>: Regroupe tout le contenu multimédia partagé dans la conversation
+        + Historique des musiques partagées (titres, albums, playlists)
+        + Images et vidéos envoyées dans le groupe
+        + Playlists collaboratives créées ou partagées dans la discussion
+        + Accès rapide aux anciens contenus sans avoir à remonter dans le chat
+        + Accès aux anciens messages par recherche de mots clés
+- Notifications de nouveaux messages et mentions
+
+### Recherche & Découverte
+- Recherche avancée d’utilisateurs
+- Recherche de morceaux, albums et artistes
+- Filtres avancés (genre, durée, popularité, date de sortie…)
+- Suggestions intelligentes lors de la saisie
+- Découverte de musique via indexation avancée (tags, tendances)
+
+### Administration & Modération
+- Monitoring des utilisateurs actifs et des tendances d’utilisation
+- Analytiques détaillées des tendances musicales et sociales
+- <span className="text-green-400">Gestion des contenus signalés</span>
+- Gestion des utilisateurs bannis et restrictions de compte
 
 
