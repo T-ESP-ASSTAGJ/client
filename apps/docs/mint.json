@@ -21,6 +21,10 @@
 			"url": "documentation"
 		},
 		{
+			"name": "Communication et Rapports",
+			"url": "communication"
+		},
+		{
 			"name": "Mintlify (How it works)",
 			"url": "mintlify"
 		}
@@ -72,6 +76,14 @@
 				"mintlify/essentials/settings",
 				"mintlify/essentials/navigation",
 				"mintlify/essentials/reusable-snippets"
+			]
+		},
+
+		{
+			"group": "Comptes-rendus",
+			"pages": [
+				"communication/reports/meetings",
+				"communication/reports/follow-up"
 			]
 		}
 	]
