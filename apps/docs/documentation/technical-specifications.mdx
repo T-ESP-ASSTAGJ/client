@@ -1,0 +1,2402 @@
+---
+title: 'Spécification technique'
+description: "Vue d'ensemble de toutes les intéractions pour chaque feature de l'application"
+---
+
+<br />
+
+## Gestion des utilisateurs
+
+<Accordion title={"Création de compte"}>
+## Front-end
+
+#### Bouton "Créer un compte":
+  **Affiche un formulaire d'inscription avec les champs suivants :**
+
+    - **Email** (obligatoire, format email, unique)
+    - **Nom d’utilisateur** (obligatoire, plus de 3 caractères, unique)
+    - **Mot de passe** (obligatoire, min. 8 caractères)
+    - **Pays** (obligatoire, liste déroulante)
+    - **Numéro de téléphone** (facultatif, format international)
+    - **Photo de profil** (facultatif)
+    - **Description** (facultatif)
+
+  **Validation côté client :**
+
+  Email bien formé
+  Mot de passe suffisamment fort
+  Champs obligatoires remplis
+
+  **Soumission :**
+
+  - Requête `POST /api/register` envoyée avec les données utilisateur
+  - Réception d’un email avec code de vérification
+  - Une fois le code saisi, le compte est activé
+  - L’utilisateur est automatiquement connecté
+
+## Back-end
+
+    **Table** user :
+
+        - id
+        - email (unique)
+        - username
+        - first_name
+        - last_name
+        - password (sha256, unique)
+        - country_id
+        - phone_number
+
+    **Contrôles** :
+
+        - Unicité de l’email, de nom d’utilisateur et du numéro de téléphone (si fourni)
+        - Format des champs
+
+    **Traitements** :
+
+        - Hash du mot de passe avec SHA-256
+        - Création de l’utilisateur en base de données
+        - Envoi d’un code de vérification par email
+        - Génération d’un token JWT une fois le compte vérifié
+        - Stockage des préférences musicales (via un `PUT /api/user/preferences`)
+</Accordion>
+
+<Accordion title={"Connexion"}>
+## Front-end
+
+    **Bouton "Connexion"** :
+        - Affiche un formulaire de connexion avec les champs suivants :
+
+            - Adresse email **ou** nom d’utilisateur (obligatoire)
+            - Mot de passe (obligatoire, masqué)
+
+    **Validation côté client** :
+
+        - Champs non vides
+        - Email bien formé si utilisé
+        - Mot de passe correctement rempli
+
+    **Soumission** :
+
+        - Requête `POST /api/login envoyée avec les identifiants
+
+
+        - Si la connexion réussit :
+
+            - Stockage du token JWT
+            - Redirection vers la page d’accueil (fil d’actualité)
+
+        - En cas d’échec :
+
+            - Message d’erreur affiché (ex. : identifiants incorrects ou email non vérifié)
+
+## Back-end
+
+    - **Route** : `POST /api/login`
+
+    - **Contrôles** :
+
+        - Vérification de l’existence du compte via email ou nom d’utilisateur
+
+        - Vérification que l’adresse email a été validée
+
+        - Vérification du mot de passe (comparaison avec le hash stocké)
+
+    - **Traitements** :
+
+        - Si toutes les conditions sont remplies :
+
+            - Génération d’un token JWT
+            - Envoi d’informations utiles sur l’utilisateur (nom, préférences, etc.)
+
+    - **Réponses possibles** :
+
+        - Connexion réussie → token JWT retourné, l’utilisateur est authentifié
+        - Identifiants incorrects → message d’erreur
+        - Email non vérifié → message d’avertissement
+</Accordion>
+<Accordion title={"Déconnexion"}>
+## Front-end
+    - **Bouton "Déconnexion"** accessible via le menu ou le profil
+
+    - **Action** :
+
+        - À l’appui du bouton :
+
+            - Suppression du token JWT du stockage local (localStorage / cookies)
+            - Redirection vers la page de connexion ou d’accueil non authentifiée
+
+
+## Back-end
+    - **Cas d’usage avec JWT** :
+
+        - Aucun traitement serveur spécifique si les tokens sont stateless
+
+    - **Cas d’usage avec sessions (ex. via cookies)** :
+
+        - Requête `POST /api/logout` pour invalider la session côté serveur
+        - Suppression du cookie de session côté client
+</Accordion>
+
+<Accordion title={"Modifier son profil"}>
+## Front-end
+    - **Accès** :
+
+        - L’utilisateur accède à la page de son profil
+        - Il clique sur le bouton "Modifier le profil"
+
+    - **Champs modifiables** :
+
+        - Photo de profil (upload ou suppression)
+        - Description (champ texte, limite de 300 caractères)
+        - Genres musicaux favoris (liste modifiable par ajout ou suppression, max. 5)
+        - Mot de passe
+        - Pays
+
+    - **Validation côté client** :
+
+        - Taille max. de la description : 300 caractères
+        - Nombre de genres favoris ≤ 5
+        - Format d’image valide pour la photo (JPEG, PNG, etc.)
+        - Si aucune photo n’est fournie, application d’une  **photo de profil par défaut**
+         (exemple: initiales de l’utilisateur)
+        - Mot de passe suffisamment puissant
+
+
+    - **Soumission** :
+
+        - Requête `PUT /api/user/profile/:id` envoyée avec les modifications
+        - Confirmation affichée à l’utilisateur
+        - Redirection ou retour visuel des nouvelles données
+
+
+## Back-end
+
+    - **Route** : <br />`PUT /api/user/profile/:id`
+       <br />     `GET /api/user/profile/:id`
+                  (récupérer les information de l’utilisateur lorsque l’on est sur le profil)
+
+
+    - **Contrôles** :
+
+        - Vérification de l’authentification via token JWT
+        - Vérification de la validité des champs :
+
+            - Description ≤ 300 caractères
+            - Max. 5 genres musicaux
+            - Fichier image valide pour la photo
+            - Mot de passe
+            - Pays
+
+
+    - **Traitements** :
+
+        - Mise à jour des champs en base de données pour la table **users**
+        - Les modifications sont enregistrées et immédiatement visibles (si le profil est public)
+</Accordion>
+
+<Accordion title={"Afficher ses genres musicaux préférés"}>
+## Front-end
+    - **Affichage sur le profil** :
+
+        - Une section dédiée affiche les **genres musicaux favoris**
+        - Présentation sous forme de **tags interactifs** (ex. : Rock, Jazz, Électro)
+        - Tags visibles uniquement si l’utilisateur concerné a au moins un genre défini
+
+    - **Interaction** :
+
+        - Cliquer sur un **tag de genre** déclenche une action :
+
+            - Affiche une **liste de morceaux et playlists** correspondant au genre sélectionné
+            - Données récupérées via une requête au back-end (ou moteur de recherche interne)
+
+
+
+## Back-end
+    - **Route** : `GET /api/user/:user/category`
+
+        - Retourne la liste des genres musicaux favoris de l’utilisateur ciblé
+
+    - **Route complémentaire** : `GET /api/genres/:category/playlist`
+
+        - Retourne une liste de morceaux et playlists associés à un genre donné
+
+    - **Contrôles** :
+
+        - Vérification que le profil cible est **public** (si applicable)
+        - Si l’utilisateur cible n’a défini aucun genre : la section est masquée ou affiche un message vide
+</Accordion>
+
+<Accordion title={"Connecter plusieurs plateformes de streaming"}>
+## Front-end
+    - **Accès** :
+
+        - L’utilisateur accès à la section **“Préférences de plateforme”** depuis son profil
+
+    - **Interaction** :
+
+        - Il peut se connecter aux 3 plateformes d’écoute présentes sur l’application (Spotify, Deezer ou Soundcloud)
+        - Il clique sur l’une des plateformes pour lier son compte
+        - Il est redirigé vers l’interface d’**authentification OAuth** de la plateforme choisie
+        - Une fois l’accès autorisé, l’utilisateur est redirigé vers l’application
+        - Il peut à tout moment annuler l’autorisation
+        - Dans les **paramètres du compte**, il peut choisir une des 3 applications en tant que plateforme principale d’écoute
+
+## Back-end
+    - **Routes principales** :
+
+        - `GET /api/streaming/list` → Liste des plateformes compatibles
+        - `POST /api/streaming/connect/:streaming` → Début du processus de connexion OAuth
+        - `GET /api/streaming/callback` → Traitement de la redirection après autorisation
+        - `GET /api/streaming/sync` → Synchronisation des données musicales
+
+    - **Traitements** :
+
+        - Gestion du **flux OAuth 2.0** pour chaque plateforme
+        - Récupération et stockage des **tokens d’accès et de rafraîchissement**
+        - Stockage des tokens en base de donnée
+        - Synchronisation initiale des données (playlists, morceaux, artistes)
+</Accordion>
+
+<Accordion title={"Suivre ses habitudes d'écoute"}>
+## Front-end
+    - **Accès** :
+
+        - L’utilisateur accède à la section **"Statistiques"** depuis son profil
+
+    - **Données affichées** :
+
+        - **Nombre de morceaux écoutés** :
+
+            - Par jour, semaine, mois, année (selon la période sélectionnée)
+
+        - **Top artistes** :
+
+            - Liste des artistes les plus écoutés, classés par nombre d’écoutes
+
+        - **Genre musical dominant** :
+
+            - Affiché sous forme de texte ou de graphique (ex. : diagramme circulaire)
+
+
+        - **Heures d’écoute totale** :
+
+            - Affiché sous forme de graphique avec au dessous le nombre d’heures total (ex. : diagramme en barre)
+
+        - **Filtres disponibles** :
+
+            - Périodes sélectionnables :
+
+                - Dernières 24 heures
+                - 7 derniers jours
+                - Dernier mois
+                - Dernière année
+
+        - **Affichage interactif** :
+            - Graphiques dynamiques (ex. : histogrammes, camemberts)
+
+## Back-end
+
+    - **Routes principales** :
+
+        - `GET /api/user/:user/stats?period=7d` → Retourne les données pour la période choisie
+
+
+    - **Traitements** :
+
+        - Agrégation des écoutes à partir des données synchronisées des plateformes
+        - Calcul du **nombre total d’écoutes** sur la période
+        - Classement des artistes en fonction du volume d’écoutes
+        - Détection du genre musical dominant selon les métadonnées des morceaux
+    - **Mise à jour des données** :
+        - Synchronisation quotidienne avec les plateformes connectées
+        - Données calculées et mises à jour automatiquement
+</Accordion>
+
+<Accordion title={"Comparer ses statistiques avec ses amis"}>
+## Front-end
+    - **Accès** :
+
+        - L’utilisateur accède à la section **"Statistiques"**
+        - Il clique sur **"Comparer avec un ami"**
+
+    - **Sélection de l’ami** :
+
+        - Une **liste déroulante** des amis est proposée
+        - L’utilisateur sélectionne un ami avec qui faire la comparaison
+
+    - **Affichage comparatif** :
+
+        - Un **tableau ou une carte interactive** affiche les données suivantes :
+
+            - **Artistes communs** :
+
+                - Liste des artistes que les deux utilisateurs écoutent
+
+            - **Nombre de morceaux écoutés** :
+
+                - Total sur la période sélectionnée pour chaque utilisateur
+
+            - **Genres les plus écoutés** :
+
+                - Affichés en parallèle ou en graphique croisé
+
+    - **Filtres** :
+
+        - Périodes comparables :
+
+            - 7 derniers jours
+            - Dernier mois
+            - 1 an
+
+
+## Back-end
+
+    - **Route** : `GET /api/user/:user/compare/:friend?period=1mo`
+
+    - **Traitements** :
+
+        - Récupération des données d’écoute de l’utilisateur et de l’ami
+        - Croisement des artistes écoutés pour détecter les **écoutes communes**
+        - Comparaison des **genres musicaux dominants**
+        - Calcul du **score de compatibilité musicale** basé sur :
+
+            - % d’artistes communs
+            - % de genres musicaux similaires
+            - Similarité dans la fréquence d’écoute
+</Accordion>
+
+<Accordion title={"Paramètres du compte"}>
+## Front-end
+    - **Accès** :
+
+        - L’utilisateur accède à son profil
+        - Il clique sur la section **"Paramètres"**
+
+    - **Options modifiables** :
+
+        - **Langue de l’application** :
+
+            - Choix parmi les langues disponibles (français ou anglais)
+            - L’interface s’adapte immédiatement à la langue sélectionnée
+
+
+        - **Notifications** :
+
+            - Activer/désactiver les **notifications push**
+
+        - **Visibilité du profil** :
+
+
+            - Option pour **mettre le profil en privé ou public**
+            - Si privé : seules les personnes autorisées peuvent voir le profil et les données associées
+
+
+        - **Application préférées** :
+
+            - On peut choisir notre application de musique préférée. On a le choix entre Spotify, Deezer et Soundcloud
+
+    - **Sauvegarde** :
+
+            - Les modifications sont envoyées via une requête au back
+            - Une confirmation visuelle est affichée une fois les paramètres mis à jour
+
+
+## Back-end
+
+    - **Route** : <br />`PUT /api/user/settings/:user
+<br /> `GET /api/user/settings/:user`
+
+    - **Contrôles** :
+
+        - Authentification requise (token JWT valide)
+        - Modifie dans la table `user_setting` les champs suivants :
+            - is_private => pour avoir un compte privé ou non
+            - notification_disabled => pour activer ou non les notifications type “push”
+            - language => choix de la langue de l’application (français ou anglais)
+            - preferred_app => choix de l’application d’écoute de musique favorite (Spotify, Deezer ou Soundcloud)
+
+    - **Traitements** :
+
+        - Mise à jour des paramètres utilisateur en base de données
+        - Application immédiate ou au prochain chargement de session (selon les paramètres)
+</Accordion>
+
+<Accordion title={"Badge & succès (BONUS)"}>
+## Front-end
+    - **Accès** :
+
+        - L’utilisateur accède à son profil
+        - Il clique sur la section **“Badges & succès”**
+
+    - **Affichage** :
+
+        - Liste des badges et succès obtenus, chacun présenté avec :
+
+        - **Icône ou visuel représentatif**
+        - **Date d’obtention**
+        - **Nom du badge ainsi qu’une description courte si l’on clique sur celui-ci** (ex. : “Succès : Premier morceau liké”)
+
+    - **Interaction** :
+
+        - Cliquer sur un badge ou un succès affiche :
+
+            - Un **texte explicatif** indiquant comment l’utilisateur l’a obtenu ou pouvait l’obtenir
+            - (Ex. : “Aimer 10 morceaux pour débloquer ce badge”)
+
+
+##Back-end
+
+    - **Route** : `GET /api/user/:user/badges`
+
+        - Retourne la liste des badges ou succès de l’utilisateur, avec les données suivantes :
+
+            - Identifiant du badge
+            - Nom
+            - Description courte
+            - Texte explicatif (détail des conditions)
+            - Date d’obtention
+
+    - **Contrôles** :
+
+        - Vérification de l’authentification si le profil est privé
+        - Si le profil est public : les badges sont consultables par d’autres utilisateurs
+
+    - **Stockage** :
+
+        - Chaque badge est lié à une action précise détectée côté serveur (ex. : like, création de playlist, écoute quotidienne, etc.)
+        - La date d’obtention est enregistrée lors de la validation de la condition
+</Accordion>
+
+## Abonnements
+
+<Accordion title={"Suivre un utilisateur"}>
+## Front-end
+
+Prérequis :
+
+    - Utilisateur connecté
+    - Accès au profil d’un autre utilisateur
+
+Interface utilisateur :
+
+    - Bouton **"Suivre"** :
+
+        - Affiché si l'utilisateur cible **n’est pas encore suivi**
+        - Passe en **"Abonné"** (ou "Ne plus suivre") après action réussie
+
+    - Bouton **"Ne plus suivre"** :
+
+        - Affiché si l'utilisateur est déjà suivi
+
+Actions utilisateur :
+
+    - **Clic sur "Suivre"** :
+
+        - Envoi d’un `POST` à `/api/users/{username}/follow`
+        - Mise à jour immédiate du statut local (optimiste)
+        - Affiche un message visuel ("Abonnement confirmé")
+
+    - **Clic sur "Ne plus suivre"** :
+
+        - Envoie une requête `DELETE` à l’API
+        - Mise à jour locale du statut
+
+## Back-end
+
+Route principale :
+
+    - `POST /api/users/{username}/follow`
+
+        - **Authentification requise (JWT)**
+        - **Vérifie l’existence de l’utilisateur cible**
+        - **Vérifie que la relation n’existe pas déjà**
+        - **Créer une entrée dans la table follows**
+        - **Déclenche une notification de type new_follower**
+
+    - `DELETE /api/users/{username}/unfollow`
+
+
+        - **Authentification requise**
+        - **Supprime l’entrée correspondante dans follows**
+
+    - Contrôles serveur :
+
+        - **L'utilisateur ne peut pas se suivre lui-même**
+        - **Vérification de l'existence de l'utilisateur cible**
+        - **Clé unique (follower_id, followed_id) pour éviter les doublons**
+</Accordion>
+
+<Accordion title={"Ne plus suivre un utilisateur"}>
+## Frontend
+
+Bouton UI :
+
+    - `"Ne plus suivre"` si utilisateur déjà suivi
+
+Comportement :
+    - Envoi d’un `DELETE` à `/api/users/{username}/unfollow`
+    - Mise à jour locale immédiate
+    - Affichage d’un message : "Vous ne suivez plus cet utilisateur."
+
+## Backend
+
+Route : `DELETE /api/users/{username}/unfollow`
+
+Traitement :
+
+    - Vérifie que la relation existe
+    - Supprime la ligne (`follower_id`, `followed_id) dans follow
+    - Aucun effet si la relation n’existait pas
+</Accordion>
+
+<Accordion title={"Liste abonnements / abonnés"}>
+## Frontend
+    - L’onglet "Abonnements" affiche la liste des comptes suivis (`GET /api/users/{username}/following`)
+    - L’onglet "Abonnés" affiche la liste des followers (`GET /api/users/{username}/followers`)
+
+
+Si vide :
+
+    - Bouton "Explorer des comptes" (si abonnements vides)
+    - Message "Aucun abonné pour le moment" (si followers vides)
+
+## Backend
+
+Route : `GET /api/users/{username}/following`
+
+Renvoie la liste des following
+</Accordion>
+
+<Accordion title={"Suggestions d'abonnement"}>
+## Frontend
+
+**UI** :
+
+Dans l’onglet “Abonnements”
+
+    - Suggestions de 3 comptes en haut
+
+**Comportement** :
+
+    - Appel à `/api/users/suggestions` au chargement
+
+## Backend
+
+**Route** : `GET /api/users/suggestions`
+
+**Traitement** :
+
+    - Utilisateurs populaires (nb de followers > seuil)
+    - Amis d’amis (mutual follow)
+    - Mêmes préférences musicales
+</Accordion>
+
+## Publication de contenu
+
+<Accordion title={"Création de post"}>
+## Front-end
+
+Prérequis
+
+    - Utilisateur connecté
+    - Application installée ou accès web autorisé
+    - Autorisation d'accès à la galerie/caméra
+
+Interface utilisateur
+
+    - **Bouton "Créer un post" (+)** :
+        - Ouvre la capsule de création de post
+
+    - **Formulaire de création** :
+
+        - Sélection de musique (obligatoire) : Barre de recherche qui permet de sélectionner la musique correspondante:
+            - plusieurs choix de musique selon la recherche
+        - Photo d'accompagnement (optionnel) :
+
+            - Prendre une photo/selfie avec l'appareil
+            - Sélectionner une photo existante dans la galerie
+            - Recadrage ou rognage de la photo une fois prise ou sélectionnée
+
+        - Description (optionnel) : Limite de 500 caractères
+        - Localisation (optionnel)
+
+Actions utilisateur
+
+    - Bouton "Retour" :
+
+        L'utilisateur peut revenir en arrière et quitter la capsule de publication
+
+    - Bouton "Publier" :
+
+        L'utilisateur clique et valide sa publication
+
+## Back-end
+
+    - Route principale:  `POST /api/posts`
+    - Contrôles serveur
+
+        **Validation des données** :
+
+            - Musique: Obligatoire
+            - Description : ≤ 500 caractères si fournie
+            - Photo : Formats acceptés JPG, PNG, GIF
+            - Localisation : Optionnelle
+
+    - Tables impactées :
+        - Table **post**:
+            - user_id (foreign key)
+            - song_preview_url (varchar)
+            - caption (varchar)
+            - track (jsonb)
+            - photo_url (varchar)
+            - location (varchar)
+            - updated_at (datetime)
+
+Processus
+    1. **Création du post** :
+
+        - Sélection de musique (obligatoire)
+        - Ajout description et photo (optionnel)
+        - Ajout localisation (optionnel)
+
+    2. **Validation** :
+
+        - Vérification de la référence musicale
+        - Contrôle de la limite de caractères pour la description
+        - Validation du format de photo
+
+    3. **Publication** :
+
+        - Le post est créé et apparaît dans le fil d'actualité
+        - Apparition dans le feed des abonnés
+</Accordion>
+
+<Accordion title={"Modification de post"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+    - Utilisateur auteur du post
+
+**Interface utilisateur**
+
+    - **Accès à la modification** :
+        - Icône "..." (options) visible sur le post de l'utilisateur
+        - Option "Modifier" dans le menu déroulant
+
+    - **Formulaire de modification** :
+        - Champs pré-remplis avec les données existantes
+        - Description (modifiable, limite 500 caractères)
+        - Photo (modifiable) :
+            - Supprimer la photo existante
+            - Remplacer par une nouvelle photo (galerie/caméra)
+            - Recadrage disponible
+        - Localisation (modifiable)
+        - Musique associée (non modifiable, affichage en lecture seule)
+
+**Actions utilisateur**
+
+    - **Bouton "Annuler"** :
+        - Ferme le formulaire sans sauvegarder
+
+    - **Bouton "Enregistrer les modifications"** :
+        - Valide et sauvegarde les modifications
+
+## Back-end
+
+**Route principale**: `PUT /api/posts/{id}`
+
+**Contrôles serveur**
+        - Vérification que l'utilisateur est l'auteur du post
+        - Validation des données modifiables :
+            - Description : ≤ 500 caractères si fournie
+            - Photo : Formats acceptés JPG, PNG, GIF
+            - Localisation : Optionnelle
+        - La référence musicale ne peut pas être modifiée
+
+**Tables impactées**
+    - Table `posts` :
+        - user_id
+        - caption (mise à jour)
+        - photo_url (mise à jour)
+        - location (mise à jour)
+        - updated_at (mise à jour automatique)
+
+    - Table `post_history` (historique des modifications) :
+
+        - post_id
+        - field_name
+        - old_value
+        - new_value
+        - modified_at
+        - modified_by
+
+**Processus**
+
+    1. **Vérification des droits** :
+
+        - Contrôle que l'utilisateur connecté est l'auteur
+
+    2. **Sauvegarde de l'historique** :
+
+        - Enregistrement des valeurs avant modification
+
+    3. **Mise à jour** :
+
+        - Modification des champs autorisés uniquement
+        - Mise à jour du timestamp
+</Accordion>
+
+<Accordion title={"Suppresion de post"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+    - Utilisateur auteur du post
+
+**Interface utilisateur**
+
+    - **Accès à la suppression** :
+        - Icône "..." (options) visible sur le post de l'utilisateur
+        - Option "Supprimer" dans le menu déroulant
+
+    - **Modale de confirmation** :
+        - Message de confirmation : "Êtes-vous sûr de vouloir supprimer ce post ?"
+        - Bouton "Annuler"
+        - Bouton "Confirmer la suppression"
+
+    - **Actions utilisateur**
+
+        - **Bouton "Annuler"** :
+            - Ferme la modale sans supprimer
+        - **Bouton "Confirmer la suppression"** :
+            - Procède à la suppression définitive
+
+## Back-end
+
+**Route principale**: `DELETE /api/posts/{id}`
+
+**Contrôles serveur**
+
+    - Vérification que l'utilisateur est l'auteur du post
+    - Vérification que le post existe
+
+- **Tables impactées**
+
+        - **Table** `posts` :
+            - Suppression définitive de l'enregistrement
+
+        - **Tables liées** (suppression en cascade) :
+            - Commentaires associés
+            - Likes associés
+            - Partages associés
+
+**Processus**
+
+    1. **Vérification des droits** :
+        - Contrôle que l'utilisateur connecté est l'auteur
+    2. **Suppression** :
+        - Suppression définitive du post et de toutes ses interactions
+        - Le post n'est plus disponible nulle part dans l'application
+</Accordion>
+
+<Accordion title={"Suppresion de post"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+    - Utilisateur auteur du post
+
+**Interface utilisateur**
+
+    - **Accès à la suppression** :
+        - Icône "..." (options) visible sur le post de l'utilisateur
+        - Option "Supprimer" dans le menu déroulant
+
+    - **Modale de confirmation** :
+        - Message de confirmation : "Êtes-vous sûr de vouloir supprimer ce post ?"
+        - Bouton "Annuler"
+        - Bouton "Confirmer la suppression"
+
+**Actions utilisateur**
+
+    - **Bouton "Annuler"** :
+        - Ferme la modale sans supprimer
+    - **Bouton "Confirmer la suppression"** :
+        - Procède à la suppression définitive
+
+## Back-end
+
+**Route principale** : `DELETE /api/posts/{id}`
+
+**Contrôles serveur**
+
+    - Vérification que l'utilisateur est l'auteur du post
+    - Vérification que le post existe
+
+**Tables impactées**
+
+    - **Table** `posts` :
+        - Suppression définitive de l'enregistrement
+
+    - **Tables liées** (suppression en cascade) :
+        - Commentaires associés
+        - Likes associés
+        - Partages associés
+
+**Processus**
+
+    1. **Vérification des droits** :
+        - Contrôle que l'utilisateur connecté est l'auteur
+    2. **Suppression** :
+        - Suppression définitive du post et de toutes ses interactions
+        - Le post n'est plus disponible nulle part dans l'application
+</Accordion>
+
+<Accordion title={"Publication de Playlist Publique"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+    - Au moins une playlist créée ou importée
+    - Playlist contenant au moins 3 titres
+
+**Interface utilisateur**
+
+    - **Accès à la publication** :
+        - Section "Mes playlists"
+        - Bouton "Publier la playlist" sur la playlist sélectionnée
+    - **Formulaire de publication** :
+        - Titre de la publication (prérempli avec le nom de la playlist, modifiable)
+        - Description (optionnel)
+        - Image de couverture (optionnel, couverture de la playlist par défaut)
+        - Tags (optionnel)
+        - Paramètres de collaboration :
+            - Case à cocher "Recevoir des notifications sur les interactions"
+            - Case à cocher "Permettre aux autres de suggérer des titres"
+
+**Actions utilisateur**
+
+    - **Bouton "Annuler"** :
+        - Ferme le formulaire sans publier
+    - **Bouton "Publier"** :
+        - Valide et publie la playlist
+
+## Back-end
+
+**Route principale** : `POST /api/playlists/{id}/publish`
+
+**Contrôles serveur**
+
+    - Vérification que l'utilisateur est propriétaire de la playlist
+    - Validation que la playlist contient au moins 3 titres
+    - Validation des données :
+        - Titre : Obligatoire
+        - Description : Optionnelle
+        - Image de couverture : Format accepté JPG, PNG, GIF
+        - Tags : Optionnels
+
+**Tables impactées**
+
+    - **Table** `posts` :
+        - id
+        - author_id
+        - type (playlist)
+        - playlist_id
+        - title
+        - description
+        - cover_image_url
+        - tags
+        - collaboration_settings
+        - created_at
+        - updated_at
+    - **Table** `playlists` :
+        - is_published (mise à jour à true)
+        - published_at
+
+**Processus**
+    1. **Validation** :
+        - Vérification du nombre minimum de titres (3)
+        - Contrôle des droits de propriété
+    2. **Publication** :
+        - Création d'un post de type "playlist"
+        - Mise à jour du statut de la playlist
+        - Apparition dans le profil de l'utilisateur
+        - Apparition dans le fil d'actualité des abonnés
+
+**Règles métier**
+
+    - Minimum 3 titres requis pour publication
+    - Paramètres de notification configurables
+    - Paramètres de collaboration configurables (suggestions de titres)
+    - La playlist publiée reste modifiable par son propriétaire
+</Accordion>
+
+## Fil d'actualité
+
+<Accordion title={"Feed Utilisateur"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+
+- **Interface utilisateur**
+
+    - **Écran principal** :
+
+        - Feed d'actualités affiché par défaut à l'ouverture de l'application
+        - Liste verticale des posts récents
+
+    - **Affichage des posts** :
+
+        - Ordre chronologique inversé (plus récents en premier)
+        - Chaque post comprend :
+            - Musique associée avec extrait ou lien vers plateforme de streaming
+            - Description (si ajoutée par l'auteur)
+            - Photo d'accompagnement (si ajoutée)
+            - Informations de l'auteur (nom, photo de profil)
+            - Localisation (si ajoutée)
+            - Horodatage de publication
+
+    - **Navigation** :
+
+        - Défilement vertical pour parcourir les posts
+        - Scroll infini : chargement automatique de nouveaux posts en atteignant le bas
+        - Rafraîchissement par glissement vers le bas (pull-to-refresh)
+
+**Actions utilisateur**
+
+    - **Défilement** :
+        - Scroll vertical pour voir plus de posts
+        - Chargement automatique sans bouton
+    - **Rafraîchissement** :
+        - Glissement vers le bas pour actualiser le contenu
+    - **Interaction avec posts** :
+        - Lecture des extraits musicaux
+        - Accès aux liens vers plateformes de streaming
+
+## Back-end
+
+**Route principale** : `GET /api/feed`
+
+**Paramètres de requête**
+
+    - `page` : Numéro de page (optionnel, défaut : 1)
+    - `limit` : Nombre de posts par page (optionnel, défaut : 20)
+    - `last_post_id` : ID du dernier post chargé pour pagination (optionnel)
+
+**Contrôles serveur**
+
+    - Vérification de l'authentification utilisateur
+    - Validation des paramètres de pagination
+    - Contrôle des posts accessibles (non supprimés, auteurs non bloqués)
+
+**Tables impactées**
+
+    - **Table** `posts` :
+
+        - Récupération des posts des utilisateurs suivis
+        - Filtrage par _created_at_ (ordre chronologique inversé)
+        - Jointure avec _users_ pour informations auteur
+
+    - **Table** `follows` :
+
+        - Détermination des utilisateurs suivis
+
+    - **Table** `users` :
+
+        - Informations des auteurs (nom, photo de profil)
+
+**Processus**
+
+    1. **Identification des sources** :
+
+        - Récupération de la liste des utilisateurs suivis
+
+    2. **Récupération des posts** :
+
+        - Posts des utilisateurs suivis uniquement
+        - Tri chronologique inversé
+        - Pagination avec limit/offset
+
+    3. **Enrichissement des données** :
+
+        - Informations complètes de l'auteur
+        - Métadonnées musicales
+        - Statistiques d'interaction (likes, commentaires)
+
+    4. **Formatage de la réponse** :
+        - Structure JSON avec tous les éléments d'affichage
+
+**Optimisations**
+
+    - Index sur (`author_id`, `created_at`) pour performance
+    - Cache des utilisateurs suivis
+    - Pagination cursor-based pour stabilité
+    - Préchargement des métadonnées musicales
+
+**Gestion des cas particuliers**
+
+    - Utilisateur sans abonnements : feed vide ou suggestions
+    - Posts supprimés : exclusion automatique
+    - Auteurs bloqués : filtrage des posts
+    - Erreurs de streaming : affichage dégradé sans preview
+</Accordion>
+
+## Interaction sociale
+
+<Accordion title={"Like"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+
+**Interface utilisateur**
+
+    - **Bouton Like** :
+        - Icône cœur visible sur chaque post
+        - Animation au clic : cœur devient rouge
+        - Feedback visuel immédiat
+
+**Actions utilisateur**
+    - **Clic sur l'icône cœur** :
+        - Animation de changement de couleur (rouge)
+        - Mise à jour immédiate du compteur de likes
+        - Possibilité de retirer le like (toggle)
+
+## Back-end
+
+**Routes principales**:
+
+`POST /api/posts/{id}/like`
+`DELETE /api/posts/{id}/like`
+
+**Contrôles serveur**
+    - Vérification de l'authentification utilisateur
+    - Vérification de l'existence du post
+    - Prévention des likes multiples du même utilisateur
+
+**Tables impactées**
+
+    - **Table** `likes` :
+
+        - post_id
+        - user_id
+        - created_at
+
+    - **Table** `notifications` :
+        - recipient_id (auteur du post)
+        - sender_id (utilisateur qui like)
+        - type (like)
+        - post_id
+        - created_at
+
+**Processus**
+
+    1. **Ajout/Suppression du like** :
+
+        - Insertion ou suppression dans la table likes
+
+    2. **Notification** :
+
+        - Création d'une notification pour l'auteur du post
+        - Envoi de la notification en temps réel
+</Accordion>
+
+<Accordion title={"Commentaire"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+
+**Interface utilisateur**
+
+    - **Icône commentaires** :
+        - Icône de bulle visible sur chaque post
+        - Affichage du nombre de commentaires
+    - **Section commentaires** :
+        - Apparition en partie inférieure de l'écran
+        - Zone de texte pour écrire un commentaire
+        - Bouton "Publier"
+        - Liste des commentaires existants d'autres utilisateurs
+**Actions utilisateur**
+    - **Clic sur l'icône bulle** :
+        - Ouverture de la section commentaires
+    - **Rédaction et publication** :
+        - Saisie du texte dans la zone
+        - Clic sur "Publier" pour valider
+
+## Back-end
+
+**Routes principales** :
+
+`POST /api/posts/{id}/comments`
+`GET /api/posts/{id}/comments`
+
+**Contrôles serveur**
+
+    - Vérification de l'authentification utilisateur
+    - Validation du contenu du commentaire (non vide)
+    - Vérification de l'existence du post
+
+**Tables impactées**
+
+    - **Table** `comments` :
+        - id
+        - post_id
+        - author_id
+        - content
+        - created_at
+
+    - **Table** `notifications` :
+        - Notification à l'auteur du post
+
+**Processus**
+
+    1. **Création du commentaire** :
+
+        - Insertion dans la table comments
+
+    2. Notification :
+
+        - Notification à l'auteur du post original
+
+    3. Affichage :
+
+        - Récupération et affichage des commentaires
+</Accordion>
+
+<Accordion title={"Partage"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+
+**Interface utilisateur**
+
+    - **Icône partage** :
+        - Icône de téléchargement visible sur chaque post
+    - **Section partage** :
+        - Apparition en partie inférieure de l'écran
+        - Liste des contacts pour envoi direct
+        - Option "Copier le lien" pour partage externe
+
+**Actions utilisateur**
+
+    - **Clic sur l'icône téléchargement** :
+        - Ouverture de la section partage
+    - **Partage à un contact** :
+        - Sélection d'un contact et envoi
+    - **Copie du lien** :
+        - Génération et copie d'un lien partageable
+
+## Back-end
+
+**Route principale** :
+`POST /api/posts/{id}/share`
+`GET /api/posts/{id}/share-link`
+
+**Contrôles serveur**
+
+    - Vérification de l'authentification utilisateur
+    - Vérification de l'existence du post
+    - Génération d'un lien de partage sécurisé
+
+**Tables impactées**
+
+    - **Table** `shares` :
+        - post_id
+        - user_id
+        - share_type (contact/link)
+        - created_at
+
+**Processus**
+
+    1. **Enregistrement du partage** :
+        - Insertion dans la table shares
+
+    2. **Génération du lien** :
+        - Création d'un lien public vers le post
+
+    3. **Envoi** :
+        - Transmission à un contact ou copie du lien
+</Accordion>
+
+<Accordion title={"Favori"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+
+**Interface utilisateur**
+
+    - **Icône favori** :
+        - Icône étoile visible sur chaque post
+        - Animation au clic : étoile devient jaune
+
+**Actions utilisateur**
+
+    - **Clic sur l'icône étoile** :
+        - Animation de changement de couleur (jaune)
+        - Ajout/suppression du favori (toggle)
+
+## Back-end
+
+**Routes principales** :
+`POST /api/posts/{id}/favorite`
+`DELETE /api/posts/{id}/favorite`
+
+**Contrôles serveur**
+
+    - Vérification de l'authentification utilisateur
+    - Vérification de l'existence du post
+    - Prévention des favoris multiples du même utilisateur
+
+**Tables impactées**
+
+    - **Tables** `favorites` :
+        - post_id
+        - user_id
+        - created_at
+
+**Processus**
+
+    1. **Ajout/Suppression du favori** :
+        - Insertion ou suppression dans la table favorites
+
+    2. **Mise à jour des préférences** :
+        - Mise à jour du profil utilisateur
+</Accordion>
+
+<Accordion title={"Signalement"}>
+## Front-end
+
+**Prérequis**
+
+    - Utilisateur connecté
+
+**Interface utilisateur**
+
+    - **Bouton signalement** :
+        - Accessible depuis le post ou le profil utilisateur
+
+    - **Modale de signalement** :
+        - Liste déroulante des raisons de signalement
+        - Zone de texte pour explication complémentaire
+        - Bouton "Valider le signalement"
+        - Message de confirmation après validation
+
+**Actions utilisateur**
+
+    - **Clic sur le bouton signaler** :
+        - Ouverture de la modale
+
+    - **Sélection de la raison** :
+        - Choix dans la liste déroulante
+
+    - **Ajout d'explication** :
+        - Rédaction optionnelle d'un texte explicatif
+
+    - **Validation** :
+        - Envoi du signalement et affichage du message de confirmation
+
+## Back-end
+
+**Route principale** :
+- `POST /api/posts/{id}/report`
+- `POST /api/users/{id}/report`
+
+**Contrôles serveur**
+
+    - Vérification de l'authentification utilisateur
+    - Validation de la raison de signalement
+    - Vérification de l'existence du post/utilisateur signalé
+
+**Tables impactées**
+
+    - **Table** `reports` :
+        - id
+        - reporter_id
+        - reported_type (post/user)
+        - reported_id
+        - reason
+        - description
+        - status (pending/reviewed/resolved)
+        - created_at
+
+**Processus**
+
+    1. **Enregistrement du signalement** :
+        - Insertion dans la table reports avec statut "pending"
+
+    2. **Notification admin** :
+        - Alerte pour modération
+
+    3. **Confirmation** :
+        - Message de prise en compte envoyé à l'utilisateur
+</Accordion>
+
+## Lecteur de musique
+
+<Accordion title={"Lecture d'extraits musicaux"}>
+## Front-end
+
+**Prérequis**
+
+    - Post contenant une référence musicale
+
+**Interface utilisateur**
+
+    - **Lecture automatique** :
+        - Déclenchement automatique lorsque l'utilisateur arrive sur le post
+        - Durée fixe de 30 secondes
+        - Début obligatoire au commencement de la musique
+
+    - **Indicateur visuel** :
+        - Barre de progression de l'extrait
+        - Visualisation du temps écoulé/restant
+
+**Actions automatiques**
+
+    - **Lancement automatique** :
+        - Démarrage dès l'affichage du post
+        - Lecture depuis le début de la piste
+
+    - **Arrêt automatique** :
+        - Fin de lecture après 30 secondes
+        - Arrêt si l'utilisateur quitte le post
+
+## Back-end
+
+**Route principale** : `GET /api/posts/{id}/preview`
+
+**Contrôles serveur**
+
+    - Vérification de l'existence du post
+    - Validation de la disponibilité de l'extrait
+    - Récupération de l'URL de prévisualisation depuis la plateforme
+
+**Tables impactées**
+
+    - **Table** `posts` :
+        - music_reference (contient preview_url)
+
+    - **Table** `music_platforms` :
+        - Configuration des URLs de preview par plateforme
+
+**Processus**
+
+    1. **Récupération de l'extrait** :
+
+        - Extraction de l'URL de preview depuis music_reference
+        - Validation de la disponibilité sur la plateforme
+
+    2. **Streaming** :
+        - Fourniture de l'URL d'extrait de 30 secondes
+        - Gestion des erreurs de disponibilité
+</Accordion>
+
+<Accordion title={"Contrôles de lecture de base"}>
+## Front-end
+
+**Prérequis**
+
+    - Post contenant un extrait musical en cours de lecture
+
+**Interface utilisateur**
+
+    - **Activation des contrôles** :
+
+        - Clic sur l'extrait musical pour afficher les contrôles
+
+    - **Contrôles disponibles** :
+
+        - Bouton Play/Pause
+        - Barre de progression avec drag & drop pour navigation temporelle
+        - Curseur de volume avec drag & drop
+        - Temps écoulé et temps restant
+
+    - **Interactions**
+
+        - Navigation temporelle :Glissement sur la barre de progression
+        - Contrôle du volume : Glissement sur le curseur de volume
+
+**Actions utilisateur**
+
+    - **Clic sur l'extrait** :
+
+        - Affichage des contrôles de lecture
+
+    - **Play/Pause** :
+
+        - Basculement entre lecture et pause
+
+    - **Navigation temporelle** :
+
+        - Déplacement dans l'extrait via drag & drop
+
+    - **Contrôle du volume** :
+
+        - Ajustement du niveau sonore via drag & drop
+
+## Back-end
+
+**Route principale** : `PUT /api/users/playback-settings`
+
+**Contrôles serveur**
+
+    - Sauvegarde des préférences de volume utilisateur
+    - Mémorisation de la position de lecture
+
+**Tables impactées**
+
+    - **Table** `user_preferences` :
+        - user_id
+        - default_volume
+        - last_position
+
+**Processus**
+
+    1. **Gestion des préférences** :
+
+        - Sauvegarde du niveau de volume préféré
+        - Mémorisation de la dernière position de lecture
+
+    2. **Synchronisation** :
+
+        - Application des préférences sur tous les extraits
+</Accordion>
+
+<Accordion title={"Interface persistante"}>
+## Front-end
+
+**Prérequis**
+
+    - Extrait musical en cours de lecture
+    - Utilisateur sur un post contenant un extrait musical
+
+**Interface utilisateur**
+
+    - **Icône lecteur réduit** :
+
+        - Bouton pour basculer en mode réduit
+
+    - **Lecteur réduit** :
+
+        - Interface minimale fixe à l'écran
+        - Persistant lors du défilement (scroll)
+        - Affichage des informations de base : titre, artiste
+        - Contrôles simplifiés : Play/Pause
+        - Bouton croix pour fermer le lecteur
+
+    - **Positionnement** :
+
+        - Position fixe en bas de l'écran
+        - Reste visible pendant la navigation
+
+**Actions utilisateur**
+
+    - **Clic sur l'icône lecteur réduit** :
+
+        - Passage en mode lecteur persistant
+        - Maintien de la lecture en cours
+
+    - **Navigation dans l'application** :
+
+        - Lecteur reste visible pendant le scroll
+        - Lecture continue
+
+    - **Contrôles en mode réduit** :
+
+        - Play/Pause disponible
+        - Clic sur le lecteur pour revenir en mode complet
+
+    - **Fermeture** :
+
+        - Clic sur la croix pour arrêter et fermer
+
+## Back-end
+
+**Routes principales** :
+`POST /api/users/playback-session`
+`DELETE /api/users/playback-session`
+
+**Contrôles serveur**
+
+    - Gestion de la session de lecture persistante
+    - Sauvegarde de l'état de lecture
+
+**Tables impactées**
+
+    - **Table**`playback_sessions` :
+        - user_id
+        - post_id
+        - current_position
+        - is_playing
+        - created_at
+
+**Processus**
+
+    1. **Création de session** :
+        - Enregistrement de la session de lecture persistante
+        - Sauvegarde de la position actuelle
+
+    2. **Maintien de l'état** :
+        - Synchronisation de la position de lecture
+        - Gestion de la continuité entre les écrans
+
+    3. **Fin de session** :
+        - Nettoyage lors de la fermeture du lecteur
+        - Suppression de la session active
+</Accordion>
+
+## Système de messagerie
+
+<Accordion title={"Messages textuels"}>
+## Front-end
+
+    - **Accès :**
+
+        - L’utilisateur accède à une **conversation privée existante** via la section “Messages”
+        - Il clique sur **"Nouvelle conversation"** pour en initier une avec un autre utilisateur
+
+    - **Envoi de message :**
+
+        - Il saisit le texte dans la zone de saisie prévue
+        - Il clique sur le bouton **"Envoyer"** ou utilise la touche **Entrée**
+
+    - **Affichage du message :**
+
+        - Le message s’affiche instantanément dans la conversation
+
+        - Affiche :
+
+            - **Contenu du message**
+            - **Nom d’utilisateur**
+            - **Horodatage** (date et heure d’envoi)
+            - **Indication "Modifié"** si le message a été modifié après l’envoi
+
+    **Options utilisateur :**
+
+        - **Modifier un message** déjà envoyé (icône ou menu contextuel)
+
+            - Une mention **“Modifié”** apparaît automatiquement après modification
+
+        - **Supprimer un de ses messages** (confirmation requise)
+
+## Back-end
+
+**Routes pour messages privés (conversations entre utilisateurs):**
+
+    - `POST /api/message` → Envoi d’un nouveau message
+    - `PUT /api/message/:message` → Modification d’un message existant
+    - `DELETE /api/message/:message` → Suppression d’un message
+    - `GET /api/conversation/:conversation` → Récupération de l’historique de conversation
+
+**Contrôles :**
+
+    - L’utilisateur doit :
+        - Être **membre de la conversation** pour les messages privés
+        - Être **connecté** pour commenter un post
+    - L’utilisateur ne peut **modifier ou supprimer que ses propres messages/commentaires**
+    - Les **modifications** et **suppressions** sont **horodatées** (timestamp d’action)
+
+    - **Tables impactées :**
+
+        - `message` : stocke les messages des conversations privées
+</Accordion>
+
+<Accordion title={"Message musical"}>
+## Front-end
+
+    - **Accès :**
+
+        - L’utilisateur accède à une **conversation**
+        - Il clique sur **l’icône de partage**
+
+    - **Sélection :**
+
+        - Il clique sur **l’icône de partage musical**
+        - Une **modal** s’ouvre avec :
+
+            - Une barre de **recherche**
+            - Lors de la saisie et validation, une recherche est lancée sur :
+
+                - La **plateforme de prédilection de l’utilisateur (A)**
+                - Les autres plateformes de musique (Deezer ou Spotify ou Soundcloud)
+
+        - **Résultats :**
+
+            - L’utilisateur sélectionne un morceau à partager dans la liste
+
+    - **Envoi multi-plateformes (logique d'adptation) :**
+
+        - Si le morceau sélectionné est également disponible sur la **plateforme préférée du destinataire (B)**, l’aperçu est adapté à cette plateforme automatiquement côté réception
+        - Si le morceau **n’est pas disponible sur B**, une vérification est faite sur **Spotify** comme fallback
+        - Si le morceau **n’est disponible sur aucune plateforme compatible**, un message est envoyé précisant que le morceau est **"indisponible"**, avec simplement le **titre recherché**
+
+    - **Option supplémentaire :**
+
+        - L’utilisateur peut ajouter un **commentaire textuel optionnel**
+
+    - **Affichage du message :**
+
+        - Message enrichi affichant :
+
+          - **Pochette de l’album**
+          - **Titre et artiste**
+          - **Extrait de 30 secondes** (si fourni par l’API)
+          - **Lien vers la plateforme source** (adaptée au destinataire)
+          - **Commentaire**, s’il a été saisi
+
+## Back-end
+
+    - **Stockage dans la table `message` :**
+
+        - `track` : URL ou ID du morceau (standardisé via une structure `{platform, track_id, fallback_ids}`)
+        - `content` : commentaire optionnel
+
+    - **Routes :**
+
+        - `POST /api/message` → Gère tous les types de messages (y compris musicaux)
+        - `GET /api/message/:message` → Retourne les métadonnées musicales (titre, artiste, etc.)
+
+    - **Traitements back-end détaillés :**
+
+        1. **Recherche multi-plateformes :**
+
+           - Lorsqu’un titre est recherché :
+
+                - L’API de la **plateforme principale de l’émetteur** est interrogée en priorité
+                - En parallèle, des requêtes sont faites vers **Deezer** et **SoundCloud**
+
+            - Le système **mappe** les morceaux entre plateformes (si possible), selon certains critères. (titre, artiste, durée)
+
+        2. **Association à la plateforme du destinataire :**
+
+            - Lors de l’envoi, les **ID correspondants sur chaque plateforme** sont enregistrés dans `media
+            - À la lecture du message, le back détecte la plateforme préférée du destinataire et renvoie :
+
+                - L’extrait, la pochette et le lien depuis **sa plateforme**, si disponible
+                - Sinon, un fallback sur **Spotify** est tenté
+                - Si aucun résultat, le message est renvoyé avec un état `"indisponible", et seul le texte `"Morceau non disponible" avec le titre est affiché
+
+        3. **Métadonnées :**
+
+            - Les métadonnées sont récupérées et stockées (titre, artiste, image, preview URL) pour affichage immédiat sans nouvel appel API
+
+**Règles métier**
+
+    - L’utilisateur doit avoir **au moins une plateforme connectée**
+    - **L’aperçu musical** contient :
+
+          - Pochette
+          - Titre et artiste
+          - Extrait (si disponible)
+          - Lien vers la plateforme source
+
+    - **Le message peut contenir un commentaire texte** optionnel
+    - Le destinataire voit le message **adapté à sa plateforme préférée**
+</Accordion>
+
+<Accordion title={"Messages photo"}>
+## Front-end
+
+    - **Accès :**
+
+        - L’utilisateur accède à une conversation dans l’application de messagerie
+        - Il clique sur l’icône de partage de contenu
+
+    - **Sélection :**
+
+        - Il choisit l’option "Photo"
+        - La galerie photo de son téléphone apparaît :
+
+            - Il peut sélectionner une photo depuis la galerie
+            - Ou bien en prendre une nouvelle via l'appareil photo
+
+    - **Édition facultative :**
+
+        - L’utilisateur peut ajouter un commentaire ou une légende
+
+    - **Affichage du message :**
+
+        - Une fois envoyé, la photo s'affiche dans la conversation :
+
+        - Miniature cliquable
+        - Affichage en plein écran
+        - Légende affichée en-dessous (si renseignée)
+
+## Back-end
+
+    - **Stockage dans la table `message` :**
+
+        - `media` : URL ou ID de la photo stockée (CDN sécurisé)
+        - `content` : légende facultative
+
+    - **Routes :**
+
+        - `POST /api/message`
+
+            - Envoie un message (photo ou autre).
+            - Gère l’upload de la photo (via champ file ou media).
+
+        - `GET /api/message/:message`
+
+            - Retourne les informations du message :
+
+                - Lien direct de la photo.
+                - Commentaire.
+                - Métadonnées si disponibles (pour affichage optimisé).
+
+
+    - **Traitements spécifiques :**
+
+        - **Upload sécurisé :**
+
+            - Upload vers un service de stockage sécurisé (ex: MinIO)
+            - URL sécurisée générée et enregistrée
+
+        - **Prévisualisation :**
+
+            - Miniature générée pour affichage rapide
+
+        - **Conversion automatique :**
+
+            - Format standardisé (JPEG, WebP)
+            - Redimensionnement (ex: max 1080p)
+
+## Règles métier
+
+        - L’utilisateur doit être connecté pour envoyer une photo
+        - La photo est requise, la légende est facultative
+        - L’image est visualisable en plein écran
+        - Formats supportés : JPEG, PNG, WebP
+        - Taille maximale (ex: 10 Mo)
+</Accordion>
+
+<Accordion title={"Liste des conversations"}>
+## Front-end
+
+    - **Accès :**
+
+        - L’utilisateur connecté navigue vers l’onglet **"Messages"**
+
+    - **Affichage :**
+
+        - Liste des conversations actives
+        - Tri par date de dernier message (décroissante)
+        - Chaque ligne contient :
+
+          - Nom du contact ou groupe
+          - Aperçu du dernier message :
+                - Texte
+                - "Vous a partagé un média"
+                - "Vous a partagé une photo"
+          - Horodatage du dernier message
+          - Indicateur si non lu (badge, surbrillance)
+
+    - **Interactions :**
+
+        - Clic sur une conversation pour l’ouvrir
+
+## Back-end
+
+    - **Routes :**
+
+        - `GET /api/conversations` → Retourne la liste des conversations
+
+    - **Table messages (référence) :**
+
+        - Utilisée pour récupérer le contenu du dernier message (`aperçu, timestamp, type)
+
+## Règles métier
+
+    - **Conversations triées par dernier message**
+    - **Conversations non lues** mises en évidence
+    - Si **aucune conversation** : message "Aucune conversation pour le moment"
+</Accordion>
+
+<Accordion title={"Discussions de groupe"}>
+## Front-end
+
+    - **Création de groupe :**
+
+        - L'utilisateur va dans l’onglet **"Messages"**
+        - Sélectionne **"Nouvelle conversation de groupe"**
+        - Il choisit des participants parmi ses **abonnements/abonnés** (multi-sélection possible).
+        - Saisie d’un **nom de groupe** (obligatoire)
+        - Validation → groupe créé, **notification** aux membres
+
+    - **Participation à un groupe :**
+
+        - L'utilisateur rejoint le groupe :
+
+            - Il voit **l’historique des messages**
+            - Il peut **envoyer des messages**
+            - Il accède à la **liste des membres** (si disponible)
+
+## Back-end
+
+    - **Routes principales :**
+
+        - `POST /api/conversation` → Crée un groupe avec `is_group = true`
+        - `GET /api/conversation/:conversation` → Détails du groupe
+        - `POST /api/conversation/:conversation/leave` → Quitter un groupe
+
+    - **Modèle de données :**
+
+        - **Table** `conversation`:
+            - `id` : identifiant du groupe
+            - `is_group`: si c’est un groupe ou une simple conversation entre utilisateurs
+            - `group_name`: nom du groupe
+            - `created_at`
+
+        - **Table** `conversation_participant`:
+            - `conversation_id` : l’id de la conversation
+            - `user_id` : l’id de l’utilisateur
+            - `joined_at`, `left_at` : date où l’utilisateur à rejoint ou quitter le groupe (si ça en est un)
+
+## Règles métier
+
+    - **Tous les membres** peuvent quitter à tout moment
+    - Le **groupe est supprimé** si **tous les membres l’ont quitté**
+</Accordion>
+
+<Accordion title={"Médiathèque des contenus partagés"}>
+
+## Front-end
+
+    - **Accès :**
+
+        - L’utilisateur entre dans une **conversation**
+        - Clique sur **"Médias partagés"** (icône)
+
+    - **Affichage :**
+
+        - Une interface dédiée s’ouvre, organisée en **onglets ou sections** selon le **type de contenu** :
+            - **Photos**
+            - **Musiques**
+        - Affichage en **grille** ou **liste** :
+            - Miniatures (photo/pochette)
+            - Métadonnées clés (titre, date, type)
+
+    - **Filtres :**
+            - Par type de contenu
+            - Par période (ex: "30 derniers jours")
+            - Par mot-clé :
+                - Filtre selon légende, titre ou métadonnées
+
+    - **Interactions :**
+
+        - Clic sur un média :
+            - **Photo** → plein écran, téléchargement
+            - **Musique** → lecteur intégré (extrait)
+
+## Back-end
+
+**Routes principales :**
+
+    - `GET /api/conversation/:conversation/media` → Contenus partagés
+    - `GET /api/media/:media` → Détails d’un média
+    - `POST /api/playlist/from-conversation` → Créer une playlist depuis les musiques partagées
+
+## Règles métier
+
+    - **Seuls les membres d’une conversation** voient les médias
+    - Les contenus **musicaux** ont des **restrictions** selon la plateforme
+    - L’utilisateur peut :
+        - **Créer une playlist** à partir des morceaux
+        - Voir les interactions (like/commentaire) **en temps réel**
+</Accordion>
+
+<Accordion title={"Notifications"}>
+
+## Front-end
+
+    - **Déclencheur :**
+
+        - **Nouveau message** reçu dans une conversation privée ou de groupe
+        - L’utilisateur n’est pas dans la conversation active
+
+    - **Affichage mobile (push) :**
+
+        - Notification affichée en haut de l’écran (iOS/Android)
+        - Contenu :
+            - Nom de l’expéditeur
+            - Texte : **"Vous a envoyé un message"**
+            - Icône de l’application
+            - Son/vibration selon réglages
+
+    - **Interaction utilisateur :**
+
+        - Appui → ouverture directe de la conversation
+        - Si app ouverte → bulle interne ou bannière
+
+## Back-end
+
+    - **Événement déclencheur :**
+
+        - À l’envoi du message :
+            - Vérification que l’utilisateur a activé les notifications
+            - Vérification qu’il n’est pas actif dans la conversation
+
+    - **Traitement :**
+
+        - Envoi push via :
+            - FCM (Android)
+            - APNs (iOS)
+        - Payload :
+            - Nom de l’expéditeur
+            - Texte générique
+            - Lien vers la conversation
+
+## Règles métier
+
+    - Notification **envoyée uniquement si** :
+        - Utilisateur inactif dans la conversation
+        - Notifications activées
+
+    - Les utilisateurs peuvent gérer les notifications
+
+    - Messages de groupe :
+        - Nom de l’utilisateur expéditeur affiché
+        - Option : "dans [Nom du groupe]" possible en extension
+</Accordion>
+
+## Système de Recherche
+
+<Accordion title={"Recherche"}>
+## Front-end
+
+    - **Prérequis**
+
+        - Utilisateur sur l'onglet "Pour vous"
+        - Utilisateur connecté ou non connecté
+
+    - **Interface utilisateur**
+
+        - **Icône de recherche** :
+            - Loupe visible en haut de l'écran
+            - Accessible depuis l'onglet "Pour vous"
+
+        - **Barre de recherche** :
+            - S'ouvre au clic sur la loupe
+            - Champ de saisie pour requête utilisateur
+            - Bouton de validation/recherche
+
+        - **Résultats de recherche** :
+            - Affichage des posts liés à la recherche
+            - Liste verticale avec les mêmes éléments qu'un post classique
+
+    - **Actions utilisateur**
+
+        - **Clic sur la loupe** :
+            - Ouverture de la barre de recherche
+            - Focus automatique sur le champ de saisie
+
+        - **Saisie de la requête** :
+            - Texte libre dans le champ de recherche
+
+        - **Validation de la recherche** :
+            - Clic sur le bouton de recherche ou touche Entrée
+            - Lancement de la recherche et affichage des résultats
+
+## Back-end
+
+    - **Route principale** :
+
+    - `GET /api/search`
+
+    - **Paramètres de requête**
+
+        - `query` : Terme de recherche (obligatoire)
+        - `type` : Type de contenu (posts, users, music, hashtags)
+        - `page` : Numéro de page (optionnel)
+        - `limit` : Nombre de résultats par page (optionnel)
+
+    - **Contrôles serveur**
+
+        - Validation de la requête de recherche (non vide)
+        - Sanitisation du texte de recherche
+        - Gestion des caractères spéciaux
+
+    - **Tables impactées**
+
+        - **Table** `posts` :
+          - Recherche dans description
+          - Recherche dans music_reference (titre, artiste)
+
+        - **Table** `users` :
+          - Recherche par nom d'utilisateur
+
+        - **Table** `hashtags` :
+          - Recherche par tags
+
+    - **Processus**
+
+        1.  **Analyse de la requête** :
+            - Parsing du texte de recherche
+            - Identification des mots-clés
+
+        2. **Recherche multi-critères** :
+            - Recherche dans les descriptions de posts
+            - Recherche dans les métadonnées musicales
+            - Recherche d'utilisateurs
+            - Recherche de hashtags
+
+        3. **Classement des résultats** :
+            - Pertinence par rapport à la requête
+            - Popularité des posts (likes, commentaires)
+            - Date de publication
+</Accordion>
+
+<Accordion title={"Suggestions"}>
+## Front-end
+
+    - **Prérequis**
+
+        - Utilisateur sur l'onglet "Pour vous"
+        - Clic sur l'icône de recherche
+
+    - **Interface utilisateur**
+
+        - **Zone de suggestions** :
+            - Affichage sous la barre de recherche
+            - Liste de suggestions cliquables
+
+        - **Types de suggestions** :
+            - **Utilisateur connecté** : Suggestions basées sur ses préférences
+            - **Utilisateur non connecté** : Tendances de la plateforme
+
+    **Actions utilisateur**
+
+        - **Clic sur l'icône de recherche** :
+            - Affichage automatique des suggestions
+
+        - **Clic sur une suggestion** :
+            - Lancement automatique de la recherche correspondante
+
+## Back-end
+
+**Route principale**
+
+- `GET /api/search/suggestions` :
+
+    - **Contrôles serveur**
+
+        - Vérification du statut de connexion utilisateur
+        - Récupération des préférences utilisateur (si connecté)
+        - Génération des suggestions appropriées
+
+    **Tables impactées**
+
+    - **Table** `user_preferences` (utilisateur connecté) :
+        - Genres musicaux favoris
+        - Artistes écoutés
+        - Historique des recherches
+
+    - **Table** `trending_topics` (utilisateur non connecté) :
+        - Sujets populaires
+        - Hashtags tendances
+        - Artistes du moment
+
+    - **Processus**
+
+        1. **Détection du statut utilisateur** :
+            - Vérification de la connexion
+
+        2. **Génération personnalisée (connecté)** :
+            - Suggestions basées sur les genres favoris
+            - Artistes similaires
+            - Tendances dans ses genres de prédilection
+
+        3. **Génération générale (non connecté)** :
+            - Hashtags les plus populaires
+            - Artistes en tendance globale
+            - Genres musicaux populaires
+
+        4. **Classement des suggestions** :
+            - Pertinence par rapport au profil utilisateur
+            - Popularité générale sur la plateforme
+
+    - **Règles métier**
+        - **Utilisateur connecté** : suggestions personnalisées
+        - **Utilisateur non connecté** : tendances globales
+</Accordion>
+
+## Système de Notifications
+
+<Accordion title={"Notifications Push"}>
+
+## Front-end
+
+    - **Prérequis**
+
+        - Utilisateur connecté
+        - Application installée sur téléphone
+        - Autorisations notifications accordées
+
+    - **Interface utilisateur**
+
+        - **Réception des notifications** :
+            - Affichage natif système (iOS/Android)
+            - Badge sur l'icône de l'application
+
+        - **Types de notifications push** :
+            - Mention dans une story
+            - Message privé reçu
+            - Réponse à un commentaire
+            - Commentaire sur une publication
+            - Like sur une publication
+
+        - **Deep-links** :
+            - Redirection vers l'événement concerné
+            - Ouverture automatique de l'application
+
+    - **Actions utilisateur**
+
+        - **Clic sur la notification** :
+            - Ouverture de l'application
+            - Navigation directe vers le contenu concerné
+
+## Back-end
+
+    - **Route principale** :
+
+        - `POST /api/notifications/push`
+
+    - **Contrôles serveur**
+
+        - Vérification des préférences de notification utilisateur
+        - Validation du token de device
+        - Contrôle de la validité du contenu
+
+    - **Tables impactées**
+
+        - **Table** `notifications` :
+            - id
+            - recipient_id
+            - sender_id
+            - type
+            - content_id
+            - is_read
+            - created_at
+
+        - **Table** `device_tokens` :
+            - user_id
+            - token
+            - platform (ios/android)
+
+    - **Processus**
+
+        1. **Génération de la notification** :
+            - Création en base
+            - Formatage selon le type
+
+        2. **Envoi push** :
+            - Récupération du token device
+            - Envoi via FCM/APNS
+            - Génération du deep-link
+</Accordion>
+
+<Accordion title={"Notifications In-App"}>
+
+## Front-end
+
+    - **Prérequis**
+
+        - Utilisateur connecté
+        - Utilisateur actuellement sur l'application
+
+    - **Interface utilisateur**
+
+        - **Toast/Banner de notification** :
+            - Affichage temporaire en haut de l'écran
+            - Disparition automatique après quelques secondes
+
+        - **Types de notifications in-app** :
+            - Message privé reçu
+            - Erreurs lors d’actions
+            - Confirmations d’actions réussies
+
+    - **Actions utilisateur**
+
+        - **Notification de message** :
+            - Clic pour accéder à la conversation
+
+        - **Notification d’erreur** :
+            - Info sur l’échec
+            - Possibilité de réessayer
+
+## Back-end
+
+    - **Route principale** :
+
+        - `GET /api/notifications/in-app`
+        - `WebSocket/notifications`
+
+    - **Contrôles serveur**
+
+        - Vérification de la session utilisateur active
+        - Filtrage selon le contexte
+        - Gestion temps réel via WebSocket
+
+    - **Tables impactées**
+
+        - **Table** `notifications` :
+            - Structure identique à push
+            - Champ `delivery_type` (push/in-app/both)
+
+    **Processus**
+
+        1. **Détection d’événement** :
+            - Message reçu ou erreur système
+
+        2. **Envoi temps réel** :
+            - Transmission via WebSocket/Mercure
+            - Affichage immédiat
+</Accordion>
+
+<Accordion title={"Paramètres de Notifications"}>
+## Front-end
+
+    - **Prérequis**
+
+        - Utilisateur connecté
+
+    - **Interface utilisateur**
+
+        - **Page de paramètres** :
+            - Liste des types de notifications
+            - Interrupteurs on/off pour chaque type
+            - Sauvegarde automatique
+
+        - **Types configurables** :
+            - Mentions dans stories
+            - Messages privés
+            - Commentaires sur publications
+            - Réponses aux commentaires
+            - Likes sur publications
+
+    - **Actions utilisateur**
+
+        - **Activation/Désactivation** :
+            - Toggle pour chaque type
+            - Sauvegarde immédiate des préférences
+
+## Back-end
+
+    - **Routes principales**
+
+        - `PUT /api/users/notification-preferences`
+        - `GET /api/users/notification-preferences`
+
+    - **Contrôles serveur**
+
+        - Vérification de l'authentification
+        - Validation des types de notifications
+
+    - **Tables impactées**
+
+        - **Table** `notification_preferences` :
+            - user_id
+            - mention_stories
+            - private_messages
+            - post_comments
+            - comment_replies
+            - post_likes
+
+    - **Processus**
+
+        1. **Sauvegarde des préférences** :
+            - Mise à jour des paramètres utilisateur
+
+        2. **Application des préférences** :
+            - Filtrage des notifications selon les choix
+</Accordion>
+
+## Administration
+
+<Accordion title={"Administration"}>
+## Front-end
+
+    - **Prérequis**
+
+        - Utilisateur administrateur
+        - Accès au dashboard via navigateur web
+
+    - **Interface utilisateur**
+
+        - **Tableau de bord** :
+            - Vue d'ensemble des KPI principaux
+            - Graphiques et statistiques
+
+        - **KPI affichés** :
+            - Nombre d'utilisateurs inscrits
+            - Nombre d'utilisateurs connectés par jour
+            - Nombre de posts créés
+            - Statistiques d'engagement
+
+        - **Outils de modération** :
+            - Liste des signalements en attente
+            - Actions sur utilisateurs (bannir, suspendre)
+            - Actions sur contenus (supprimer posts)
+
+    - **Actions administrateur**
+
+        - **Consultation des KPI** :
+            - Affichage des métriques en temps réel
+
+        - **Modération** :
+            - Traitement des signalements
+            - Sanctions utilisateurs
+            - Suppression de contenus
+
+## Back-end
+
+    - **Routes principales** :
+
+        - `GET /api/admin/dashboard`
+        - `GET /api/admin/reports`
+        - `POST /api/admin/users/{id}/ban`
+        - `POST /api/admin/users/{id}/suspend`
+        - `DELETE /api/admin/posts/{id}`
+
+    - **Contrôles serveur**
+
+        - Vérification des droits administrateur
+        - Validation des actions de modération
+        - Logging des actions
+
+    - **Tables impactées**
+
+        - **Table** `admin_actions` :
+            - admin_id, action_type, target_type, target_id, reason, created_at
+
+        - **Table** `user_sanctions` :
+            - user_id, type, reason, expires_at, created_by
+
+    - **Processus**
+
+        1. **Génération des KPI** :
+            - Agrégation des données utilisateurs et contenus
+
+        2. **Traitement des signalements** :
+            - Affichage des reports en attente
+            - Outils de décision
+
+        3. **Actions de modération** :
+            - Application des sanctions
+            - Logging pour audit
+</Accordion>
