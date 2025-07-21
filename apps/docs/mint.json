@@ -1,6 +1,6 @@
 {
 	"$schema": "https://mintlify.com/schema.json",
-	"name": "Jamly..",
+	"name": "Jamly",
 	"logo": {
 		"dark": "/src/assets/logo/dark.svg",
 		"light": "/src/assets/logo/light.svg"
