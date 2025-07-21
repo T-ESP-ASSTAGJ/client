@@ -9,6 +9,7 @@ import {
 
 import * as Haptics from "expo-haptics";
 import * as React from "react";
+import type { GestureResponderEvent } from "react-native/Libraries/Types/CoreEventTypes";
 
 export type TouchableScaleProps = Omit<
 	RNTouchableOpacityProps,
@@ -58,7 +59,7 @@ export default function TouchableBounce({
 	return (
 		<RNTouchableBounce
 			{...props}
-			onPressIn={(ev: any) => {
+			onPressIn={(ev: GestureResponderEvent) => {
 				onSensory();
 				onPressIn?.(ev);
 			}}

@@ -3,12 +3,10 @@ import type {
 	BottomTabBarButtonProps,
 	BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
-// Better transitions on web, no changes on native.
 import { PlatformPressable } from "@react-navigation/elements";
 import * as Haptics from "expo-haptics";
 import { Tabs as NativeTabs } from "expo-router";
 import React from "react";
-import BlurTabBarBackground from "./TabBarBackground";
 
 // These are the default tab options for iOS, they disable on other platforms.
 const DEFAULT_TABS: BottomTabNavigationOptions =

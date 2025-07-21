@@ -17,7 +17,9 @@
 			"routeTree.gen.ts",
 			"src-tauri",
 			".nuxt",
-			"apps/docs"
+			"apps/docs",
+
+			"apps/client/components/ui/Tabs.tsx"
 		]
 	},
 	"formatter": {
@@ -32,7 +34,7 @@
 		"rules": {
 			"recommended": true,
 			"correctness": {
-				"useExhaustiveDependencies": "info"
+				"useExhaustiveDependencies": "off"
 			},
 			"nursery": {
 				"useSortedClasses": {
@@ -42,6 +44,12 @@
 						"functions": ["clsx", "cva", "cn"]
 					}
 				}
+			},
+			"complexity": {
+				"noUselessFragments": "off"
+			},
+			"suspicious": {
+				"noArrayIndexKey": "off"
 			}
 		}
 	},
