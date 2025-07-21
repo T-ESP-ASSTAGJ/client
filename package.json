@@ -1,21 +1,20 @@
 {
-	"name": "client",
+	"name": "root",
 	"private": true,
 	"workspaces": ["apps/*", "packages/*"],
 	"scripts": {
 		"check": "biome check --write .",
-		"prepare": "husky",
 		"dev": "turbo dev",
 		"build": "turbo build",
 		"check-types": "turbo check-types",
-		"dev:web": "turbo -F web dev",
-		"dev:docs": "pnpm --filter ./apps/docs exec mint dev"
+		"dev:client": "pnpm --filter client exec expo start",
+		"dev:web": "turbo run dev --filter=web",
+		"dev:docs": "pnpm --filter docs exec mintlify dev"
 	},
 	"dependencies": {},
 	"devDependencies": {
 		"turbo": "^2.4.2",
 		"@biomejs/biome": "1.9.4",
-		"husky": "^9.1.7",
 		"lint-staged": "^15.5.0"
 	},
 	"lint-staged": {

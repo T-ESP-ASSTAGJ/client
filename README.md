@@ -21,16 +21,10 @@ First, install the dependencies:
 pnpm install
 ```
 
-Run the web server
+Then, run the development server:
 
 ```bash
-pnpm dev:web
-```
-
-Run the doc server
-
-```bash
-pnpm dev:docs
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the web application.
@@ -40,15 +34,21 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the w
 ```
 client/
 ├── apps/
-│   ├── web/         # Landing page (Next.js)
-│   └── docs/        # Documentation (Mintlify)
+│   ├── client/         # Client mobile (React Native & Expo)
+│   ├── docs/         # Documentation (Mintlify)
+│   └── web/        # Landing page (Next.js)
+├── shared/
+│   ├── components/         # Shared components between web & client
+│   ├── hooks/         # Shared hooks between web & client
+│   ├── types/         # Shared types between web & client
 ```
 
 ## Available Scripts
 
 - `pnpm dev`: Start all applications in development mode
 - `pnpm build`: Build all applications
+- `pnpm dev:client`: Start only the mobile application
+- `pnpm dev:docs`: Start only the doc mintlify application
 - `pnpm dev:web`: Start only the web application
-- `pnpm dev:docs`: Start only the documentation application
 - `pnpm check-types`: Check TypeScript types across all apps
 - `pnpm check`: Run Biome formatting and linting

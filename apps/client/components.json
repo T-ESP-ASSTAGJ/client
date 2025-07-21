@@ -1,0 +1,6 @@
+{
+	"aliases": {
+		"components": "@/components/rnr-ui",
+		"lib": "@/lib"
+	}
+}

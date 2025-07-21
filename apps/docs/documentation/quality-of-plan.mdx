@@ -33,14 +33,14 @@ description: "Vue d'ensemble de l'organisation de l'équipe et de la répartitio
 ---
 
 ### Outils de gestion
-* Gestion & Suivi de projet: Notion, Gitlab, Google Docs, Discord
-* Suivi des tickets: Gitlab
+* Gestion & Suivi de projet: Github, Google Docs, Discord
+* Suivi des tickets: Github
 
 ### Méthodologie
-* 1 réunion par mois en présentiel pour voir l’avancement global
+* <span className={"text-white font-medium"}>1 réunion par mois en présentiel</span> pour voir l’avancement global
 * Des réunions ponctuelles au besoin (après follow-up, avant un rendu)
 * En phase de développement:
-     - Réunion toute les 2 semaines par équipe (présentiel ou distanciel) pour l’avancement des tickets
+     - <span className={"text-white font-medium"}>Réunion toute les 2 semaines par équipe (présentiel ou distanciel)</span> pour l’avancement des tickets
 
 <br/>
 
@@ -49,11 +49,11 @@ description: "Vue d'ensemble de l'organisation de l'équipe et de la répartitio
 ---
 
 ### DevOps
-* Base de donnée: [PostgreSQL](https://www.postgresql.org/)
-* [Gitlab Runner](https://docs.gitlab.com/runner/)
-* [AWS](https://aws.amazon.com/)
-* [Kubernetes](https://kubernetes.io/)
-* [Terraform](https://www.terraform.io/)
+* [PostgreSQL](https://www.postgresql.org/) Base de données robuste, migrations, sauvegardes
+* [Github Runner](https://docs.github.com/runner/) Exécution des jobs CI/CD, mise en ligne sur les différents environnements
+* [AWS](https://aws.amazon.com/) Infrastructure cloud
+* [Kubernetes](https://kubernetes.io/) Orchestration, scalabilité, déploiements fiables
+* [Terraform](https://www.terraform.io/) Infrastructure as Code, reproductibilité, traçabilité
 
 ### Backend
 * Langage: [PHP Symfony 7.2](https://symfony.com/) : framework et langage avec lesquels l’équipe à le plus d’expérience, convient au besoin d’une API Rest. Pas forcément le plus adapté pour du mobile asynchrone par rapport à du JS par exemple mais convenable quand même.
@@ -61,11 +61,11 @@ description: "Vue d'ensemble de l'organisation de l'équipe et de la répartitio
 * Normes: [PSR-1](https://www.php-fig.org/psr/psr-1/), [PSR-2](https://www.php-fig.org/psr/psr-2/), [PSR-4](https://www.php-fig.org/psr/psr-4/), [PSR-12](https://www.php-fig.org/psr/psr-12/) (convention standard de Symfony)
 
 ### Frontend
-* Application Mobile & Web: [React Native 0.77.0](https://reactnative.dev/) (latest)
-* Site Vitrine: [NextJS 15.1.6](https://nextjs.org/) (latest), [Tailwind 4.0](https://tailwindcss.com/), [Lucide](https://lucide.dev/)
+* Application Mobile & Web: [React Native 0.79.0](https://reactnative.dev/) (latest) & [Expo](https://docs.expo.dev/) (SDK 53)
+* Site Vitrine: [Next.js](https://nextjs.org/) (latest), [Tailwind 4.0](https://tailwindcss.com/), [Lucide](https://lucide.dev/)
 * Librairies: Shadcn, HeroUI, RNR, Zustand
-* CMS: [EasyAdmin](https://symfony.com/bundles/EasyAdminBundle/current/index.html) (Symfony & [Twig](https://twig.symfony.com/))
-* Normes: [ESLint](https://eslint.org/) pour NextJS et React Native, [TwigCS](https://github.com/friendsoftwig/twigcs) pour le CMS
+* Normes: [ESLint](https://eslint.org/), [Biome](https://biomejs.dev/) et [Husky](https://github.com/typicode/husky) pour Next.js et React Native
+* Package Manager: [PNPM](https://pnpm.io/fr/) & [TurboPack](https://turborepo.com/)
 
 <br/>
 
