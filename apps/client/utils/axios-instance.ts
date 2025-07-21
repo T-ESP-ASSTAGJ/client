@@ -39,10 +39,11 @@ axiosInstance.interceptors.response.use(
 					await SecureStore.setItemAsync("access_token", newToken);
 					const originalRequest = response.config;
 					originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
 					return axiosInstance(originalRequest);
-				} else {
-					await forceLogout();
 				}
+
+				await forceLogout();
 			} catch (err) {
 				console.error("❌ Refresh token échoué");
 				/*await forceLogout();*/
