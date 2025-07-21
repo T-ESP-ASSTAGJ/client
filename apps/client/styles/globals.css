@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 240 10% 3.9%;
+		--card: 0 0% 100%;
+		--card-foreground: 240 10% 3.9%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 240 10% 3.9%;
+		--primary: #ff7043;
+		--primary-foreground: 0 0% 98%;
+		--secondary: 240 4.8% 95.9%;
+		--secondary-foreground: 240 5.9% 10%;
+		--muted: 240 4.8% 95.9%;
+		--muted-foreground: 240 3.8% 46.1%;
+		--accent: 240 4.8% 95.9%;
+		--accent-foreground: 240 5.9% 10%;
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 240 5.9% 90%;
+		--input: 240 5.9% 90%;
+		--ring: 240 5.9% 10%;
+	}
+
+	.dark:root {
+		--background: 0 0% 100%;
+		--foreground: 0 0% 0%;
+		--card: 0 0% 94.9020%;
+		--card-foreground: 0 0% 0%;
+		--popover: 0 0% 98.0392%;
+		--popover-foreground: 0 0% 0%;
+		--primary: 259.2366 91.6084% 71.9608%;
+		--primary-foreground: 0 0% 100%;
+		--secondary: 240 5.0279% 64.9020%;
+		--secondary-foreground: 0 0% 0%;
+		--muted: 0 0% 87.8431%;
+		--muted-foreground: 0 0% 45.0980%;
+		--accent: 207.4648 81.6092% 65.8824%;
+		--accent-foreground: 0 0% 100%;
+		--destructive: 1.1321 83.2461% 62.5490%;
+		--destructive-foreground: 0 0% 100%;
+		--border: 0 0% 83.1373%;
+		--input: 0 0% 89.8039%;
+		--ring: 259.2366 91.6084% 71.9608%;
+		--chart-1: 207.4648 81.6092% 65.8824%;
+		--chart-2: 230.4878 44.0860% 63.5294%;
+		--chart-3: 15.8824 15.3153% 56.4706%;
+		--chart-4: 200.0 15.6250% 62.3529%;
+		--chart-5: 200 15.3846% 54.1176%;
+		--font-sans: Roboto, sans-serif;
+		--font-serif: ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
+		--font-mono: Menlo, Monaco, Consolas, Liberation Mono, Courier New,
+			monospace;
+		--radius: 0.5rem;
+		--shadow-2xs: 0px 3px 17px 0px hsl(0 0% 0% / 0.05);
+		--shadow-xs: 0px 3px 17px 0px hsl(0 0% 0% / 0.05);
+		--shadow-sm: 0px 3px 17px 0px hsl(0 0% 0% / 0.1), 0px 1px 2px -1px
+			hsl(0 0% 0% / 0.1);
+		--shadow: 0px 3px 17px 0px hsl(0 0% 0% / 0.1), 0px 1px 2px -1px
+			hsl(0 0% 0% / 0.1);
+		--shadow-md: 0px 3px 17px 0px hsl(0 0% 0% / 0.1), 0px 2px 4px -1px
+			hsl(0 0% 0% / 0.1);
+		--shadow-lg: 0px 3px 17px 0px hsl(0 0% 0% / 0.1), 0px 4px 6px -1px
+			hsl(0 0% 0% / 0.1);
+		--shadow-xl: 0px 3px 17px 0px hsl(0 0% 0% / 0.1), 0px 8px 10px -1px
+			hsl(0 0% 0% / 0.1);
+		--shadow-2xl: 0px 3px 17px 0px hsl(0 0% 0% / 0.25);
+		--tracking-normal: 0.025em;
+	}
+}
