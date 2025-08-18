@@ -7,7 +7,10 @@ export default function Layout() {
 		<View className={"flex flex-1 bg-[#121213]"}>
 			<Tabs tabBar={(props) => <TabBar {...props} />}>
 				<Tabs.Screen name="home" />
-				<Tabs.Screen name="profile" />
+				<Tabs.Screen name="explore" />
+				<Tabs.Screen name="friends" />
+				<Tabs.Screen name="chats" />
+				{/*<Tabs.Screen name="profile" />*/}
 			</Tabs>
 		</View>
 	);

@@ -6,7 +6,6 @@
 		"check": "biome check --write .",
 		"dev": "turbo dev",
 		"build": "turbo build",
-		"check-types": "turbo check-types",
 		"dev:client": "pnpm --filter client exec expo start",
 		"dev:web": "turbo run dev --filter=web",
 		"dev:docs": "pnpm --filter docs exec mint dev"

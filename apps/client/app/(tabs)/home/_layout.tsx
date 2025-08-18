@@ -2,7 +2,7 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import { TouchableButton } from "@/components/ui/touchable-button";
 import { Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import { Alert, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 
 export default function Layout() {
 	const router = useRouter();
