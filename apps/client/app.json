@@ -10,7 +10,7 @@
 		"newArchEnabled": true,
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.reverss.jamly",
+			"bundleIdentifier": "com.jamly.app",
 			"infoPlist": {
 				"UIViewControllerBasedStatusBarAppearance": false,
 				"ITSAppUsesNonExemptEncryption": false
@@ -39,12 +39,12 @@
 				"origin": false
 			},
 			"eas": {
-				"projectId": "3b272d94-9d47-4860-8f82-8c9aae42dc8f"
+				"projectId": "062b2e9d-9e98-4c4d-9704-154fb41c46c6"
 			}
 		},
 		"android": {
-			"package": "com.reverss.jamly"
+			"package": "com.jamly.app"
 		},
-		"owner": "reversss"
+		"owner": "jamly"
 	}
 }

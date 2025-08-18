@@ -1,7 +1,7 @@
-import AccountIcon from "@/assets/svg/tab-icons/account-icon.svg";
+import ChatIcon from "@/assets/svg/tab-icons/chat-icon.svg";
+import { CompasIcon } from "@/assets/svg/tab-icons/compas-icon.jsx";
+import { FriendsIcon } from "@/assets/svg/tab-icons/friends-icon.jsx";
 import HomeIcon from "@/assets/svg/tab-icons/home-icon.svg";
-import MoodIcon from "@/assets/svg/tab-icons/mood-icon.svg";
-import ReportIcon from "@/assets/svg/tab-icons/report-icon.svg";
 import * as Haptics from "expo-haptics";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -12,7 +12,6 @@ import Animated, {
 	interpolate,
 	withTiming,
 } from "react-native-reanimated";
-
 interface TabBarButtonProps extends PressableProps {
 	isFocused: boolean;
 	label: string;
@@ -38,7 +37,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 			width: 75,
 			height: 55,
 			borderRadius: 12,
-			backgroundColor: "#FFFFFF",
+			backgroundColor: "#000000",
 			opacity: scale.value,
 			zIndex: -1,
 		};
@@ -59,16 +58,51 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 
 	// Déterminer quelle icône afficher en fonction du routeName
 	const renderIcon = () => {
-		const color = isFocused ? "#6C5F54" : "#C9C8C9";
+		const color = isFocused ? "#FFFFFF" : "#C9C8C9";
 		const size = 24;
 
 		switch (routeName) {
 			case "home":
-				return <HomeIcon width={size} height={size} color={color} />;
-			case "profile":
-				return <AccountIcon width={size} height={size} color={color} />;
+				return (
+					<HomeIcon
+						width={size}
+						height={size}
+						fill={`${isFocused ? color : "none"}`}
+					/>
+				);
+			case "explore":
+				return (
+					<CompasIcon
+						width={size}
+						height={size}
+						strokeColor={isFocused ? "#000000" : "#C9C8C9"}
+						fill={isFocused ? color : "none"}
+					/>
+				);
+			case "friends":
+				return (
+					<FriendsIcon
+						width={size}
+						height={size}
+						fill={`${isFocused ? "#FFFFFF" : "#777777"}`}
+					/>
+				);
+			case "chats":
+				return (
+					<ChatIcon
+						width={size}
+						height={size}
+						fill={`${isFocused ? color : "none"}`}
+					/>
+				);
 			default:
-				return <HomeIcon width={size} height={size} color={color} />;
+				return (
+					<HomeIcon
+						width={size}
+						height={size}
+						fill={`${isFocused ? color : "none"}`}
+					/>
+				);
 		}
 	};
 
@@ -78,7 +112,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 		<Pressable
 			{...rest}
 			style={styles.container}
-			className={`transition-all duration-300 ${buttonIsPressed ? "scale-90" : "scale-100"}`}
+			className={`transition-all duration-300 ${buttonIsPressed ? "scale-90" : "scale-100 pb-6"}`}
 			onPressIn={() => {
 				/*if(user?.preferences?.haptic_touch) {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -96,7 +130,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 
 			{/* Label */}
 			<Text
-				className={`text-center font-semibold text-[12px] ${isFocused ? "text-primary" : "text-[#C9C8C9]"}`}
+				className={`text-center font-semibold text-[12px] ${isFocused ? "text-[#FFFFFF]" : "text-gray-500"}`}
 			>
 				{label}
 			</Text>

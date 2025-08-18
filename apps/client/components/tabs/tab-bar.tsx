@@ -48,14 +48,19 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 					});
 				};
 
-				// Adapter le label selon le routeName pour Revly
 				let displayLabel: string;
 				switch (route.name) {
 					case "home":
 						displayLabel = "Accueil";
 						break;
-					case "profile":
-						displayLabel = "Profil";
+					case "explore":
+						displayLabel = "Explore";
+						break;
+					case "friends":
+						displayLabel = "Amis";
+						break;
+					case "chats":
+						displayLabel = "Chats";
 						break;
 					default:
 						displayLabel = label;
@@ -87,12 +92,12 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-		backgroundColor: "#F3F2EE",
+		backgroundColor: "#000000",
 		paddingHorizontal: 10,
 		paddingBottom: 20,
 		paddingVertical: 5,
 		borderTopWidth: 0,
-		borderRadius: 15,
+		borderRadius: 0,
 	},
 	tabbarItem: {
 		flex: 1,

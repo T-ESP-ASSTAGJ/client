@@ -50,5 +50,5 @@ client/
 - `pnpm dev:client`: Start only the mobile application
 - `pnpm dev:docs`: Start only the doc mintlify application
 - `pnpm dev:web`: Start only the web application
-- `pnpm check-types`: Check TypeScript types across all apps
+- `pnpm check`: Check TypeScript types across all apps
 - `pnpm check`: Run Biome formatting and linting
