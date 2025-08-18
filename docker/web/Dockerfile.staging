@@ -70,4 +70,5 @@ ENV HOSTNAME="0.0.0.0"
 # More verbose health check for staging
 HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=5 \
 CMD curl -f http://localhost:3000/ || exit 1
+
 CMD ["node", "apps/web/server.js"]
