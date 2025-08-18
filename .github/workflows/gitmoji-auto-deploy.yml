@@ -3,7 +3,7 @@ name: Gitmoji Auto Deploy
 on:
   push:
     branches:
-      - 'TEM-*' 
+      - 'TEM-*'
 
 jobs:
   auto-deploy:
