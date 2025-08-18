@@ -21,6 +21,7 @@ help:
 	@echo "  Commit: $(shell echo $(GIT_COMMIT) | cut -c1-8)"
 	@echo "  Build Date: $(BUILD_DATE)"
 
+
 .PHONY: install
 install:
 	@echo "Installing dependencies for client projects"
