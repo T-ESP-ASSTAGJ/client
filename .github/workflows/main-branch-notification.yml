@@ -8,7 +8,7 @@ jobs:
   discord-merge-notification:
     uses: T-ESP-ASSTAGJ/infra/.github/workflows/discord-notification.yml@main
     with:
-      repository_name: "api"
+      repository_name: "client"
       target_branch: ${{ github.ref_name }}
     secrets:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
