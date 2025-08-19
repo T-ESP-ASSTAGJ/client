@@ -62,7 +62,7 @@ export const TouchableButton: FC<TouchableButtonProps> = ({
 					)}
 				>
 					<Text
-						className={"text-[16px] text-primary"}
+						className={"text-[16px] text-white"}
 						style={{ fontFamily: "Urbanist-Bold" }}
 					>
 						{props.content}
