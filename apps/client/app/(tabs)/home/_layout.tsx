@@ -3,7 +3,6 @@ import { TouchableButton } from "@/components/ui/touchable-button";
 import { Stack, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { Alert, Text, View } from "react-native";
-import {HeaderAuth} from "@/components/ui/header/header-auth";
 
 export default function Layout() {
 	const router = useRouter();
@@ -15,8 +14,8 @@ export default function Layout() {
 					headerShown: false,
 				}}
 			>
-                <Stack.Screen name="index" />
-            </Stack>
+				<Stack.Screen name="index" />
+			</Stack>
 		</>
 	);
 }

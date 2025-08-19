@@ -12,7 +12,7 @@ type PostProps = {
 export default function Post({ post }: PostProps) {
     return (
         <>
-            <View className={"flex flex-col gap-2 w-[390px] h-[500px]"}>
+            <View className={"flex flex-col gap-2"}>
                 <View>
                     <PostHeader
                         user_post={post.user_post}
@@ -23,11 +23,11 @@ export default function Post({ post }: PostProps) {
                         music={post.music}
                         photo={post.photo}
                     />
-                    <PostFooter
-                        music={post.music}
-                        stats={post.stats}
-                    />
                 </View>
+                <PostFooter
+                    music={post.music}
+                    stats={post.stats}
+                />
             </View>
         </>
     )
