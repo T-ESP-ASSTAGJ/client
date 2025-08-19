@@ -11,7 +11,7 @@ type PostFooterProps = {
 export default function PostFooter({ music, stats }: PostFooterProps) {
     return (
         <>
-            <View className={"flex flex-col"}>
+            <View className={"h-1/5 flex flex-col"}>
                 <View className="flex flex-row justify-between items-center pt-2.5 pl-5 pr-5">
                     <View className="flex flex-row items-center">
                         <Text className="text-2xl font-semibold text-white items-center pb-1">

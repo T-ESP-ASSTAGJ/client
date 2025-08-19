@@ -27,7 +27,7 @@ export default function PostBody({ music, photo }: PostBodyProps) {
 
     return (
         <>
-            <View className={"relative w-[375px] h-[330px] flex flex-row justify-center mx-auto"}>
+            <View className={"relative w-11/12 h-4/6 flex flex-row justify-center mx-auto"}>
                 <View
                     style={{
                         width: "100%",

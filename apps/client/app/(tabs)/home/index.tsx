@@ -1,16 +1,14 @@
 import { MainView } from "@/components/ui/MainView";
-import { useUserStore } from "@/stores/use-user-store";
-import {useEffect, useState} from "react";
-import { Text, View } from "react-native";
-import { IUserPostsResponse } from "@/types/posts/post";
+import {useCallback, useEffect, useState} from "react";
+import {Platform, RefreshControl, View} from "react-native";
+import { IUserPostsResponse, IPost } from "@/types/posts/post";
 import Post from "@/app/(tabs)/home/_components/post";
 import { FlashList } from "@shopify/flash-list";
+import {HeaderAuth} from "@/components/ui/header/header-auth";
 
 export default function HomePage() {
-	const [isRefreshing, setIsRefreshing] = useState(false);
     const [posts, setPosts] = useState<IUserPostsResponse>();
-    const [loading, setLoading] = useState(true);
-	const { user } = useUserStore();
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
         setPosts({
@@ -78,17 +76,45 @@ export default function HomePage() {
         })
     }, []);
 
-	return (
-		<MainView scrollView safeArea={false} className={"bg-[#0C0C0C]"}>
-            <View className={"w-full h-full"}>
-                {posts && posts.posts.map((post) => (
-                    <View key={post.id}>
-                        <Post post={post} />
-                    </View>
-                ))}
-            </View>
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        console.log("🔄 refresh feed…");
+        setTimeout(() => {
+            setRefreshing(false);
+            console.log("✅ refresh terminé");
+        }, 1000);
+    }, []);
 
-            <View className={"w-full h-44"}/>
+	return (
+		<MainView safeArea={false}>
+            <HeaderAuth searchIcon />
+            <View className={"w-full h-full"}>
+                <FlashList<IPost>
+                    data={posts?.posts ?? []}
+                    numColumns={1}
+                    renderItem={({ item } ) => (
+                        <View className="m-auto">
+                            <Post
+                                key={item.id}
+                                post={item}
+                            />
+                        </View>
+                    )}
+                    contentContainerStyle={{ paddingBottom: 180 }}
+                    estimatedItemSize={60}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            tintColor="#000000"
+                            titleColor="#000000"
+                            colors={["#ffffff"]}
+                            progressBackgroundColor="#ffffff"
+                            progressViewOffset={Platform.select({ ios: 24, android: 16 })}
+                        />
+                    }
+                />
+            </View>
 		</MainView>
 	);
 }

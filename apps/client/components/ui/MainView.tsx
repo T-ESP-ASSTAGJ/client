@@ -46,7 +46,7 @@ export const MainView: FC<MainViewProps> = ({
 				{safeArea ? (
 					<SafeAreaView
 						className={cn(
-							"relative flex h-screen w-screen items-center bg-background",
+							"relative flex h-screen w-screen items-center",
 							className,
 						)}
 					>
@@ -61,7 +61,7 @@ export const MainView: FC<MainViewProps> = ({
 				) : !scrollView ? (
 					<View
 						className={cn(
-							"relative flex h-screen w-screen items-center bg-background pt-16",
+							"relative flex h-screen w-screen items-center pt-16",
 							className,
 						)}
 					>
@@ -75,7 +75,7 @@ export const MainView: FC<MainViewProps> = ({
 					</View>
 				) : (
 					<ScrollView
-						className={cn("relative w-screen bg-background pt-16", className)}
+						className={cn("relative w-screen pt-16", className)}
 					>
 						{disableTouchableWrapper ? (
 							content
