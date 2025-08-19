@@ -35,7 +35,7 @@ export const Header: FC<HeaderProps> = ({
 
 			<View className={"flex h-full w-4/6 items-center justify-center"}>
 				<Text
-					className={"text-[27px]"}
+					className={"text-[27px] text-white"}
 					style={{ fontFamily: "Urbanist-Medium" }}
 				>
 					{title}
