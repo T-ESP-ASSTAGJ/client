@@ -12,7 +12,7 @@ type PostHeaderProps = {
 export default function PostHeader({ user_post, created_at, location }: PostHeaderProps) {
     return (
         <>
-            <View className={"flex flex-row gap-3 p-5 justify-between"}>
+            <View className={"h-1/6 flex flex-row gap-3 p-5 justify-between items-end"}>
                 <View className={"flex flex-row gap-3"}>
                     <Avatar alt={"User avatar"}>
                         <AvatarImage source={{ uri: user_post.profile_picture }}/>

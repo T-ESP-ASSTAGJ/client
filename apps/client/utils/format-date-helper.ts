@@ -12,9 +12,9 @@ export function formatDate(isoString: string) {
     const minutes = String(date.getMinutes()).padStart(2, "0");
 
     if (targetDay.getTime() === today.getTime()) {
-        return `Aujourd’hui, ${hours}:${minutes}`;
+        return `Today, ${hours}:${minutes}`;
     } else if (targetDay.getTime() === yesterday.getTime()) {
-        return `Hier, ${hours}:${minutes}`;
+        return `Yesterday, ${hours}:${minutes}`;
     } else {
         const day = String(date.getDate()).padStart(2, "0");
         const month = String(date.getMonth() + 1).padStart(2, "0");
