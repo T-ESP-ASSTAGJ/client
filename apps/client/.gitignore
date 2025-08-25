@@ -40,3 +40,7 @@ yarn-error.*
 
 # assets
 assets/emojis
+
+# expo folder generated
+ios
+android
