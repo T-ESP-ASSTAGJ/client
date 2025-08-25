@@ -170,10 +170,9 @@ export default function HomePage() {
                     estimatedItemSize={60}
                     refreshControl={
                         <RefreshControl
-                            refreshing={refreshing}
                             onRefresh={onRefresh}
-                            tintColor="#000000"
-                            titleColor="#000000"
+                            refreshing={refreshing}
+                            tintColor="#ffffff"
                             colors={["#ffffff"]}
                             progressBackgroundColor="#ffffff"
                             progressViewOffset={Platform.select({ ios: 24, android: 16 })}
