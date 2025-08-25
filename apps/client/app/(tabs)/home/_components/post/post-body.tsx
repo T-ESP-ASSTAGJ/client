@@ -1,4 +1,4 @@
-import {IMusic} from "@/types/posts/post";
+import {IMusic} from "@/app/(tabs)/home/_types/post.types";
 import {Pressable, StyleSheet, View} from "react-native";
 import {Image} from "expo-image";
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";

@@ -1,7 +1,7 @@
-import {IMusic, IStats} from "@/types/posts/post";
+import {IMusic, IStats} from "@/app/(tabs)/home/_types/post.types";
 import {Text, View} from "react-native";
 import {Dot, LucideThumbsUp as ThumbUp, MessageCircle} from "lucide-react-native";
-import {getYearFromDate} from "@/utils/format-date-helper";
+import {getYearFromDate} from "@/helpers/format-date-helper";
 
 type PostFooterProps = {
     music: IMusic,

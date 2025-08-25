@@ -1,9 +1,8 @@
-import { IPost } from "@/types/posts/post";
-import {Text, View} from "react-native";
-import {Image} from "expo-image";
-import PostHeader from "@/app/(tabs)/home/_components/post-header";
-import PostFooter from "@/app/(tabs)/home/_components/post-footer";
-import PostBody from "@/app/(tabs)/home/_components/post-body";
+import { IPost } from "@/app/(tabs)/home/_types/post.types";
+import {View} from "react-native";
+import PostHeader from "@/app/(tabs)/home/_components/post/post-header";
+import PostFooter from "@/app/(tabs)/home/_components/post/post-footer";
+import PostBody from "@/app/(tabs)/home/_components/post/post-body";
 
 type PostProps = {
     post: IPost;

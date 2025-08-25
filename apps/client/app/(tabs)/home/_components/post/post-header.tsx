@@ -1,7 +1,7 @@
 import {Text, View} from "react-native";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/rnr-ui/avatar";
-import {formatDate} from "@/utils/format-date-helper";
-import {IUserPost} from "@/types/posts/post";
+import {formatDate} from "@/helpers/format-date-helper";
+import {IUserPost} from "@/app/(tabs)/home/_types/post.types";
 
 type PostHeaderProps = {
     user_post: IUserPost,
