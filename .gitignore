@@ -11,3 +11,5 @@ node_modules
 
 # ignore
 apps/docs/.mintlify-last
+
+**/.DS_Store
