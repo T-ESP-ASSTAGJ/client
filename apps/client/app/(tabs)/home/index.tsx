@@ -28,7 +28,7 @@ export default function HomePage() {
     }, []);
 
 	return (
-		<MainView safeArea={false}>
+		<MainView safeArea disableTouchableWrapper={true} >
             <HeaderAuth searchIcon />
             <View className={"w-full h-full"}>
                 <FlashList<IPost>

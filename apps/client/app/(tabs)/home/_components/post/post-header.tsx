@@ -1,4 +1,4 @@
-import {Text, View} from "react-native";
+import {Pressable, Text, View} from "react-native";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/rnr-ui/avatar";
 import {formatDate} from "@/helpers/format-date-helper";
 import {IUserPost} from "@/app/(tabs)/home/_types/post.types";
@@ -11,32 +11,30 @@ type PostHeaderProps = {
 
 export default function PostHeader({ user_post, created_at, location }: PostHeaderProps) {
     return (
-        <>
-            <View className={"flex flex-row gap-3 p-5 justify-between"}>
-                <View className={"flex flex-row gap-3"}>
-                    <Avatar alt={"User avatar"}>
-                        <AvatarImage source={{ uri: user_post.profile_picture }}/>
-                        <AvatarFallback>
-                            <Text>Avatar</Text>
-                        </AvatarFallback>
-                    </Avatar>
-                    <View className={"flex flex-col gap-2"}>
-                        <View>
-                            <Text className={"text-white font-semibold text-lg"}>
-                                {user_post.username}
-                            </Text>
-                            <Text className={"text-muted-foreground text-sm"}>
-                                {location}
-                            </Text>
-                        </View>
+        <View className={"flex flex-row gap-3 pt-5 pb-5 pl-1 pr-1 justify-between"}>
+            <Pressable className={"flex-1 flex flex-row gap-3"}>
+                <Avatar alt={"User avatar"}>
+                    <AvatarImage source={{ uri: user_post.profile_picture }}/>
+                    <AvatarFallback>
+                        <Text>Avatar</Text>
+                    </AvatarFallback>
+                </Avatar>
+                <View className={"flex flex-col gap-2"}>
+                    <View>
+                        <Text className={"text-white font-semibold text-lg"}>
+                            {user_post.username}
+                        </Text>
+                        <Text className={"text-muted-foreground text-sm"}>
+                            {location}
+                        </Text>
                     </View>
                 </View>
-                <View className={"flex justify-end"}>
-                    <Text className={"text-muted-foreground text-sm"}>
-                        {formatDate(created_at)}
-                    </Text>
-                </View>
+            </Pressable>
+            <View className={"flex justify-end"}>
+                <Text className={"text-muted-foreground text-sm"}>
+                    {formatDate(created_at)}
+                </Text>
             </View>
-        </>
+        </View>
     )
 }
