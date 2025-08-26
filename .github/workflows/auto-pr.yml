@@ -7,6 +7,9 @@ on:
 
 jobs:
   create-pr:
+    permissions:
+      contents: read
+      pull-requests: write
     uses: T-ESP-ASSTAGJ/infra/.github/workflows/reusable_pr-creation.yml@main
     with:
       repository_name: "client"
