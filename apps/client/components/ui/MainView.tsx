@@ -46,7 +46,7 @@ export const MainView: FC<MainViewProps> = ({
 				{safeArea ? (
 					<SafeAreaView
 						className={cn(
-							"relative flex h-screen bg-background w-screen items-center",
+							"relative flex h-screen w-screen items-center bg-background",
 							className,
 						)}
 					>
@@ -61,7 +61,7 @@ export const MainView: FC<MainViewProps> = ({
 				) : !scrollView ? (
 					<View
 						className={cn(
-							"relative flex h-screen w-screen bg-background items-center pt-16",
+							"relative flex h-screen w-screen items-center bg-background pt-16",
 							className,
 						)}
 					>
