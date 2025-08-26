@@ -8,13 +8,14 @@
 		"build": "turbo build",
 		"dev:client": "pnpm --filter client exec expo start",
 		"dev:web": "turbo run dev --filter=web",
-		"dev:docs": "pnpm --filter docs exec mint dev"
+		"dev:docs": "pnpm --filter docs exec mint dev",
+		"prepare": "husky"
 	},
-	"dependencies": {},
 	"devDependencies": {
-		"turbo": "^2.4.2",
 		"@biomejs/biome": "1.9.4",
-		"lint-staged": "^15.5.0"
+		"husky": "^9.1.7",
+		"lint-staged": "^15.5.0",
+		"turbo": "^2.4.2"
 	},
 	"lint-staged": {
 		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
