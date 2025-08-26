@@ -1,0 +1,15 @@
+name: 🖥️ Auto PR Creation (Client)
+
+on:
+  push:
+    branches:
+      - 'TEM-*'
+
+jobs:
+  create-pr:
+    uses: T-ESP-ASSTAGJ/infra/.github/workflows/reusable_pr-creation.yml@main
+    with:
+      repository_name: "client"
+      base_branch: "staging"
+    secrets:
+      AUTO_DEPLOY_TOKEN: ${{ secrets.AUTO_DEPLOY_TOKEN }}
