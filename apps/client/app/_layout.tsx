@@ -4,7 +4,7 @@ import { useUserStore } from "@/stores/use-user-store";
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
-import { Redirect, Stack, router, useRouter } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -14,6 +14,7 @@ import {
 	View,
 	useWindowDimensions,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
@@ -67,9 +68,11 @@ export default function App() {
 	});
 
 	return (
-		<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
-			<MainScreen />
-		</AnimatedSplashScreen>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
+				<MainScreen />
+			</AnimatedSplashScreen>
+		</GestureHandlerRootView>
 	);
 }
 
