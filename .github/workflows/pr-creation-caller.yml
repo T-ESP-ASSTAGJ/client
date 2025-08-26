@@ -3,6 +3,7 @@ name: PR Creation
 on:
   push:
     branches:
+      - 'TEM-*'
       - 'staging'
       - 'main'
       - 'master'
