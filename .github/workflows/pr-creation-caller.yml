@@ -6,7 +6,6 @@ on:
       - 'TEM-*'
       - 'staging'
       - 'main'
-      - 'master'
 
 jobs:
   create-pr:
