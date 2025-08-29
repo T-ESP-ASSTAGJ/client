@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 
 import { useUserStore } from "@/stores/use-user-store";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
@@ -14,6 +15,7 @@ import {
 	View,
 	useWindowDimensions,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
@@ -175,12 +177,14 @@ function MainScreen() {
 	]);
 
 	return (
-		<>
-			<Stack screenOptions={{ headerShown: false }}>
-				<Stack.Screen name={"(tabs)"} />
-			</Stack>
+		<GestureHandlerRootView>
+			<BottomSheetModalProvider>
+				<Stack screenOptions={{ headerShown: false }}>
+					<Stack.Screen name={"(tabs)"} />
+				</Stack>
 
-			<PortalHost />
-		</>
+				<PortalHost />
+			</BottomSheetModalProvider>
+		</GestureHandlerRootView>
 	);
 }
