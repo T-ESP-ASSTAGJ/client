@@ -3,12 +3,13 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import PhoneInputCountryItem from "@/components/ui/inputs/phone/phone-input-country-item";
 import { type Country, countries } from "@/constants/countries";
 import { Portal } from "@rn-primitives/portal";
-import { useEffect, useRef, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 import {
 	Animated,
 	FlatList,
 	Pressable,
 	Text,
+	type TextInput,
 	TouchableOpacity,
 	View,
 } from "react-native";
@@ -16,6 +17,7 @@ import {
 export default function PhoneInput({
 	onChange,
 	initialValue,
+	phoneInputRef,
 }: {
 	onChange: (data: {
 		phone: string;
@@ -23,6 +25,7 @@ export default function PhoneInput({
 		fullNumber: string;
 	}) => void;
 	initialValue?: string;
+	phoneInputRef?: RefObject<TextInput>;
 }) {
 	const parseInitialValue = (fullNumber: string) => {
 		if (!fullNumber) return { phone: "", country: countries[0] };
@@ -83,6 +86,7 @@ export default function PhoneInput({
 	}, []);
 
 	const openBottomSheet = () => {
+		phoneInputRef.current?.blur();
 		setIsOpen(true);
 		setDisplayedCountries(countries);
 		Animated.parallel([
@@ -132,37 +136,44 @@ export default function PhoneInput({
 			country,
 			fullNumber: country.dialCode + phone,
 		});
+		phoneInputRef.current?.focus();
 	}, [phone, country]);
 
 	return (
 		<>
-			<View className=" flex w-full flex-row items-center justify-between gap-0 px-10">
-				<View className={"flex flex-row"}>
-					<TouchableOpacity
-						onPress={openBottomSheet}
-						className={
-							"flex flex-row items-center justify-center gap-x-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5"
-						}
-					>
-						<Text className="text-lg">{country.flag}</Text>
-						<IconSymbol size={12} name={"chevron.down"} color={"black"} />
-					</TouchableOpacity>
-				</View>
-				<View className={"flex flex-row"}>
+			<View className="flex w-full flex-row items-center justify-center rounded-2xl border border-primary-foreground/30">
+				<TouchableOpacity
+					onPress={openBottomSheet}
+					className={
+						"flex h-full flex-row items-center justify-center gap-x-2 rounded-full border p-2 px-4"
+					}
+				>
+					<Text className="text-lg">{country.flag}</Text>
+					<IconSymbol size={12} name={"chevron.down"} color={"white"} />
+				</TouchableOpacity>
+				<View
+					className={
+						"flex w-3/4 flex-row items-center justify-center px-2 py-2"
+					}
+				>
 					<Input
 						keyboardType={"phone-pad"}
 						placeholder="Your phone number"
 						value={`(${country.dialCode})`}
 						className={
-							"pointer-events-none rounded-r-none border border-gray-200 border-r-0"
+							"pointer-events-none rounded-r-none border-0 border-b-gray-950 bg-background font-extrabold text-muted-foreground"
 						}
 					/>
 					<Input
+						ref={phoneInputRef}
 						keyboardType={"phone-pad"}
+						placeholderTextColor={"#8E8E93"}
 						placeholder="Your phone number"
 						value={phone}
 						onChangeText={handlePhoneChange}
-						className={"flex-1 rounded-l-none border border-gray-200 text-lg"}
+						className={
+							"flex-1 border-0 bg-background font-extrabold text-lg text-primary-foreground"
+						}
 					/>
 				</View>
 			</View>
@@ -177,7 +188,6 @@ export default function PhoneInput({
 						}}
 					>
 						<Pressable className="flex-1" onPress={closeBottomSheet} />
-
 						<Animated.View
 							className="flex-1 rounded-t-3xl bg-white pt-5"
 							style={{
@@ -195,7 +205,6 @@ export default function PhoneInput({
 							<Text className="mb-4 text-center font-semibold text-lg">
 								Select Country
 							</Text>
-
 							<View className="mb-4 px-4">
 								<View>
 									<Input

@@ -1,6 +1,5 @@
 import { Input } from "@/components/rnr-ui/input";
 import { MainView } from "@/components/ui/MainView";
-import { Header } from "@/components/ui/header";
 import { useState } from "react";
 import { View } from "react-native";
 
@@ -10,7 +9,6 @@ export default function LoginPage() {
 
 	return (
 		<MainView disableTouchableWrapper>
-			<Header backButton={true} />
 			<View className={""}>
 				<Input value={email} placeholder={"Email"} onChangeText={setEmail} />
 				<Input

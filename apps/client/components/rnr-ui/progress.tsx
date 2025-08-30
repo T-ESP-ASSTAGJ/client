@@ -1,4 +1,3 @@
-import { Text } from "@/components/rnr-ui/text";
 import { cn } from "@/lib/utils";
 import * as ProgressPrimitive from "@rn-primitives/progress";
 import * as React from "react";
@@ -21,21 +20,21 @@ const Progress = React.forwardRef<
 		<ProgressPrimitive.Root
 			ref={ref}
 			className={cn(
-				"relative h-4 w-full overflow-hidden rounded-full bg-secondary",
+				"relative h-4 w-full overflow-hidden rounded-full bg-foreground",
 				className,
 			)}
 			{...props}
 		>
-			<Text
-				key="progression"
-				className="absolute top-0 z-20 w-full text-primary text-xs"
-				style={{
-					fontFamily: "Urbanist-medium",
-					textAlign: "center",
-				}}
-			>
-				250/1500
-			</Text>
+			{/*<Text*/}
+			{/*	key="progression"*/}
+			{/*	className="absolute top-0 z-20 w-full text-primary text-xs"*/}
+			{/*	style={{*/}
+			{/*		fontFamily: "Urbanist-medium",*/}
+			{/*		textAlign: "center",*/}
+			{/*	}}*/}
+			{/*>*/}
+			{/*	250/1500*/}
+			{/*</Text>*/}
 			<Indicator value={value} className={indicatorClassName} />
 		</ProgressPrimitive.Root>
 	);

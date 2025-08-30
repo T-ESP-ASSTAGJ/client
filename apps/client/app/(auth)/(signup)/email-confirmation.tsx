@@ -85,20 +85,6 @@ export default function EmailConfirmation() {
 		}
 	};
 
-	const handleContinue = () => {
-		// TODO: Add actual email verification check
-		Alert.alert(
-			"Email Verified",
-			"Great! Your email has been verified successfully.",
-			[
-				{
-					text: "Continue",
-					onPress: () => router.push("/(auth)/(signup)/names"),
-				},
-			],
-		);
-	};
-
 	const maskEmail = (email: string) => {
 		const [localPart, domain] = email.split("@");
 		if (localPart.length <= 3) {
@@ -171,17 +157,6 @@ export default function EmailConfirmation() {
 							Change Email Address
 						</Text>
 					</TouchableOpacity>
-				</View>
-
-				{/* Mock verification button - remove in production */}
-				<View className="mt-8 border-gray-200 border-t pt-6">
-					<Button
-						onPress={handleContinue}
-						className="w-full"
-						variant="secondary"
-					>
-						<Text>Continue (Mock Verification)</Text>
-					</Button>
 				</View>
 			</View>
 		</MainView>

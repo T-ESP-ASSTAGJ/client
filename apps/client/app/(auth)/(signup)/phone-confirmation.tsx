@@ -1,10 +1,9 @@
-import { Button } from "@/components/rnr-ui/button";
+import ContinueButton from "@/app/(auth)/(signup)/_components/continue_button";
 import { Text } from "@/components/rnr-ui/text";
-import { MainView } from "@/components/ui/MainView";
 import PhoneOtpInput from "@/components/ui/inputs/phone/phone-otp-input";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { router } from "expo-router";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 
 export default function PhoneConfirmation() {
@@ -16,11 +15,6 @@ export default function PhoneConfirmation() {
 	const [canResend, setCanResend] = useState(false);
 
 	useEffect(() => {
-		if (!formState.phoneNumber) {
-			router.replace("/(auth)/(signup)/phone");
-			return;
-		}
-
 		const timer = setInterval(() => {
 			setCountdown((prev) => {
 				if (prev <= 1) {
@@ -40,14 +34,9 @@ export default function PhoneConfirmation() {
 		setIsVerifying(true);
 
 		try {
-			// filler pour le moment, call api nécéssaire, à définir dans une collection
 			await new Promise((resolve) => setTimeout(resolve, 1500));
-
-			//filler
 			if (code === "123456") {
-				Alert.alert("Success", "Phone number verified successfully!", [
-					{ text: "OK", onPress: () => router.push("/(auth)/(signup)/email") },
-				]);
+				router.push("/(auth)/(signup)/email");
 			} else {
 				setError("Invalid verification code. Please try again.");
 			}
@@ -93,69 +82,54 @@ export default function PhoneConfirmation() {
 		return phoneNumber.slice(0, -4).replace(/./g, "*") + phoneNumber.slice(-4);
 	};
 
-	function onSubmit() {
-		router.navigate("/(auth)/(signup)/email");
-	}
-
 	return (
-		<MainView disableTouchableWrapper>
-			<View className="flex-1 justify-center px-8">
-				<View className="mb-8 items-center">
-					<Text className="mb-4 text-center font-bold text-2xl">
-						Verify Your Phone
-					</Text>
-					<Text className="mb-2 text-center text-gray-600">
-						We've sent a 6-digit verification code to
-					</Text>
-					<Text className="text-center font-semibold text-black">
-						{formatPhoneNumber(formState.phoneNumber)}
-					</Text>
-				</View>
-
-				<View className="mb-8">
-					<PhoneOtpInput
-						length={6}
-						onComplete={handleOTPComplete}
-						onChangeText={setOtp}
-						value={otp}
-						error={error}
-						autoFocus={true}
-					/>
-				</View>
-
-				{isVerifying && (
-					<Text className="mb-4 text-center text-gray-600">
-						Verifying code...
-					</Text>
-				)}
-
-				<View className="items-center">
-					<Text className="mb-4 text-center text-gray-600">
-						Didn't receive a code?
-					</Text>
-
-					{canResend ? (
-						<TouchableOpacity
-							onPress={handleResendCode}
-							className="rounded-lg bg-blue-500 px-6 py-3"
-						>
-							<Text className="font-semibold text-white">Resend Code</Text>
-						</TouchableOpacity>
-					) : (
-						<Text className="text-gray-500">Resend code in {countdown}s</Text>
-					)}
-				</View>
-
-				<TouchableOpacity
-					onPress={() => router.back()}
-					className="mt-8 items-center"
-				>
-					<Text className="font-medium text-blue-500">Change Phone Number</Text>
-				</TouchableOpacity>
-				<Button onPress={onSubmit} className={"mt-6 w-full"} variant="default">
-					<Text>{"Continue"}</Text>
-				</Button>
+		<View className="flex-1 items-center bg-background px-6">
+			<View className="mt-12 w-full">
+				<Text className="mb-4 font-bold text-3xl text-primary-foreground">
+					Verify Your Phone
+				</Text>
+				<Text className="mb-2 text-lg text-muted">
+					We've sent a 6-digit verification code to
+				</Text>
+				<Text className="text-center font-semibold text-black">
+					{formatPhoneNumber(formState.phoneNumber)}
+				</Text>
 			</View>
-		</MainView>
+
+			<View className="mb-8 flex-1 items-center justify-end gap-y-4">
+				<PhoneOtpInput
+					length={6}
+					onComplete={handleOTPComplete}
+					onChangeText={setOtp}
+					value={otp}
+					error={error}
+					autoFocus={true}
+				/>
+			</View>
+			<View className="flex-1 items-center justify-center ">
+				<Text className="mb-4 text-center text-muted">
+					Didn't receive a code?
+				</Text>
+
+				{canResend ? (
+					<TouchableOpacity
+						onPress={handleResendCode}
+						className="rounded-lg bg-blue-500 px-6 py-3"
+					>
+						<Text className="font-semibold text-white">Resend Code</Text>
+					</TouchableOpacity>
+				) : (
+					<Text className="text-muted">Resend code in {countdown}s</Text>
+				)}
+			</View>
+
+			{isVerifying && (
+				<Text className="mb-4 text-center text-muted">Verifying code...</Text>
+			)}
+
+			<View className={"mb-16 w-full gap-y-4 pt-4"}>
+				<ContinueButton />
+			</View>
+		</View>
 	);
 }
