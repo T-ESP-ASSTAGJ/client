@@ -32,8 +32,9 @@ export default function PhoneOtpInput({
 		}
 	}, [autoFocus]);
 
-	const handleChangeText = (text: string, index: number) => {
+	const handleChangeText = (input: string, index: number) => {
 		const newOtp = otp.split("");
+		const text = input[input.length - 1];
 
 		if (text.length === length) {
 			const pastedCode = text.slice(0, length);
@@ -94,10 +95,11 @@ export default function PhoneOtpInput({
 
 	return (
 		<View className="w-full">
-			<View className="mb-4 flex flex-row justify-center gap-3">
+			<View className="mb-4 flex flex-row justify-center gap-8">
 				{Array.from({ length }, (_, index) => (
 					<TextInput
-						key={index}
+						inputMode={"numeric"}
+						key={`otp-${index}`}
 						ref={(ref) => {
 							if (ref) inputRefs.current[index] = ref;
 						}}
@@ -112,16 +114,10 @@ export default function PhoneOtpInput({
 						textContentType="oneTimeCode"
 						autoComplete="sms-otp"
 						maxLength={length}
-						selectTextOnFocus
-						className={`h-12 w-12 rounded-lg border-2 text-center font-semibold text-lg ${
-							focusedIndex === index
-								? "border-blue-500 bg-blue-50"
-								: error
-									? "border-red-500 bg-red-50"
-									: "border-gray-300 bg-white"
-						}
-              ${otp[index] ? "border-green-500 bg-green-50" : ""}
-            `}
+						caretHidden={true}
+						cursorColor="transparent"
+						selectionColor="transparent"
+						className={`h-8 w-8 transform rounded-full text-center font-bold text-3xl text-primary-foreground transition-transform duration-300 ease-out ${otp[index] ? "bg-transparent" : "border-4 bg-muted-foreground"} ${focusedIndex === index ? "scale-125 border-0" : "scale-100"}`}
 					/>
 				))}
 			</View>

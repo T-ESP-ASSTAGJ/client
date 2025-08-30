@@ -62,7 +62,7 @@ export default function Layout() {
 				<TouchableButton
 					sensory={"medium"}
 					onPress={() => {
-						router.navigate("/(auth)/sign-in");
+						router.push("/(auth)/sign-in");
 					}}
 				>
 					<View

@@ -1,13 +1,11 @@
-import { Header } from "@/components/ui/header";
-import RegistrationProgressWrapper from "@/components/ui/registration-progress-wrapper";
+import RegisterProgress from "@/app/(auth)/(signup)/_components/register-progress";
+import { MainView } from "@/components/ui/MainView";
 import { Stack } from "expo-router";
-import { View } from "react-native";
 
-export default function Layout() {
+export default function SignUpLayout() {
 	return (
-		<View className="flex-1">
-			<RegistrationProgressWrapper />
-			<Header backButton />
+		<MainView safeArea={true} disableTouchableWrapper={false}>
+			<RegisterProgress />
 			<Stack screenOptions={{ headerShown: false, animation: "none" }}>
 				<Stack.Screen name="phone" />
 				<Stack.Screen name="phone-confirmation" />
@@ -15,6 +13,6 @@ export default function Layout() {
 				<Stack.Screen name="email-confirmation" />
 				<Stack.Screen name="names" />
 			</Stack>
-		</View>
+		</MainView>
 	);
 }

@@ -1,3 +1,4 @@
+import { type Href, router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -27,6 +28,16 @@ const expoSecureStorage = {
 	},
 };
 
+const SIGNUP_FLOW: Href[] = [
+	"/(auth)/(signup)/phone",
+	"/(auth)/(signup)/phone-confirmation",
+	"/(auth)/(signup)/email",
+	"/(auth)/(signup)/email-confirmation",
+	"/(auth)/(signup)/names",
+];
+
+const TOTAL_STEPS = SIGNUP_FLOW.length;
+
 interface RegistrationState {
 	phoneNumber: string;
 	email: string;
@@ -37,10 +48,14 @@ interface RegistrationState {
 
 interface RegistrationStore {
 	formState: RegistrationState;
+	nextStep: () => void;
 	setFormState: (
 		updater: (prevState: RegistrationState) => RegistrationState,
 	) => void;
-	loadStoredData: () => Promise<void>;
+	prevStep: () => void;
+	setStep: (step: number) => void;
+	getProgress: () => number;
+	// loadStoredData: () => Promise<void>;
 }
 
 const initialFormState: RegistrationState = {
@@ -48,17 +63,47 @@ const initialFormState: RegistrationState = {
 	email: "",
 	name: "",
 	lastName: "",
-	currentStep: 1,
+	currentStep: 0,
 };
 
 export const useRegistrationStore = create<RegistrationStore>()(
 	persist(
-		(set) => ({
+		(set, get) => ({
 			formState: initialFormState,
 			setFormState: (updater) =>
 				set((state) => ({
 					formState: updater(state.formState),
 				})),
+			nextStep: () => {
+				set((state) => ({
+					formState: {
+						...state.formState,
+						currentStep: Math.min(state.formState.currentStep + 1, TOTAL_STEPS),
+					},
+				}));
+				router.push(SIGNUP_FLOW[get().formState.currentStep]);
+			},
+			prevStep: () => {
+				set((state) => ({
+					formState: {
+						...state.formState,
+						currentStep: Math.max(state.formState.currentStep - 1, 0),
+					},
+				}));
+				router.push(SIGNUP_FLOW[get().formState.currentStep]);
+			},
+
+			setStep: (step) => {
+				set((state) => ({
+					formState: {
+						...state.formState,
+						currentStep: Math.max(1, Math.min(step, TOTAL_STEPS - 1)),
+					},
+				}));
+				router.push(SIGNUP_FLOW[get().formState.currentStep]);
+			},
+
+			getProgress: () => (get().formState.currentStep * 100) / TOTAL_STEPS - 1,
 			loadStoredData: async () => {
 				try {
 					const storedData = await expoSecureStorage.getItem(

@@ -1,49 +1,44 @@
-import { Button } from "@/components/rnr-ui/button";
+import ContinueButton from "@/app/(auth)/(signup)/_components/continue_button";
 import { Text } from "@/components/rnr-ui/text";
-import { MainView } from "@/components/ui/MainView";
 import PhoneInput from "@/components/ui/inputs/phone/phone-input";
 import { useRegistrationStore } from "@/stores/use-registry-store";
-import { router } from "expo-router";
-import { View } from "react-native";
+import { useEffect, useRef } from "react";
+import { type TextInput, View } from "react-native";
 
 export default function PhonePage() {
 	const { formState, setFormState } = useRegistrationStore();
+	const phoneInputRef = useRef<TextInput>(null);
 
 	const onPhoneChange = ({ fullNumber }) => {
 		setFormState((prev) => ({ ...prev, phoneNumber: fullNumber }));
 	};
 
-	function onSubmit() {
-		console.log(formState.phoneNumber);
-		router.navigate("/(auth)/(signup)/phone-confirmation");
-	}
+	useEffect(() => {
+		phoneInputRef.current.focus();
+	}, []);
 
 	return (
-		<MainView disableTouchableWrapper>
-			<View className="flex h-full w-full items-center justify-between">
-				<View className={"flex h-1/3 justify-end gap-y-4 px-6"}>
-					<Text className="mb-8 text-center font-bold text-3xl">
-						Phone Number
-					</Text>
-					<PhoneInput
-						onChange={onPhoneChange}
-						initialValue={formState.phoneNumber}
-					/>
-				</View>
-				<View className={"flex h-1/2 w-full justify-center px-8"}>
-					<View className="mb-6 rounded-lg bg-gray-50 p-4">
-						<Text className="text-center text-gray-600 text-sm leading-5">
-							By continuing, you agree to our{" "}
-							<Text className="text-blue-500 underline">Terms of Service</Text>{" "}
-							and{" "}
-							<Text className="text-blue-500 underline">Privacy Policy</Text>
-						</Text>
-					</View>
-					<Button onPress={onSubmit} className={"w-full"} variant="default">
-						<Text>{"Continue"}</Text>
-					</Button>
-				</View>
+		<View className="flex-1 items-center bg-background px-6 text-start">
+			<Text className="mt-12 font-bold text-3xl text-primary-foreground">
+				What's your phone number?
+			</Text>
+			<View className={"flex-1 justify-center"}>
+				<PhoneInput
+					phoneInputRef={phoneInputRef}
+					onChange={onPhoneChange}
+					initialValue={formState.phoneNumber}
+				/>
 			</View>
-		</MainView>
+			<View className={"mb-16 w-full gap-y-4 pt-4"}>
+				<View className="mb-4 rounded-full border border-primary-foreground/20 p-4">
+					<Text className="text-center text-primary-foreground">
+						By continuing, you agree to our{" "}
+						<Text className="text-blue-500 underline">Terms of Service</Text>{" "}
+						and <Text className="text-blue-500 underline">Privacy Policy</Text>
+					</Text>
+				</View>
+				<ContinueButton />
+			</View>
+		</View>
 	);
 }
