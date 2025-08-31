@@ -123,7 +123,8 @@ export default function PhoneInput({
 	};
 
 	const handlePhoneChange = (text: string) => {
-		setPhone(text);
+		const numericValue = text.replace(/[^0-9]/g, "");
+		setPhone(numericValue);
 	};
 
 	const handleCountryChange = (newCountry: Country) => {
@@ -168,6 +169,7 @@ export default function PhoneInput({
 						ref={phoneInputRef}
 						keyboardType={"phone-pad"}
 						placeholderTextColor={"#8E8E93"}
+						inputMode={"numeric"}
 						placeholder="Your phone number"
 						value={phone}
 						onChangeText={handlePhoneChange}

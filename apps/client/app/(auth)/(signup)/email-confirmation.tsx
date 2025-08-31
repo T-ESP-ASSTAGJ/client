@@ -1,23 +1,18 @@
+import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
 import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
-import { MainView } from "@/components/ui/MainView";
 import { useRegistrationStore } from "@/stores/use-registry-store";
-import { router } from "expo-router";
 import React, { useState, useEffect } from "react";
-import { Alert, Linking, TouchableOpacity, View } from "react-native";
+import { Alert, Linking, View } from "react-native";
 
 export default function EmailConfirmation() {
 	const { formState } = useRegistrationStore();
+	const email = formState.email;
 	const [isLoading, setIsLoading] = useState(false);
 	const [countdown, setCountdown] = useState(30);
 	const [canResend, setCanResend] = useState(false);
 
 	useEffect(() => {
-		if (!formState.email) {
-			router.replace("/(auth)/(signup)/email");
-			return;
-		}
-
 		const timer = setInterval(() => {
 			setCountdown((prev) => {
 				if (prev <= 1) {
@@ -69,12 +64,13 @@ export default function EmailConfirmation() {
 	};
 
 	const handleCheckEmail = async () => {
+		//TODO: fonction à tester sur mobile, app mail pas dispo sur simulateur
 		try {
-			// Try to open default email app
 			const supported = await Linking.canOpenURL("mailto:");
 			if (supported) {
 				await Linking.openURL("mailto:");
 			} else {
+				//TODO: remplacer par le modal inférieur
 				Alert.alert(
 					"Unable to open email app",
 					"Please check your email manually.",
@@ -85,52 +81,36 @@ export default function EmailConfirmation() {
 		}
 	};
 
-	const maskEmail = (email: string) => {
-		const [localPart, domain] = email.split("@");
-		if (localPart.length <= 3) {
-			return `${localPart[0]}***@${domain}`;
-		}
-		return `${localPart.slice(0, 2)}${"*".repeat(localPart.length - 2)}@${domain}`;
-	};
-
 	return (
-		<MainView disableTouchableWrapper>
-			<View className="flex-1 justify-center px-8">
-				<View className="mb-8 items-center">
-					<View className="mb-6 h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-						<Text className="text-2xl">=�</Text>
-					</View>
-
-					<Text className="mb-4 text-center font-bold text-2xl">
-						Check your email
+		<View className="flex-1 items-center bg-background px-6 text-start">
+			<View className={"mt-12 w-full flex-1 justify-between "}>
+				<Text className="w-full font-bold text-3xl text-primary-foreground">
+					Check your email
+				</Text>
+				<View className="mt-12">
+					<Text className="mb-2 text-lg text-muted">
+						We've sent a confirmation link to :
 					</Text>
-
-					<Text className="mb-4 text-center text-gray-600">
-						We've sent a confirmation link to
+					<Text className="mt-12 rounded-full border bg-primary p-4 text-center font-extrabold text-primary-foreground">
+						{email}
 					</Text>
-
-					<Text className="mb-6 text-center font-semibold text-black">
-						{maskEmail(formState.email)}
-					</Text>
-
-					<Text className="text-center text-gray-500 text-sm leading-5">
+					<Text className="mt-12 text-lg text-muted">
 						Click the link in the email to verify your account. If you don't see
 						it, check your spam folder.
 					</Text>
 				</View>
-
-				<View className="space-y-4">
+				<View className="mt-6 flex-1 justify-center gap-y-12 ">
 					<Button
 						onPress={handleCheckEmail}
-						className="mb-4 w-full"
+						className="mb-4 w-full border border-primary-foreground bg-primary"
 						variant="default"
 						size="lg"
 					>
-						<Text>Open Email App</Text>
+						<Text className={"text-muted"}>Open Email App</Text>
 					</Button>
 
 					<View className="mb-6 items-center">
-						<Text className="mb-4 text-center text-gray-600">
+						<Text className="mb-4 text-center text-primary-foreground">
 							Didn't receive an email?
 						</Text>
 
@@ -138,27 +118,22 @@ export default function EmailConfirmation() {
 							<Button
 								onPress={handleResendEmail}
 								disabled={isLoading}
-								className="w-full"
+								className="w-full border-muted bg-muted"
 								variant="outline"
 							>
-								<Text>{isLoading ? "Sending..." : "Resend Email"}</Text>
+								<Text className={"text-primary"}>
+									{isLoading ? "Sending..." : "Resend Email"}
+								</Text>
 							</Button>
 						) : (
-							<Text className="text-gray-500">
-								Resend email in {countdown}s
-							</Text>
+							<Text className="text-muted">Resend email in {countdown}s</Text>
 						)}
 					</View>
 				</View>
-
-				<View className="mt-8 items-center">
-					<TouchableOpacity onPress={() => router.back()} className="py-2">
-						<Text className="font-medium text-blue-500">
-							Change Email Address
-						</Text>
-					</TouchableOpacity>
-				</View>
 			</View>
-		</MainView>
+			<View className={"mb-16 w-full gap-y-4 pt-4"}>
+				<ContinueButton />
+			</View>
+		</View>
 	);
 }

@@ -1,24 +1,13 @@
-import ContinueButton from "@/app/(auth)/(signup)/_components/continue_button";
-import { Input } from "@/components/rnr-ui/input";
+import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
 import { Text } from "@/components/rnr-ui/text";
 import { useRegistrationStore } from "@/stores/use-registry-store";
-import { validateEmail } from "@/utils/validation";
-import { router } from "expo-router";
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { TextInput, View } from "react-native";
 
 export default function Email() {
-	const { formState, setFormState, nextStep } = useRegistrationStore();
+	const { formState, setFormState } = useRegistrationStore();
 	const [email, setEmail] = useState(formState.email || "");
 	const [emailError, setEmailError] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
-	const [isEmailFocused, setIsEmailFocused] = useState(false);
-
-	useEffect(() => {
-		if (!formState.phoneNumber) {
-			router.replace("/(auth)/(signup)/phone");
-		}
-	}, [formState.phoneNumber]);
 
 	useEffect(() => {
 		setEmail(formState.email || "");
@@ -31,47 +20,8 @@ export default function Email() {
 		setFormState((prev) => ({ ...prev, email: text }));
 	};
 
-	const validateForm = (): boolean => {
-		const emailValidation = validateEmail(email);
-
-		if (!emailValidation.isValid) {
-			setEmailError(emailValidation.error || "");
-			return false;
-		}
-
-		return true;
-	};
-
-	// const handleSubmit = async () => {
-	// 	if (!validateForm()) {
-	// 		return;
-	// 	}
-	//
-	// 	setIsLoading(true);
-	//
-	// 	try {
-	// 		// TODO: Replace with actual API call to check email availability
-	// 		await new Promise((resolve) => setTimeout(resolve, 1500));
-	//
-	// 		// Mock email check - replace with actual API
-	// 		const existingEmails = ["test@example.com", "admin@test.com"];
-	//
-	// 		if (existingEmails.includes(email.toLowerCase())) {
-	// 			setEmailError("This email is already registered");
-	// 			return;
-	// 		}
-	//
-	// 		setFormState((prev) => ({ ...prev, email }));
-	// 		router.push("/(auth)/(signup)/email-confirmation");
-	// 	} catch (error) {
-	// 		Alert.alert("Error", "Something went wrong. Please try again.");
-	// 	} finally {
-	// 		setIsLoading(false);
-	// 	}
-	// };
-
 	return (
-		<View className="flex-1 justify-center bg-background px-8">
+		<View className="flex-1 justify-center bg-background px-6">
 			<View className="mt-12 w-full">
 				<Text className="mb-4 font-bold text-3xl text-primary-foreground">
 					What's your email?
@@ -81,13 +31,11 @@ export default function Email() {
 				</Text>
 			</View>
 
-			<View className="mb-8 flex-1 items-center justify-end gap-y-4">
-				<View className="mb-4 flex-1 justify-center">
-					<Input
+			<View className="flex-1 items-center justify-end gap-y-4">
+				<View className="mb-4 w-full flex-1 justify-center">
+					<TextInput
 						value={email}
 						onChangeText={handleEmailChange}
-						onFocus={() => setIsEmailFocused(true)}
-						onBlur={() => setIsEmailFocused(false)}
 						placeholder="john.doe@example.com"
 						keyboardType="email-address"
 						placeholderTextColor={"#8E8E93"}
@@ -95,9 +43,9 @@ export default function Email() {
 						autoCorrect={false}
 						textContentType="emailAddress"
 						autoComplete="email"
-						editable={!isLoading}
+						textAlign={"center"}
 						className={
-							"border border-primary-foreground bg-background font-bold text-primary-foreground"
+							"rounded-2xl border border-primary-foreground/20 bg-background p-6 text-center font-bold text-primary-foreground text-xl"
 						}
 					/>
 					{emailError ? (

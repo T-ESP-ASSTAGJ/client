@@ -3,12 +3,14 @@ import { Text } from "@/components/rnr-ui/text";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { useRouter } from "expo-router";
+import { useMemo } from "react";
 import { View } from "react-native";
 
 export default function ContinueButton() {
-	const { nextStep, prevStep, formState } = useRegistrationStore();
+	const { nextStep, prevStep, formState, canNext } = useRegistrationStore();
 	const router = useRouter();
 	const currentStep = formState.currentStep;
+	const canGoNext = useMemo(() => canNext(), [formState]);
 
 	function onPrev() {
 		if (currentStep !== 0) {
@@ -28,6 +30,7 @@ export default function ContinueButton() {
 				<IconSymbol name={"chevron.left"} color={"white"} size={12} />
 			</Button>
 			<Button
+				disabled={!canGoNext}
 				onPress={nextStep}
 				className={"flex flex-row gap-x-4 rounded-2xl bg-primary-foreground"}
 				variant="default"
