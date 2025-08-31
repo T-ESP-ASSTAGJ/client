@@ -33,49 +33,45 @@ export default function PhoneOtpInput({
 	}, [autoFocus]);
 
 	const handleChangeText = (input: string, index: number) => {
-		const newOtp = otp.split("");
-		const text = input[input.length - 1];
+		const numericValue = input.replace(/[^0-9]/g, "");
 
-		if (text.length === length) {
-			const pastedCode = text.slice(0, length);
-			setOtp(pastedCode);
-			onChangeText?.(pastedCode);
-
-			if (pastedCode.length === length) {
-				onComplete(pastedCode);
-				inputRefs.current[length - 1]?.blur();
-			}
+		if (!numericValue) {
+			const newOtp = otp.split("");
+			newOtp[index] = "";
+			const result = newOtp.join("");
+			setOtp(result);
+			onChangeText?.(result);
 			return;
 		}
 
-		if (text.length > 1) {
-			const pastedText = text.slice(0, length - index);
-			for (let i = 0; i < pastedText.length && index + i < length; i++) {
-				newOtp[index + i] = pastedText[i];
-			}
-			const newOtpString = newOtp.join("");
-			setOtp(newOtpString);
-			onChangeText?.(newOtpString);
+		const newOtp = otp.split("");
 
-			const nextIndex = Math.min(index + pastedText.length, length - 1);
+		if (numericValue.length > 1) {
+			const availableSlots = length - index;
+			const textToInsert = numericValue.slice(0, availableSlots);
+
+			for (let i = 0; i < textToInsert.length; i++) {
+				newOtp[index + i] = textToInsert[i];
+			}
+
+			const nextIndex = Math.min(index + textToInsert.length, length - 1);
 			inputRefs.current[nextIndex]?.focus();
+		}
 
-			if (newOtpString.length === length) {
-				onComplete(newOtpString);
-			}
-		} else {
-			newOtp[index] = text;
-			const newOtpString = newOtp.join("");
-			setOtp(newOtpString);
-			onChangeText?.(newOtpString);
-
-			if (text && index < length - 1) {
+		if (numericValue.length === 1) {
+			newOtp[index] = numericValue;
+			if (index < length - 1) {
 				inputRefs.current[index + 1]?.focus();
 			}
+		}
 
-			if (newOtpString.replace(/\s/g, "").length === length) {
-				onComplete(newOtpString);
-			}
+		const result = newOtp.join("");
+		setOtp(result);
+		onChangeText?.(result);
+
+		if (result.length === length) {
+			onComplete(result);
+			if (numericValue.length > 1) inputRefs.current[length - 1]?.blur();
 		}
 	};
 

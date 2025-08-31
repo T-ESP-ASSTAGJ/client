@@ -16,7 +16,7 @@ if (!gitmoji_regex.test(commitMsg)) {
 	console.error("");
 	console.error("Examples:");
 	console.error("  :sparkles: TEM-123 add new user authentication");
-	console.error("  :bug: TEM-456 fix login validation error");
+	console.error("  :bug: TEM-456 fix login schemas error");
 	console.error("  :zap: TEM-789 improve database query performance");
 	process.exit(1);
 }

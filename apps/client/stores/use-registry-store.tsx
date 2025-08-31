@@ -1,45 +1,28 @@
-import { type Href, router } from "expo-router";
+import { canAccessStep, validateStep } from "@/utils/schemas/registration";
+import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const expoSecureStorage = {
-	getItem: async (name: string): Promise<string | null> => {
-		try {
-			return await SecureStore.getItemAsync(name);
-		} catch (error) {
-			console.error("Error getting item from SecureStore:", error);
-			return null;
-		}
-	},
-	setItem: async (name: string, value: string): Promise<void> => {
-		try {
-			await SecureStore.setItemAsync(name, value);
-		} catch (error) {
-			console.error("Error setting item in SecureStore:", error);
-		}
-	},
-	removeItem: async (name: string): Promise<void> => {
-		try {
-			await SecureStore.deleteItemAsync(name);
-		} catch (error) {
-			console.error("Error removing item from SecureStore:", error);
-		}
-	},
-};
-
-const SIGNUP_FLOW: Href[] = [
+const ROUTES = [
 	"/(auth)/(signup)/phone",
 	"/(auth)/(signup)/phone-confirmation",
 	"/(auth)/(signup)/email",
 	"/(auth)/(signup)/email-confirmation",
 	"/(auth)/(signup)/names",
-];
+] as const;
 
-const TOTAL_STEPS = SIGNUP_FLOW.length;
+export const createSecureStorage = () => ({
+	getItem: (name: string) => SecureStore.getItemAsync(name).catch(() => null),
+	setItem: (name: string, value: string) =>
+		SecureStore.setItemAsync(name, value).catch(console.error),
+	removeItem: (name: string) =>
+		SecureStore.deleteItemAsync(name).catch(console.error),
+});
 
-interface RegistrationState {
+export interface RegistrationState {
 	phoneNumber: string;
+	isPhoneConfirmed: boolean;
 	email: string;
 	name: string;
 	lastName: string;
@@ -47,19 +30,33 @@ interface RegistrationState {
 }
 
 interface RegistrationStore {
+	// Form state
 	formState: RegistrationState;
-	nextStep: () => void;
+	errors: Record<string, string[]>;
+
+	// Methods
 	setFormState: (
 		updater: (prevState: RegistrationState) => RegistrationState,
 	) => void;
+	nextStep: () => void;
 	prevStep: () => void;
-	setStep: (step: number) => void;
+	goToStep: (step: number) => void;
+
+	// Validation
+	canNext: () => boolean;
+	canBack: () => boolean;
+	canAccessStep: (step: number) => boolean;
+	validateCurrentStep: () => boolean;
+
+	// Progress & Errors
 	getProgress: () => number;
-	// loadStoredData: () => Promise<void>;
+	getErrors: (field?: string) => string[];
+	clearErrors: () => void;
 }
 
 const initialFormState: RegistrationState = {
 	phoneNumber: "",
+	isPhoneConfirmed: false,
 	email: "",
 	name: "",
 	lastName: "",
@@ -70,60 +67,110 @@ export const useRegistrationStore = create<RegistrationStore>()(
 	persist(
 		(set, get) => ({
 			formState: initialFormState,
+			errors: {},
+
 			setFormState: (updater) =>
 				set((state) => ({
 					formState: updater(state.formState),
 				})),
+
 			nextStep: () => {
-				set((state) => ({
+				const state = get().formState;
+				const validation = validateStep(state.currentStep, state);
+
+				if (!validation.isValid) {
+					set((prevState) => ({
+						...prevState,
+						errors: validation.fieldErrors,
+					}));
+					return;
+				}
+
+				const nextStep = Math.min(state.currentStep + 1, ROUTES.length - 1);
+				// Fixed: update formState properly
+				set((prevState) => ({
+					...prevState,
 					formState: {
-						...state.formState,
-						currentStep: Math.min(state.formState.currentStep + 1, TOTAL_STEPS),
+						...prevState.formState,
+						currentStep: nextStep,
 					},
 				}));
-				router.push(SIGNUP_FLOW[get().formState.currentStep]);
+				router.push(ROUTES[nextStep]);
 			},
+
 			prevStep: () => {
-				set((state) => ({
+				const { formState } = get();
+				const prevStep = Math.max(formState.currentStep - 1, 0);
+				// Fixed: update formState properly
+				set((prevState) => ({
+					...prevState,
 					formState: {
-						...state.formState,
-						currentStep: Math.max(state.formState.currentStep - 1, 0),
+						...prevState.formState,
+						currentStep: prevStep,
 					},
 				}));
-				router.push(SIGNUP_FLOW[get().formState.currentStep]);
+				router.push(ROUTES[prevStep]);
 			},
 
-			setStep: (step) => {
-				set((state) => ({
-					formState: {
-						...state.formState,
-						currentStep: Math.max(1, Math.min(step, TOTAL_STEPS - 1)),
-					},
-				}));
-				router.push(SIGNUP_FLOW[get().formState.currentStep]);
-			},
+			goToStep: (step) => {
+				const { formState } = get(); // Fixed: get formState specifically
+				const targetStep = Math.max(0, Math.min(step, ROUTES.length - 1));
 
-			getProgress: () => (get().formState.currentStep * 100) / TOTAL_STEPS - 1,
-			loadStoredData: async () => {
-				try {
-					const storedData = await expoSecureStorage.getItem(
-						"registration-storage",
-					);
-					if (storedData) {
-						const parsed = JSON.parse(storedData);
-						if (parsed.state?.formState) {
-							set({ formState: parsed.state.formState });
-						}
-					}
-				} catch (error) {
-					console.error("Error loading stored registration data:", error);
+				if (canAccessStep(targetStep, formState)) {
+					// Fixed: pass formState
+					set((prevState) => ({
+						...prevState,
+						formState: {
+							...prevState.formState,
+							currentStep: targetStep,
+						},
+					}));
+					router.push(ROUTES[targetStep]);
 				}
 			},
+
+			canNext: () => {
+				const { formState } = get(); // Fixed: get formState specifically
+				return validateStep(formState.currentStep, formState).isValid;
+			},
+
+			canBack: () => get().formState.currentStep > 0, // Fixed: access formState.currentStep
+
+			canAccessStep: (step) => {
+				const { formState } = get(); // Fixed: get formState specifically
+				return canAccessStep(step, formState); // Fixed: pass formState
+			},
+
+			validateCurrentStep: () => {
+				const { formState } = get(); // Fixed: get formState specifically
+				const validation = validateStep(formState.currentStep, formState);
+				set((prevState) => ({
+					...prevState,
+					errors: validation.fieldErrors,
+				}));
+				return validation.isValid;
+			},
+
+			getProgress: () => {
+				const { formState } = get(); // Fixed: get formState specifically
+				return (formState.currentStep / ROUTES.length) * 100;
+			},
+
+			getErrors: (field) => {
+				const { errors } = get();
+				return field ? errors[field] || [] : Object.values(errors).flat();
+			},
+
+			clearErrors: () =>
+				set((prevState) => ({
+					...prevState,
+					errors: {},
+				})),
 		}),
 		{
-			name: "registration-storage",
-			storage: createJSONStorage(() => expoSecureStorage),
-			partialize: (state) => ({ formState: state.formState }),
+			name: "registration",
+			storage: createJSONStorage(() => createSecureStorage()),
+			partialize: ({ errors, ...state }) => state, // This excludes errors from persistence
 		},
 	),
 );

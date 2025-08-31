@@ -1,4 +1,4 @@
-import ContinueButton from "@/app/(auth)/(signup)/_components/continue_button";
+import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
 import { Text } from "@/components/rnr-ui/text";
 import PhoneOtpInput from "@/components/ui/inputs/phone/phone-otp-input";
 import { useRegistrationStore } from "@/stores/use-registry-store";
@@ -7,12 +7,13 @@ import React, { useEffect, useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 
 export default function PhoneConfirmation() {
-	const { formState } = useRegistrationStore();
+	const { formState, setFormState, nextStep } = useRegistrationStore();
 	const [otp, setOtp] = useState("");
 	const [error, setError] = useState("");
 	const [isVerifying, setIsVerifying] = useState(false);
 	const [countdown, setCountdown] = useState(30);
 	const [canResend, setCanResend] = useState(false);
+	const phoneNumber = formState.phoneNumber;
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -36,7 +37,8 @@ export default function PhoneConfirmation() {
 		try {
 			await new Promise((resolve) => setTimeout(resolve, 1500));
 			if (code === "123456") {
-				router.push("/(auth)/(signup)/email");
+				setFormState((prev) => ({ ...prev, isPhoneConfirmed: true }));
+				nextStep();
 			} else {
 				setError("Invalid verification code. Please try again.");
 			}
@@ -77,11 +79,6 @@ export default function PhoneConfirmation() {
 		}
 	};
 
-	const formatPhoneNumber = (phoneNumber: string) => {
-		if (phoneNumber.length <= 4) return phoneNumber;
-		return phoneNumber.slice(0, -4).replace(/./g, "*") + phoneNumber.slice(-4);
-	};
-
 	return (
 		<View className="flex-1 items-center bg-background px-6">
 			<View className="mt-12 w-full">
@@ -89,10 +86,10 @@ export default function PhoneConfirmation() {
 					Verify Your Phone
 				</Text>
 				<Text className="mb-2 text-lg text-muted">
-					We've sent a 6-digit verification code to
+					We've sent a 6-digit verification code to number finishing by
 				</Text>
-				<Text className="text-center font-semibold text-black">
-					{formatPhoneNumber(formState.phoneNumber)}
+				<Text className="mt-12 rounded-full border bg-primary p-4 text-center font-bold text-2xl text-primary-foreground">
+					{phoneNumber}
 				</Text>
 			</View>
 
@@ -106,7 +103,7 @@ export default function PhoneConfirmation() {
 					autoFocus={true}
 				/>
 			</View>
-			<View className="flex-1 items-center justify-center ">
+			<View className="w-full flex-1 items-center justify-center">
 				<Text className="mb-4 text-center text-muted">
 					Didn't receive a code?
 				</Text>
@@ -114,9 +111,9 @@ export default function PhoneConfirmation() {
 				{canResend ? (
 					<TouchableOpacity
 						onPress={handleResendCode}
-						className="rounded-lg bg-blue-500 px-6 py-3"
+						className="rounded-full bg-muted px-6 py-3"
 					>
-						<Text className="font-semibold text-white">Resend Code</Text>
+						<Text className="font-semibold text-primary">Resend Code</Text>
 					</TouchableOpacity>
 				) : (
 					<Text className="text-muted">Resend code in {countdown}s</Text>
