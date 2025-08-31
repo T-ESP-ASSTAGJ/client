@@ -216,7 +216,7 @@ export default function PhoneInput({
 										className={"relative rounded-lg border pl-10"}
 									/>
 									<View
-										className="absolute bottom-0 left-3 "
+										className="absolute bottom-0 left-3"
 										style={{ transform: [{ translateY: -12 }] }}
 									>
 										<IconSymbol
