@@ -38,11 +38,11 @@ const PhoneInputCountryItem = ({
 			}}
 		>
 			<TouchableOpacity
-				className="border-gray-100 border-b px-4 py-3"
+				className="border-gray-100 border-b px-4 py-6"
 				onPress={onPress}
 			>
 				<Text
-					className={`text-base ${
+					className={`text-lg ${
 						isSelected
 							? "font-semibold text-blue-500"
 							: "font-normal text-black"
