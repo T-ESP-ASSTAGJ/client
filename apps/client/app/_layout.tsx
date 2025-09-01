@@ -1,7 +1,13 @@
 import "../styles/globals.css";
 
 import { useUserStore } from "@/stores/use-user-store";
-import {DarkTheme, DefaultTheme, Theme, ThemeProvider} from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
+import {
+	DarkTheme,
+	DefaultTheme,
+	Theme,
+	ThemeProvider,
+} from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
@@ -9,18 +15,18 @@ import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-    Animated,
-    LogBox,
-    Platform,
-    StyleSheet,
-    View,
-    useWindowDimensions, useColorScheme,
+	Animated,
+	LogBox,
+	Platform,
+	StyleSheet,
+	View,
+	useColorScheme,
+	useWindowDimensions,
 } from "react-native";
 import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
 } from "react-native-reanimated";
-import {FontAwesome} from "@expo/vector-icons";
 
 // Instruct SplashScreen not to hide yet, we want to do this manually
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -62,7 +68,7 @@ export function SplashVideo({ onLoaded, onFinish }) {
 export default function App() {
 	// Chargez vos polices ici
 	const [fontsLoaded, fontError] = useFonts({
-        ...FontAwesome.font,
+		...FontAwesome.font,
 	});
 
 	return (
@@ -141,7 +147,7 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 
 function MainScreen() {
 	const { user } = useUserStore();
-    const colorScheme = useColorScheme();
+	const colorScheme = useColorScheme();
 	/* Hook automatique pour synchroniser l'utilisateur (5 minutes / fermeture ou mise en arrière plan | si "dirty")*/
 	/*useUserSync();*/
 
@@ -175,7 +181,7 @@ function MainScreen() {
 	]);
 
 	return (
-		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
 			<Stack screenOptions={{ headerShown: false }}>
 				<Stack.Screen name={"(tabs)"} />
 			</Stack>
