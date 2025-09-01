@@ -199,6 +199,5 @@ function MainScreen() {
             </BottomSheetModalProvider>
           </GestureHandlerRootView>
        </ThemeProvider>
-
 	);
 }

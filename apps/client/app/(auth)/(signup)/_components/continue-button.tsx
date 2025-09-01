@@ -17,13 +17,13 @@ export default function ContinueButton() {
 			prevStep();
 			return;
 		}
-		router.push("/(auth)/sign-in");
+		router.push("/(auth)/branding");
 	}
 
 	return (
 		<View className={"flex flex-row justify-between"}>
 			<Button
-				onPress={onPrev}
+				onPress={router.back}
 				className={"w-1/4 rounded-2xl bg-primary"}
 				variant="default"
 			>
