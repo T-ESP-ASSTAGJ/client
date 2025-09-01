@@ -1,31 +1,26 @@
 import { MainView } from "@/components/ui/MainView";
 import { TouchableButton } from "@/components/ui/touchable-button";
-import React from "react";
-import { Text, View } from "react-native";
+import { ArrowLeft, ArrowRight, Info } from "lucide-react-native";
+import { View } from "react-native";
 
 export default function ExplorePage() {
 	return (
 		<MainView disableTouchableWrapper>
-			<TouchableButton variant={"primary"} content={"Explore"} />
-
-			<Text
-				className={"text-white"}
-				style={{ fontFamily: "JakartaRegular", fontSize: 20 }}
-			>
-				JakartaRegular
-			</Text>
-			<Text
-				className={"text-white"}
-				style={{ fontFamily: "JakartaMedium", fontSize: 24 }}
-			>
-				JakartaMedium
-			</Text>
-			<Text
-				className={"text-white"}
-				style={{ fontFamily: "Jakarta", fontWeight: "800", fontSize: 24 }}
-			>
-				JakartaBold
-			</Text>
+			<View className={"w-full flex gap-y-4"}>
+				<TouchableButton variant={"primary"} content={"Explore"} />
+				<TouchableButton
+					variant={"primary"}
+					content={"Explore"}
+					leftIcon={<ArrowLeft />}
+				/>
+				<TouchableButton
+					variant={"primary"}
+					content={"Explore"}
+					rightIcon={<ArrowRight />}
+				/>
+				<TouchableButton variant={"primary"} isLoading />
+				<TouchableButton variant={"icon"} icon={<Info />} />
+			</View>
 		</MainView>
 	);
 }

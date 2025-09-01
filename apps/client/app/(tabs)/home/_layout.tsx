@@ -17,7 +17,7 @@ export default function Layout() {
 				<Stack.Screen name="index" />
 			</Stack>
 
-			<View className={"absolute right-4 bottom-28 flex flex-row gap-x-4"}>
+			<View className={"absolute right-4 bottom-32 flex flex-row gap-x-4"}>
 				<TouchableButton
 					sensory={"medium"}
 					onPress={() => {
@@ -35,44 +35,26 @@ export default function Layout() {
 
 						debugLog();
 					}}
-				>
-					<View
-						className={
-							"flex size-16 items-center justify-center rounded-2xl bg-white shadow-sm"
-						}
-					>
-						<IconSymbol name={"ladybug"} color={"black"} size={32} />
-					</View>
-				</TouchableButton>
+					variant={"icon"}
+					icon={<IconSymbol name={"ladybug"} color={"black"} size={24} />}
+				/>
 
 				<TouchableButton
 					sensory={"medium"}
 					onPress={() => {
 						/*router.navigate("/(other)/training/create")*/
 					}}
-				>
-					<View
-						className={
-							"flex size-16 items-center justify-center rounded-2xl bg-white shadow-sm"
-						}
-					>
-						<IconSymbol name={"plus"} color={"#6C5F54"} size={32} />
-					</View>
-				</TouchableButton>
+					variant={"icon"}
+					icon={<IconSymbol name={"plus"} color={"#6C5F54"} size={24} />}
+				/>
 				<TouchableButton
 					sensory={"medium"}
 					onPress={() => {
-						router.push("/(auth)/sign-in");
+						router.push("/(auth)/branding");
 					}}
-				>
-					<View
-						className={
-							"flex size-16 items-center justify-center rounded-2xl bg-white shadow-sm"
-						}
-					>
-						<IconSymbol name={"minus"} color={"#6C5F54"} size={32} />
-					</View>
-				</TouchableButton>
+					variant={"icon"}
+					icon={<IconSymbol name={"minus"} color={"#6C5F54"} size={24} />}
+				/>
 			</View>
 		</>
 	);
