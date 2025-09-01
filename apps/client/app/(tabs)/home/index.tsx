@@ -33,6 +33,7 @@ export default function HomePage() {
 	return (
 		<MainView safeArea disableTouchableWrapper={true}>
 			<HeaderAuth searchIcon />
+
 			<View className={"h-full w-full"}>
 				<FlashList<IPost>
 					data={posts?.posts ?? []}
