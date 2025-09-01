@@ -129,7 +129,7 @@ export const useRegistrationStore = create<RegistrationStore>()(
 
 			canNext: () => {
 				const { formState } = get(); // Fixed: get formState specifically
-                return true
+				return true;
 				/*return validateStep(formState.currentStep, formState).isValid;*/
 			},
 
@@ -137,7 +137,7 @@ export const useRegistrationStore = create<RegistrationStore>()(
 
 			canAccessStep: (step) => {
 				const { formState } = get(); // Fixed: get formState specifically
-                return true
+				return true;
 				/*return canAccessStep(step, formState); // Fixed: pass formState*/
 			},
 
