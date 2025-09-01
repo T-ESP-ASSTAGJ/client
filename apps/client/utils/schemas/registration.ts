@@ -10,10 +10,10 @@ const emailSchema = z
 	.string()
 	.min(1, "Email is required")
 	.email("Invalid email address");
-const nameSchema = z
+const usernameSchema = z
 	.string()
 	.min(1, "Required")
-	.min(2, "At least 2 characters");
+	.min(4, "At least 2 characters");
 
 export const stepSchemas = [
 	z.object({ phoneNumber: phoneSchema }),
@@ -26,8 +26,7 @@ export const stepSchemas = [
 	z.object({
 		phoneNumber: phoneSchema,
 		email: emailSchema,
-		name: nameSchema,
-		lastName: nameSchema,
+        username: usernameSchema,
 	}),
 ];
 

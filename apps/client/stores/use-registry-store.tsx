@@ -24,8 +24,7 @@ export interface RegistrationState {
 	phoneNumber: string;
 	isPhoneConfirmed: boolean;
 	email: string;
-	name: string;
-	lastName: string;
+    username: string;
 	currentStep: number;
 }
 
@@ -58,8 +57,7 @@ const initialFormState: RegistrationState = {
 	phoneNumber: "",
 	isPhoneConfirmed: false,
 	email: "",
-	name: "",
-	lastName: "",
+    username: "",
 	currentStep: 0,
 };
 
@@ -152,7 +150,7 @@ export const useRegistrationStore = create<RegistrationStore>()(
 			},
 
 			getProgress: () => {
-				const { formState } = get(); // Fixed: get formState specifically
+				const { formState } = get();
 				return (formState.currentStep / ROUTES.length) * 100;
 			},
 
