@@ -1,5 +1,4 @@
 import { IconSymbol } from "@/components/ui/IconSymbol";
-import { useUserPreferences } from "@/hooks/user/userUserPreferences";
 import { useUserStore } from "@/stores/use-user-store";
 import * as Haptics from "expo-haptics";
 import { type Route, useRouter } from "expo-router";

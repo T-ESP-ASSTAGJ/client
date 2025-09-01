@@ -8,14 +8,14 @@ const commitMsg = fs.readFileSync(commitMsgFile, "utf8").trim();
 
 // Regex pattern matching your CaptainHook config
 const gitmoji_regex =
-	/^(:(zap|sparkles|bug|rocket|recycle|art|ambulance|white_check_mark|wrench|memo):) .+/;
+	/^(:(zap|sparkles|bug|rocket|recycle|art|ambulance|white_check_mark|wrench|memo|construction):) .+/;
 
 if (!gitmoji_regex.test(commitMsg)) {
 	console.error(
 		"❌ Commit message must start with a valid gitmoji followed by a space and a message.",
 	);
 	console.error(
-		"Allowed: :zap: :sparkles: :bug: :rocket: :recycle: :art: :ambulance: :white_check_mark: :wrench: :memo:",
+		"Allowed: :zap: :sparkles: :bug: :rocket: :recycle: :art: :ambulance: :white_check_mark: :wrench: :memo: :construction:",
 	);
 	console.error("");
 	console.error("Examples:");

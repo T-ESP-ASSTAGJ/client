@@ -4,20 +4,23 @@ import { useUserStore } from "@/stores/use-user-store";
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
-import { Redirect, Stack, router, useRouter } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-	Animated,
-	LogBox,
-	StyleSheet,
-	View,
-	useWindowDimensions,
+    Animated,
+    LogBox,
+    StyleSheet,
+    View,
+    useWindowDimensions, Platform,
 } from "react-native";
 import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
 } from "react-native-reanimated";
+import {Theme, ThemeProvider} from "@react-navigation/native";
+import {NAV_THEME} from "@/lib/constants";
+import {FontAwesome} from "@expo/vector-icons";
 
 // Instruct SplashScreen not to hide yet, we want to do this manually
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -58,13 +61,15 @@ export function SplashVideo({ onLoaded, onFinish }) {
 
 export default function App() {
 	// Chargez vos polices ici
-	const [fontsLoaded, fontError] = useFonts({
-		"Urbanist-Light": require("@/assets/fonts/Urbanist-Light.ttf"),
-		"Urbanist-Regular": require("@/assets/fonts/Urbanist-Regular.ttf"),
-		"Urbanist-Medium": require("@/assets/fonts/Urbanist-Medium.ttf"),
-		"Urbanist-SemiBold": require("@/assets/fonts/Urbanist-SemiBold.ttf"),
-		"Urbanist-Bold": require("@/assets/fonts/Urbanist-Bold.ttf"),
-	});
+    const [fontsLoaded, fontError] = useFonts({
+        /*'Jakarta-Light': require("../assets/fonts/PlusJakartaSans-Light.ttf"),
+        'Jakarta-Regular': require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
+        'Jakarta-Medium': require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
+        'Jakarta-SemiBold': require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+        'Jakarta-Bold': require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
+        'Jakarta-Extrabold': require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
+        ...FontAwesome.font,*/
+    });
 
 	return (
 		<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
@@ -175,12 +180,12 @@ function MainScreen() {
 	]);
 
 	return (
-		<>
-			<Stack screenOptions={{ headerShown: false }}>
-				<Stack.Screen name={"(tabs)"} />
-			</Stack>
+        <>
+            <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name={"(tabs)"} />
+            </Stack>
 
-			<PortalHost />
-		</>
+            <PortalHost />
+        </>
 	);
 }
