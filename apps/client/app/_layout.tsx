@@ -77,9 +77,11 @@ export default function App() {
 	});
 
 	return (
-		<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
-			<MainScreen />
-		</AnimatedSplashScreen>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
+				<MainScreen />
+			</AnimatedSplashScreen>
+		</GestureHandlerRootView>
 	);
 }
 
