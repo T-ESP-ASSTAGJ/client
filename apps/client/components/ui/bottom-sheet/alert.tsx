@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Text, View } from "react-native";
 
 type AlertProps = {
-	alertIcon?: ReactNode;
+	alertIcon: ReactNode;
 	title: string;
 	description: string;
 	primaryButton: {
