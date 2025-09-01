@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import type { FC, ReactNode } from "react";
 import {
 	Keyboard,
@@ -41,52 +42,50 @@ export const MainView: FC<MainViewProps> = ({
 	);
 
 	return (
-		<GestureHandlerRootView>
-			<>
-				{safeArea ? (
-					<SafeAreaView
-						className={cn(
-							"relative flex h-screen w-screen items-center bg-background",
-							className,
-						)}
-					>
-						{avoidingView && disableTouchableWrapper ? (
-							content
-						) : (
-							<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-								{content}
-							</TouchableWithoutFeedback>
-						)}
-					</SafeAreaView>
-				) : !scrollView ? (
-					<View
-						className={cn(
-							"relative flex h-screen w-screen items-center bg-background pt-16",
-							className,
-						)}
-					>
-						{disableTouchableWrapper ? (
-							content
-						) : (
-							<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-								{content}
-							</TouchableWithoutFeedback>
-						)}
-					</View>
-				) : (
-					<ScrollView
-						className={cn("relative w-screen bg-background pt-16", className)}
-					>
-						{disableTouchableWrapper ? (
-							content
-						) : (
-							<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-								{content}
-							</TouchableWithoutFeedback>
-						)}
-					</ScrollView>
-				)}
-			</>
-		</GestureHandlerRootView>
+		<>
+			{safeArea ? (
+				<SafeAreaView
+					className={cn(
+						"relative flex h-screen w-screen items-center bg-background",
+						className,
+					)}
+				>
+					{avoidingView && disableTouchableWrapper ? (
+						content
+					) : (
+						<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+							{content}
+						</TouchableWithoutFeedback>
+					)}
+				</SafeAreaView>
+			) : !scrollView ? (
+				<View
+					className={cn(
+						"relative flex h-screen w-screen items-center bg-background pt-16",
+						className,
+					)}
+				>
+					{disableTouchableWrapper ? (
+						content
+					) : (
+						<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+							{content}
+						</TouchableWithoutFeedback>
+					)}
+				</View>
+			) : (
+				<ScrollView
+					className={cn("relative w-screen bg-background pt-16", className)}
+				>
+					{disableTouchableWrapper ? (
+						content
+					) : (
+						<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+							{content}
+						</TouchableWithoutFeedback>
+					)}
+				</ScrollView>
+			)}
+		</>
 	);
 };

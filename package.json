@@ -3,7 +3,7 @@
 	"private": true,
 	"workspaces": ["apps/*", "packages/*"],
 	"scripts": {
-		"check": "biome check --write .",
+		"check": "biome check --write . ",
 		"dev": "turbo dev",
 		"build": "turbo build",
 		"dev:client": "pnpm --filter client exec expo start",

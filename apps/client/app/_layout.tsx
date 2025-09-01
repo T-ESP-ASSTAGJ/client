@@ -1,6 +1,17 @@
 import "../styles/globals.css";
 
 import { useUserStore } from "@/stores/use-user-store";
+
+import { FontAwesome } from "@expo/vector-icons";
+import {
+	DarkTheme,
+	DefaultTheme,
+	Theme,
+	ThemeProvider,
+} from "@react-navigation/native";
+
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
@@ -8,19 +19,19 @@ import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-    Animated,
-    LogBox,
-    StyleSheet,
-    View,
-    useWindowDimensions, Platform,
+	Animated,
+	LogBox,
+	Platform,
+	StyleSheet,
+	View,
+	useColorScheme,
+	useWindowDimensions,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
 } from "react-native-reanimated";
-import {Theme, ThemeProvider} from "@react-navigation/native";
-import {NAV_THEME} from "@/lib/constants";
-import {FontAwesome} from "@expo/vector-icons";
 
 // Instruct SplashScreen not to hide yet, we want to do this manually
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -61,20 +72,16 @@ export function SplashVideo({ onLoaded, onFinish }) {
 
 export default function App() {
 	// Chargez vos polices ici
-    const [fontsLoaded, fontError] = useFonts({
-        /*'Jakarta-Light': require("../assets/fonts/PlusJakartaSans-Light.ttf"),
-        'Jakarta-Regular': require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
-        'Jakarta-Medium': require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
-        'Jakarta-SemiBold': require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
-        'Jakarta-Bold': require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
-        'Jakarta-Extrabold': require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
-        ...FontAwesome.font,*/
-    });
+	const [fontsLoaded, fontError] = useFonts({
+		...FontAwesome.font,
+	});
 
 	return (
-		<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
-			<MainScreen />
-		</AnimatedSplashScreen>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
+				<MainScreen />
+			</AnimatedSplashScreen>
+		</GestureHandlerRootView>
 	);
 }
 
@@ -147,6 +154,7 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 
 function MainScreen() {
 	const { user } = useUserStore();
+	const colorScheme = useColorScheme();
 	/* Hook automatique pour synchroniser l'utilisateur (5 minutes / fermeture ou mise en arrière plan | si "dirty")*/
 	/*useUserSync();*/
 
@@ -180,12 +188,16 @@ function MainScreen() {
 	]);
 
 	return (
-        <>
-            <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name={"(tabs)"} />
-            </Stack>
+		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+			<GestureHandlerRootView>
+				<BottomSheetModalProvider>
+					<Stack screenOptions={{ headerShown: false }}>
+						<Stack.Screen name={"(tabs)"} />
+					</Stack>
 
-            <PortalHost />
-        </>
+					<PortalHost />
+				</BottomSheetModalProvider>
+			</GestureHandlerRootView>
+		</ThemeProvider>
 	);
 }
