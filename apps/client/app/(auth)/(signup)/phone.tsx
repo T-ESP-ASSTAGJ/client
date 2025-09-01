@@ -1,4 +1,4 @@
-import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
+import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
 import { Text } from "@/components/rnr-ui/text";
 import PhoneInput from "@/components/ui/inputs/phone/phone-input";
 import { useRegistrationStore } from "@/stores/use-registry-store";
@@ -9,8 +9,12 @@ export default function Phone() {
 	const { formState, setFormState } = useRegistrationStore();
 	const phoneInputRef = useRef<TextInput>(null);
 
-	const onPhoneChange = ({ fullNumber }) => {
-		setFormState((prev) => ({ ...prev, phoneNumber: fullNumber }));
+	const onPhoneChange = ({ fullNumber, phone }) => {
+		setFormState((prev) => ({
+			...prev,
+			phoneNumber: phone.length > 0 ? fullNumber : phone,
+			isPhoneConfirmed: false,
+		}));
 	};
 
 	useEffect(() => {
@@ -37,7 +41,7 @@ export default function Phone() {
 						and <Text className="text-blue-500 underline">Privacy Policy</Text>
 					</Text>
 				</View>
-				<ContinueButton />
+				<RegisterFooter />
 			</View>
 		</View>
 	);

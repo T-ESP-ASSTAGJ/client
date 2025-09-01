@@ -51,34 +51,3 @@ export const validateStep = (step: number, data: RegistrationState) => {
 
 	return { isValid: false, errors, fieldErrors };
 };
-
-export const validateField = (
-	step: number,
-	field: keyof RegistrationState,
-	value: string,
-	data: RegistrationState,
-): string[] => {
-	const schema = stepSchemas[step];
-	if (!schema) return [];
-
-	const testData = { ...data, [field]: value };
-	const result = schema.safeParse(testData);
-
-	return result.success
-		? []
-		: result.error.errors
-				.filter((err) => err.path.includes(field))
-				.map((err) => err.message);
-};
-
-export const canAccessStep = (
-	targetStep: number,
-	data: RegistrationState,
-): boolean => {
-	if (targetStep === 0) return true;
-
-	for (let i = 0; i < targetStep; i++) {
-		if (!validateStep(i, data).isValid) return false;
-	}
-	return true;
-};

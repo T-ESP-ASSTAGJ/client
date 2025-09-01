@@ -1,58 +1,27 @@
-import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
+import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
+import RegisterTimer from "@/app/(auth)/(signup)/_components/register-timer";
 import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { useRegistrationStore } from "@/stores/use-registry-store";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Alert, Linking, View } from "react-native";
 
 export default function EmailConfirmation() {
 	const { formState } = useRegistrationStore();
 	const email = formState.email;
 	const [isLoading, setIsLoading] = useState(false);
-	const [countdown, setCountdown] = useState(30);
-	const [canResend, setCanResend] = useState(false);
-
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setCountdown((prev) => {
-				if (prev <= 1) {
-					setCanResend(true);
-					clearInterval(timer);
-					return 0;
-				}
-				return prev - 1;
-			});
-		}, 1000);
-
-		return () => clearInterval(timer);
-	}, [formState.email]);
 
 	const handleResendEmail = async () => {
-		if (!canResend) return;
-
 		setIsLoading(true);
 
 		try {
 			// TODO: Replace with actual API call
 			await new Promise((resolve) => setTimeout(resolve, 1500));
 
-			setCountdown(30);
-			setCanResend(false);
 			Alert.alert(
 				"Email Sent",
 				"A new confirmation email has been sent to your email address.",
 			);
-
-			const timer = setInterval(() => {
-				setCountdown((prev) => {
-					if (prev <= 1) {
-						setCanResend(true);
-						clearInterval(timer);
-						return 0;
-					}
-					return prev - 1;
-				});
-			}, 1000);
 		} catch (error) {
 			Alert.alert(
 				"Error",
@@ -109,30 +78,16 @@ export default function EmailConfirmation() {
 						<Text className={"text-muted"}>Open Email App</Text>
 					</Button>
 
-					<View className="mb-6 items-center">
-						<Text className="mb-4 text-center text-primary-foreground">
-							Didn't receive an email?
-						</Text>
-
-						{canResend ? (
-							<Button
-								onPress={handleResendEmail}
-								disabled={isLoading}
-								className="w-full border-muted bg-muted"
-								variant="outline"
-							>
-								<Text className={"text-primary"}>
-									{isLoading ? "Sending..." : "Resend Email"}
-								</Text>
-							</Button>
-						) : (
-							<Text className="text-muted">Resend email in {countdown}s</Text>
-						)}
-					</View>
+					<RegisterTimer
+						onResendCode={handleResendEmail}
+						promptMessage="Didn't receive an email?"
+						resendButtonText="Resend Email"
+						countdownMessage="Resend email in {countdown}s"
+					/>
 				</View>
 			</View>
 			<View className={"mb-16 w-full gap-y-4 pt-4"}>
-				<ContinueButton />
+				<RegisterFooter />
 			</View>
 		</View>
 	);

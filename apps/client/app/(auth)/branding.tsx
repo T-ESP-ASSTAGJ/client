@@ -1,12 +1,20 @@
 import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { MainView } from "@/components/ui/MainView";
+import { useRegistrationStore } from "@/stores/use-registry-store";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, router } from "expo-router";
 import { View } from "react-native";
 
 export default function AuthPage() {
+	const { getCurrentStep } = useRegistrationStore();
+	function onPress() {
+		const currentStep = getCurrentStep();
+		if (!currentStep) return;
+		router.push(currentStep);
+	}
+
 	return (
 		<MainView
 			disableTouchableWrapper
@@ -67,7 +75,7 @@ export default function AuthPage() {
 					</View>
 					<View className={"mb-8 flex w-full items-center justify-end"}>
 						<Button
-							onPress={() => router.push("/(auth)/(signup)/phone")}
+							onPress={onPress}
 							className="w-full bg-primary-foreground"
 							variant="default"
 						>

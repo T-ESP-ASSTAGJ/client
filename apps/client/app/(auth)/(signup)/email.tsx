@@ -1,22 +1,15 @@
-import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
+import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
 import { Text } from "@/components/rnr-ui/text";
 import { useRegistrationStore } from "@/stores/use-registry-store";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { TextInput, View } from "react-native";
 
 export default function Email() {
 	const { formState, setFormState } = useRegistrationStore();
 	const [email, setEmail] = useState(formState.email || "");
-	const [emailError, setEmailError] = useState("");
-
-	useEffect(() => {
-		setEmail(formState.email || "");
-	}, [formState.email]);
 
 	const handleEmailChange = (text: string) => {
 		setEmail(text);
-		setEmailError("");
-
 		setFormState((prev) => ({ ...prev, email: text }));
 	};
 
@@ -48,12 +41,9 @@ export default function Email() {
 							"rounded-2xl border border-primary-foreground/20 bg-background p-6 text-center font-bold text-primary-foreground text-xl"
 						}
 					/>
-					{emailError ? (
-						<Text className="mt-2 ml-1 text-red-500 text-sm">{emailError}</Text>
-					) : null}
 				</View>
 				<View className={"mb-16 w-full gap-y-4 pt-4"}>
-					<ContinueButton />
+					<RegisterFooter />
 				</View>
 			</View>
 		</View>

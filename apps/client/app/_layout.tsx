@@ -188,17 +188,16 @@ function MainScreen() {
 	]);
 
 	return (
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-          <GestureHandlerRootView>
-            <BottomSheetModalProvider>
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name={"(tabs)"} />
-              </Stack>
+		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+			<GestureHandlerRootView>
+				<BottomSheetModalProvider>
+					<Stack screenOptions={{ headerShown: false }}>
+						<Stack.Screen name={"(tabs)"} />
+					</Stack>
 
-              <PortalHost />
-            </BottomSheetModalProvider>
-          </GestureHandlerRootView>
-       </ThemeProvider>
-
+					<PortalHost />
+				</BottomSheetModalProvider>
+			</GestureHandlerRootView>
+		</ThemeProvider>
 	);
 }

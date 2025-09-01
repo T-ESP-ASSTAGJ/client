@@ -1,4 +1,4 @@
-import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
+import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
 import { Text } from "@/components/rnr-ui/text";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import React, { useRef } from "react";
@@ -46,7 +46,7 @@ export default function Name() {
 					/>
 				</View>
 				<View className={"mb-16 w-full gap-y-4 pt-4"}>
-					<ContinueButton />
+					<RegisterFooter />
 				</View>
 			</View>
 		</View>

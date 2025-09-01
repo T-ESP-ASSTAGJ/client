@@ -1,10 +1,16 @@
 import { Progress } from "@/components/rnr-ui/progress";
-import { useRegistrationStore } from "@/stores/use-registry-store";
+import {
+	REGISTER_ROUTES,
+	useRegistrationStore,
+} from "@/stores/use-registry-store";
 import { View } from "react-native";
 
 export default function RegisterProgress() {
-	const { getProgress } = useRegistrationStore();
-	const progress = getProgress();
+	const currentStep = useRegistrationStore(
+		(state) => state.formState.currentStep,
+	);
+	const progress = (currentStep / REGISTER_ROUTES.length) * 100;
+
 	return (
 		<View className="mt-8 w-full bg-background px-6">
 			<Progress
