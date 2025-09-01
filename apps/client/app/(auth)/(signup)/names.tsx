@@ -1,8 +1,6 @@
 import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
 import { Text } from "@/components/rnr-ui/text";
-import {
-	useRegistrationStore,
-} from "@/stores/use-registry-store";
+import { useRegistrationStore } from "@/stores/use-registry-store";
 import React, { useRef } from "react";
 import { TextInput, View } from "react-native";
 
@@ -23,8 +21,7 @@ export default function Name() {
 					What should we call you?
 				</Text>
 				<Text className="mb-2 text-lg text-muted">
-					Please enter your username or how people should refer to
-					you
+					Please enter your username or how people should refer to you
 				</Text>
 			</View>
 

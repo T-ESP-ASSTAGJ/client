@@ -26,7 +26,7 @@ export const stepSchemas = [
 	z.object({
 		phoneNumber: phoneSchema,
 		email: emailSchema,
-        username: usernameSchema,
+		username: usernameSchema,
 	}),
 ];
 
