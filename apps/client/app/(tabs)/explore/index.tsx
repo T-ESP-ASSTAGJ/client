@@ -10,27 +10,22 @@ export default function ExplorePage() {
 
 			<Text
 				className={"text-white"}
-				style={{ fontFamily: "Jakarta-Light", fontSize: 20 }}
+				style={{ fontFamily: "JakartaRegular", fontSize: 20 }}
 			>
 				JakartaRegular
 			</Text>
 			<Text
 				className={"text-white"}
-				style={{ fontFamily: "Jakarta-Medium", fontSize: 24 }}
+				style={{ fontFamily: "JakartaMedium", fontSize: 24 }}
 			>
 				JakartaMedium
 			</Text>
 			<Text
 				className={"text-white"}
-				style={{ fontFamily: "Jakarta-Bold", fontSize: 24 }}
+				style={{ fontFamily: "Jakarta", fontWeight: "800", fontSize: 24 }}
 			>
 				JakartaBold
 			</Text>
-            <Text
-                className={"text-white font-extrabold"}
-            >
-                JakartaExtraBold
-            </Text>
 		</MainView>
 	);
 }

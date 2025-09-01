@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 
 import { useUserStore } from "@/stores/use-user-store";
+import {DarkTheme, DefaultTheme, Theme, ThemeProvider} from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
@@ -10,16 +11,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
     Animated,
     LogBox,
+    Platform,
     StyleSheet,
     View,
-    useWindowDimensions, Platform,
+    useWindowDimensions, useColorScheme,
 } from "react-native";
 import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
 } from "react-native-reanimated";
-import {Theme, ThemeProvider} from "@react-navigation/native";
-import {NAV_THEME} from "@/lib/constants";
 import {FontAwesome} from "@expo/vector-icons";
 
 // Instruct SplashScreen not to hide yet, we want to do this manually
@@ -61,15 +61,9 @@ export function SplashVideo({ onLoaded, onFinish }) {
 
 export default function App() {
 	// Chargez vos polices ici
-    const [fontsLoaded, fontError] = useFonts({
-        /*'Jakarta-Light': require("../assets/fonts/PlusJakartaSans-Light.ttf"),
-        'Jakarta-Regular': require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
-        'Jakarta-Medium': require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
-        'Jakarta-SemiBold': require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
-        'Jakarta-Bold': require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
-        'Jakarta-Extrabold': require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
-        ...FontAwesome.font,*/
-    });
+	const [fontsLoaded, fontError] = useFonts({
+        ...FontAwesome.font,
+	});
 
 	return (
 		<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
@@ -147,6 +141,7 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 
 function MainScreen() {
 	const { user } = useUserStore();
+    const colorScheme = useColorScheme();
 	/* Hook automatique pour synchroniser l'utilisateur (5 minutes / fermeture ou mise en arrière plan | si "dirty")*/
 	/*useUserSync();*/
 
@@ -180,12 +175,12 @@ function MainScreen() {
 	]);
 
 	return (
-        <>
-            <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name={"(tabs)"} />
-            </Stack>
+		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+			<Stack screenOptions={{ headerShown: false }}>
+				<Stack.Screen name={"(tabs)"} />
+			</Stack>
 
-            <PortalHost />
-        </>
+			<PortalHost />
+		</ThemeProvider>
 	);
 }
