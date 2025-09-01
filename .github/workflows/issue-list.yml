@@ -7,7 +7,6 @@ on:
         branches:
             - staging
             - main
-            - production
     workflow_dispatch:
 
 jobs:
