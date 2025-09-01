@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 
 import { useUserStore } from "@/stores/use-user-store";
+
 import { FontAwesome } from "@expo/vector-icons";
 import {
 	DarkTheme,
@@ -8,6 +9,9 @@ import {
 	Theme,
 	ThemeProvider,
 } from "@react-navigation/native";
+
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
@@ -23,6 +27,7 @@ import {
 	useColorScheme,
 	useWindowDimensions,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
@@ -181,12 +186,17 @@ function MainScreen() {
 	]);
 
 	return (
-		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-			<Stack screenOptions={{ headerShown: false }}>
-				<Stack.Screen name={"(tabs)"} />
-			</Stack>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <GestureHandlerRootView>
+            <BottomSheetModalProvider>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name={"(tabs)"} />
+              </Stack>
 
-			<PortalHost />
-		</ThemeProvider>
+              <PortalHost />
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+       </ThemeProvider>
+
 	);
 }
