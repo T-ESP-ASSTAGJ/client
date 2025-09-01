@@ -25,7 +25,7 @@ interface TouchableButtonProps {
 }
 
 export const TouchableButton: FC<TouchableButtonProps> = ({
-	sensory,
+	sensory = "light",
 	...props
 }) => {
 	/*const { user } = useUserStore();*/
@@ -33,20 +33,21 @@ export const TouchableButton: FC<TouchableButtonProps> = ({
 	return (
 		<TouchableBounce
 			/*sensory={user?.preferences?.haptic_touch ? sensory : false}*/
+			sensory={sensory}
 			onPress={props.onPress}
 			disabled={props.disabled}
 		>
 			{props.variant === "primary" ? (
 				<View
 					className={cn(
-						`mt-1 flex native:h-[4.5rem] items-center justify-center rounded-3xl bg-primary transition-all duration-300 ${props.disabled || props.isLoading ? "opacity-25" : "opacity-100"}`,
+						`mt-1 flex native:h-[4.5rem] items-center justify-center rounded-3xl bg-white transition-all duration-300 ${props.disabled || props.isLoading ? "opacity-25" : "opacity-100"}`,
 						props.className,
 					)}
 				>
 					{!props.isLoading ? (
 						<Text
-							className={"text-[16px] text-white"}
-							style={{ fontFamily: "Urbanist-Bold" }}
+							className={"text-[16px] text-primary"}
+							style={{ fontFamily: "Jakarta-Extrabold" }}
 						>
 							{props.content}
 						</Text>

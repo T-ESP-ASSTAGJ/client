@@ -1,18 +1,30 @@
 import "../styles/globals.css";
 
 import { useUserStore } from "@/stores/use-user-store";
+
+import { FontAwesome } from "@expo/vector-icons";
+import {
+	DarkTheme,
+	DefaultTheme,
+	Theme,
+	ThemeProvider,
+} from "@react-navigation/native";
+
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
-import { Redirect, Stack, router, useRouter } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
 	Animated,
 	LogBox,
+	Platform,
 	StyleSheet,
 	View,
+	useColorScheme,
 	useWindowDimensions,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -61,11 +73,7 @@ export function SplashVideo({ onLoaded, onFinish }) {
 export default function App() {
 	// Chargez vos polices ici
 	const [fontsLoaded, fontError] = useFonts({
-		"Urbanist-Light": require("@/assets/fonts/Urbanist-Light.ttf"),
-		"Urbanist-Regular": require("@/assets/fonts/Urbanist-Regular.ttf"),
-		"Urbanist-Medium": require("@/assets/fonts/Urbanist-Medium.ttf"),
-		"Urbanist-SemiBold": require("@/assets/fonts/Urbanist-SemiBold.ttf"),
-		"Urbanist-Bold": require("@/assets/fonts/Urbanist-Bold.ttf"),
+		...FontAwesome.font,
 	});
 
 	return (
@@ -144,6 +152,7 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 
 function MainScreen() {
 	const { user } = useUserStore();
+	const colorScheme = useColorScheme();
 	/* Hook automatique pour synchroniser l'utilisateur (5 minutes / fermeture ou mise en arrière plan | si "dirty")*/
 	/*useUserSync();*/
 
@@ -177,14 +186,17 @@ function MainScreen() {
 	]);
 
 	return (
-		<GestureHandlerRootView>
-			<BottomSheetModalProvider>
-				<Stack screenOptions={{ headerShown: false }}>
-					<Stack.Screen name={"(tabs)"} />
-				</Stack>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <GestureHandlerRootView>
+            <BottomSheetModalProvider>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name={"(tabs)"} />
+              </Stack>
 
-				<PortalHost />
-			</BottomSheetModalProvider>
-		</GestureHandlerRootView>
+              <PortalHost />
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
+       </ThemeProvider>
+
 	);
 }

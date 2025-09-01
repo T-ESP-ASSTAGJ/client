@@ -21,7 +21,11 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 			)}
 		>
 			<View className={"flex h-full w-1/6 justify-center"}>
-				<TouchableButton sensory={"light"}>
+				<TouchableButton
+					sensory={"light"}
+					size={"icon"}
+					className={"bg-transparent"}
+				>
 					<Avatar
 						className={"flex size-11 items-center justify-center rounded-full"}
 						alt={"Profile picture"}
