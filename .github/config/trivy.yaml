@@ -1,0 +1,42 @@
+# .github/trivy.yaml - Configuration pour monorepo client
+format: sarif
+severity:
+  - CRITICAL
+  - HIGH
+  - MEDIUM
+
+# Configuration pour les vulnérabilités
+vulnerability:
+  ignore-unfixed: true
+
+# Configuration pour les secrets
+secret:
+  config: ''
+
+# Configuration pour les dépendances
+dependency:
+  check: true
+
+# Configuration pour les licences (optionnel)
+license:
+  full: true
+
+# Ignorer certains fichiers/dossiers spécifiques au monorepo
+skip-files:
+  - "**/.next/**"
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/build/**"
+  - "**/.expo/**"
+  - "**/coverage/**"
+  - "**/.turbo/**"
+
+# Patterns spécifiques pour React Native/Expo
+skip-dirs:
+  - ".expo"
+  - ".next"
+  - "node_modules"
+  - "dist"
+  - "build"
+  - ".turbo"
+  - "coverage"
