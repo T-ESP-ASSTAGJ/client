@@ -1,10 +1,10 @@
+import PhoneInput from "@/app/(auth)/(signup)/_components/inputs/phone/phone-input";
 import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
 import { Text } from "@/components/rnr-ui/text";
-import PhoneInput from "@/app/(auth)/(signup)/_components/inputs/phone/phone-input";
+import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { useEffect, useRef } from "react";
 import { type TextInput, View } from "react-native";
-import {fontFamily} from "@/dimensions/font-family";
 
 export default function Phone() {
 	const { formState, setFormState } = useRegistrationStore();
@@ -25,16 +25,13 @@ export default function Phone() {
 	return (
 		<View className="flex-1 items-center bg-background px-6 text-start">
 			<View>
-                <Text
-                    className="mt-10 text-3xl text-primary-foreground tracking-tighter"
-                    style={{ fontFamily: fontFamily.semibold}}
-                >
-                    What's your phone number?
-                </Text>
-                <Text>
-
-                </Text>
-            </View>
+				<Text
+					className="mt-10 text-3xl text-primary-foreground tracking-tighter"
+					style={{ fontFamily: fontFamily.semibold }}
+				>
+					What's your phone number?
+				</Text>
+			</View>
 			<View className={"mt-10 justify-center"}>
 				<PhoneInput
 					phoneInputRef={phoneInputRef}

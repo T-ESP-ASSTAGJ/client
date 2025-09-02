@@ -1,8 +1,10 @@
 import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
+import { Input } from "@/components/rnr-ui/input";
 import { Text } from "@/components/rnr-ui/text";
+import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import React, { useRef } from "react";
-import { TextInput, View } from "react-native";
+import { type TextInput, View } from "react-native";
 
 export default function Username() {
 	const { formState, setFormState } = useRegistrationStore();
@@ -15,38 +17,37 @@ export default function Username() {
 	}
 
 	return (
-		<View className="flex-1 justify-center bg-background px-6">
-			<View className="mt-12 w-full">
-				<Text className="mb-4 font-bold text-3xl text-primary-foreground">
+		<View className="flex-1 bg-background px-6">
+			<View className="mt-10 w-full">
+				<Text
+					className="mb-3 font-bold text-3xl text-primary-foreground tracking-tighter"
+					style={{ fontFamily: fontFamily.semibold }}
+				>
 					What should we call you?
 				</Text>
-				<Text className="mb-2 text-lg text-muted">
+				<Text
+					className="text-lg text-muted"
+					style={{ fontFamily: fontFamily.regular }}
+				>
 					Please enter your username or how people should refer to you
 				</Text>
 			</View>
 
-			<View className="flex-1 items-center justify-end gap-y-4">
-				<View className="mb-4 w-full flex-1 justify-center gap-y-12">
-					<TextInput
+			<View className="mt-8 flex items-center justify-end gap-y-4">
+				<View className="mb-4 w-full justify-center gap-y-12">
+					<Input
 						ref={usernameInputRef}
 						value={username}
 						onChangeText={onChange}
-						placeholder="username"
+						placeholder="john_doe"
 						keyboardType="default"
 						placeholderTextColor={"#8E8E93"}
 						autoCapitalize="words"
 						autoCorrect={false}
-						textContentType="username"
-						autoComplete="username"
-						textAlign={"center"}
 						returnKeyType="done"
-						className={
-							"rounded-2xl border border-primary-foreground/20 bg-background p-6 text-center font-bold text-primary-foreground text-xl"
-						}
+						label={"Username"}
+						style={{ fontFamily: fontFamily.medium }}
 					/>
-				</View>
-				<View className={"mb-16 w-full gap-y-4 pt-4"}>
-					<RegisterFooter />
 				</View>
 			</View>
 		</View>

@@ -1,5 +1,6 @@
 import TouchableBounce from "@/components/ui/TouchableBounce";
 import { Loader } from "@/components/ui/loader/loader";
+import { fontFamily } from "@/dimensions/font-family";
 import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import React, { forwardRef, type ReactNode } from "react";
@@ -11,7 +12,6 @@ import {
 	View,
 } from "react-native";
 import type { GestureResponderEvent } from "react-native/Libraries/Types/CoreEventTypes";
-import {fontFamily} from "@/dimensions/font-family";
 
 const buttonVariants = cva(
 	// Shrink-to-content by default; keep row layout and center.
@@ -24,10 +24,10 @@ const buttonVariants = cva(
 				secondary: "border border-white/10 bg-primary",
 				transparent: "bg-transparent",
 			},
-            size: {
-              default: "w-full native:h-[4rem]",
-              icon: "size-[4rem]"
-            },
+			size: {
+				default: "w-full native:h-[4rem]",
+				icon: "size-[4rem]",
+			},
 			state: {
 				default: "opacity-100",
 				disabled: "opacity-25",
@@ -69,7 +69,7 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 		{
 			sensory = "light",
 			variant = "primary",
-            size = "default",
+			size = "default",
 			block,
 			isLoading = false,
 			disabled: disabledProp,
@@ -105,7 +105,10 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 				accessibilityState={accessibilityState}
 			>
 				<View
-					className={cn(buttonVariants({ variant, state, size, block }), className)}
+					className={cn(
+						buttonVariants({ variant, state, size, block }),
+						className,
+					)}
 				>
 					{isLoading ? (
 						<ActivityIndicator />
@@ -129,7 +132,7 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 											variant === "primary" ? "text-primary" : "text-white",
 											"text-xl",
 										)}
-                                        style={{ fontFamily: fontFamily.bold }}
+										style={{ fontFamily: fontFamily.bold }}
 									>
 										{content}
 									</Text>

@@ -1,7 +1,8 @@
-import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
+import { Input } from "@/components/rnr-ui/input";
 import { Text } from "@/components/rnr-ui/text";
+import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";
-import React, { useState } from "react";
+import { useState } from "react";
 import { TextInput, View } from "react-native";
 
 export default function Email() {
@@ -14,19 +15,25 @@ export default function Email() {
 	};
 
 	return (
-		<View className="flex-1 justify-center bg-background px-6">
-			<View className="mt-12 w-full">
-				<Text className="mb-4 font-bold text-3xl text-primary-foreground">
+		<View className="flex-1 bg-background px-6">
+			<View className="mt-10 w-full">
+				<Text
+					className="mb-2 font-bold text-3xl text-primary-foreground tracking-tighter"
+					style={{ fontFamily: fontFamily.semibold }}
+				>
 					What's your email?
 				</Text>
-				<Text className="mb-2 text-lg text-muted">
+				<Text
+					className="text-lg text-muted"
+					style={{ fontFamily: fontFamily.regular }}
+				>
 					We'll send you a confirmation link to verify your email address
 				</Text>
 			</View>
 
-			<View className="flex-1 items-center justify-end gap-y-4">
-				<View className="mb-4 w-full flex-1 justify-center">
-					<TextInput
+			<View className="flex items-center justify-end gap-y-4 mt-8">
+				<View className="w-full justify-center">
+					<Input
 						value={email}
 						onChangeText={handleEmailChange}
 						placeholder="john.doe@example.com"
@@ -36,10 +43,7 @@ export default function Email() {
 						autoCorrect={false}
 						textContentType="emailAddress"
 						autoComplete="email"
-						textAlign={"center"}
-						className={
-							"rounded-2xl border border-primary-foreground/20 bg-background p-6 text-center font-bold text-primary-foreground text-xl"
-						}
+						label={"E-mail"}
 					/>
 				</View>
 			</View>

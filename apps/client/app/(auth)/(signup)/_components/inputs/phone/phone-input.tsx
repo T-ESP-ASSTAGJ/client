@@ -1,6 +1,6 @@
+import PhoneInputCountryItem from "@/app/(auth)/(signup)/_components/inputs/phone/phone-input-country-item";
 import { Input } from "@/components/rnr-ui/input";
 import { IconSymbol } from "@/components/ui/IconSymbol";
-import PhoneInputCountryItem from "@/app/(auth)/(signup)/_components/inputs/phone/phone-input-country-item";
 import { type Country, countries } from "@/constants/countries";
 import { Portal } from "@rn-primitives/portal";
 import { type RefObject, useEffect, useRef, useState } from "react";
@@ -155,7 +155,7 @@ export default function PhoneInput({
 				<View className={"flex w-10/12 flex-row items-center py-2"}>
 					<View
 						className={
-							"pointer-events-none rounded-r-none border-0 border-b-gray-950 bg-background"
+							"pointer-events-none rounded-r-none border-0 border-b-gray-950 bg-background mb-px"
 						}
 					>
 						<Text
@@ -165,7 +165,7 @@ export default function PhoneInput({
 							{country.dialCode}
 						</Text>
 					</View>
-					<View className={"w-4/5 flex justify-center mb-0.5 -ml-px"}>
+					<View className={"w-4/5 flex justify-center mb-1 -ml-px"}>
 						<Input
 							ref={phoneInputRef}
 							keyboardType={"phone-pad"}
@@ -173,8 +173,9 @@ export default function PhoneInput({
 							inputMode={"numeric"}
 							value={phone}
 							onChangeText={handlePhoneChange}
+							containerClassName={"bg-background border-0"}
 							className={
-								"border-0 bg-background text-lg font-semibold text-primary-foreground"
+								"border-0 bg-background text-lg font-semibold text-primary-foreground px-0"
 							}
 							style={{ fontFamily: "Jakarta" }}
 						/>

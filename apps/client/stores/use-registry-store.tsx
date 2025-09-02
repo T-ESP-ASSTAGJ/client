@@ -9,7 +9,7 @@ export const REGISTER_ROUTES = [
 	"/(auth)/(signup)/phone-confirmation",
 	"/(auth)/(signup)/email",
 	"/(auth)/(signup)/email-confirmation",
-	"/(auth)/(signup)/names",
+	"/(auth)/(signup)/username",
 ] as const;
 
 export const createSecureStorage = () => ({

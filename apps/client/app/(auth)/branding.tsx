@@ -2,12 +2,12 @@ import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { MainView } from "@/components/ui/MainView";
 import { TouchableButton } from "@/components/ui/touchable-button";
+import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, router } from "expo-router";
 import { View } from "react-native";
-import {fontFamily} from "@/dimensions/font-family";
 
 export default function AuthPage() {
 	const { getCurrentStep } = useRegistrationStore();
@@ -49,10 +49,8 @@ export default function AuthPage() {
 					<View className={"mt-12 flex items-start gap-y-6"}>
 						<View>
 							<Text
-								className={
-									"text-4xl text-primary-foreground tracking-tighter"
-								}
-                                style={{ fontFamily: fontFamily.semibold }}
+								className={"text-4xl text-primary-foreground tracking-tighter"}
+								style={{ fontFamily: fontFamily.semibold }}
 							>
 								Welcome to
 							</Text>
@@ -60,14 +58,14 @@ export default function AuthPage() {
 								className={
 									"-mt-2.5 text-5xl text-primary-foreground tracking-tighter"
 								}
-                                style={{ fontFamily: fontFamily.extrabold }}
+								style={{ fontFamily: fontFamily.extrabold }}
 							>
 								JAMLY
 							</Text>
 						</View>
 						<Text
 							className={"text-secondary text-xl tracking-tight -mt-2.5"}
-                            style={{ fontFamily: fontFamily.regular }}
+							style={{ fontFamily: fontFamily.regular }}
 						>
 							Explore your friends new musical discoveries, and share your mood
 							with them.

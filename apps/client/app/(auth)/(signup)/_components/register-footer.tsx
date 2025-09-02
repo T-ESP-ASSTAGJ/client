@@ -4,9 +4,9 @@ import { View } from "react-native";
 import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { TouchableButton } from "@/components/ui/touchable-button";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { useCallback } from "react";
-import {TouchableButton} from "@/components/ui/touchable-button";
 
 export default function RegisterFooter() {
 	const router = useRouter();
@@ -18,8 +18,12 @@ export default function RegisterFooter() {
 	const currentStep = useRegistrationStore(
 		(state) => state.formState.currentStep,
 	);
+	const formState = useRegistrationStore((state) => state.formState);
 
-	const canGoNext = useCallback(() => canNext(), [currentStep]);
+	const canGoNext = useCallback(() => {
+		return canNext();
+	}, [formState]);
+
 	function handleNext() {
 		const nextRoute = nextStep();
 		if (!nextRoute) return;
@@ -38,17 +42,30 @@ export default function RegisterFooter() {
 
 	return (
 		<View className={"w-full flex flex-row justify-between items-center"}>
-            <TouchableButton onPress={handlePrev} className={"rounded-xl"} size={"icon"} variant={"secondary"} icon={<IconSymbol name={"chevron.left"} color={"white"} size={15} weight={"bold"} />}/>
+			<TouchableButton
+				onPress={handlePrev}
+				className={"rounded-xl"}
+				size={"icon"}
+				variant={"secondary"}
+				icon={
+					<IconSymbol
+						name={"chevron.left"}
+						color={"white"}
+						size={15}
+						weight={"bold"}
+					/>
+				}
+			/>
 			<View className={"w-3/6"}>
-                <TouchableButton
-                    disabled={!canGoNext()}
-                    onPress={handleNext}
-                    variant={"primary"}
-                    content={"Continue"}
-                    className={"rounded-xl"}
-                />
-            </View>
-				{/*<Text className={"text-primary"}>{"Continue"}</Text>
+				<TouchableButton
+					disabled={!canGoNext()}
+					onPress={handleNext}
+					variant={"primary"}
+					content={"Continue"}
+					className={"rounded-xl"}
+				/>
+			</View>
+			{/*<Text className={"text-primary"}>{"Continue"}</Text>
 				<IconSymbol name={"chevron.right"} color={"black"} size={12} />
 			</TouchableButton>*/}
 		</View>

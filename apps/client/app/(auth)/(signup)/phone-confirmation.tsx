@@ -1,12 +1,12 @@
+import PhoneOtpInput from "@/app/(auth)/(signup)/_components/inputs/phone/phone-otp-input";
 import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
 import RegisterTimer from "@/app/(auth)/(signup)/_components/register-timer";
 import { Text } from "@/components/rnr-ui/text";
-import PhoneOtpInput from "@/app/(auth)/(signup)/_components/inputs/phone/phone-otp-input";
+import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, View } from "react-native";
-import {fontFamily} from "@/dimensions/font-family";
 export default function PhoneConfirmation() {
 	const { formState, setFormState, nextStep } = useRegistrationStore();
 	const [otp, setOtp] = useState("");
@@ -49,18 +49,24 @@ export default function PhoneConfirmation() {
 
 	return (
 		<View className="flex-1 items-center bg-background px-6">
-			<View className="mt-12 w-full">
+			<View className="mt-10 w-full">
 				<Text
-                    className="mb-2 font-bold text-3xl text-primary-foreground"
-                    style={{ fontFamily: fontFamily.semibold}}
-                >
+					className="mb-2 font-bold text-3xl text-primary-foreground tracking-tighter"
+					style={{ fontFamily: fontFamily.semibold }}
+				>
 					Verify Your Phone
 				</Text>
 				<Text
-                    className="text-lg text-muted"
-                    style={{ fontFamily: fontFamily.regular }}
-                >
-                    We've sent a 6-digit verification code to number finishing by <Text className={"text-white text-lg"} style={{ fontFamily: fontFamily.bold}}>{phoneNumber}</Text>
+					className="text-lg text-muted"
+					style={{ fontFamily: fontFamily.regular }}
+				>
+					We've sent a 6-digit verification code to number finishing by{" "}
+					<Text
+						className={"text-white text-lg"}
+						style={{ fontFamily: fontFamily.bold }}
+					>
+						{phoneNumber}
+					</Text>
 				</Text>
 				{/*<Text className="mt-12 rounded-full border bg-primary p-4 text-center font-bold text-2xl text-primary-foreground">
 					{phoneNumber}
