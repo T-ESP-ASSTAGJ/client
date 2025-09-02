@@ -142,41 +142,43 @@ export default function PhoneInput({
 
 	return (
 		<>
-			<View className="flex w-full flex-row items-center justify-center rounded-2xl border border-primary-foreground/30">
+			<View className="flex w-full flex-row items-center justify-center rounded-full border border-primary-foreground/30 px-5">
 				<TouchableOpacity
 					onPress={openBottomSheet}
 					className={
-						"flex h-full flex-row items-center justify-center gap-x-2 rounded-full border p-2 px-4"
+						"flex h-full flex-row items-center justify-center gap-x-2 rounded-full border p-2"
 					}
 				>
 					<Text className="text-lg">{country.flag}</Text>
 					<IconSymbol size={12} name={"chevron.down"} color={"white"} />
 				</TouchableOpacity>
-				<View
-					className={
-						"flex w-3/4 flex-row items-center justify-center px-2 py-2"
-					}
-				>
-					<Input
-						keyboardType={"phone-pad"}
-						placeholder="Your phone number"
-						value={`(${country.dialCode})`}
+				<View className={"flex w-10/12 flex-row items-center py-2"}>
+					<View
 						className={
-							"pointer-events-none rounded-r-none border-0 border-b-gray-950 bg-background font-extrabold text-muted-foreground"
+							"pointer-events-none rounded-r-none border-0 border-b-gray-950 bg-background"
 						}
-					/>
-					<Input
-						ref={phoneInputRef}
-						keyboardType={"phone-pad"}
-						placeholderTextColor={"#8E8E93"}
-						inputMode={"numeric"}
-						placeholder="Your phone number"
-						value={phone}
-						onChangeText={handlePhoneChange}
-						className={
-							"flex-1 border-0 bg-background font-extrabold text-lg text-primary-foreground"
-						}
-					/>
+					>
+						<Text
+							className={"text-xl font-bold text-muted-foreground"}
+							style={{ fontFamily: "Jakarta" }}
+						>
+							{country.dialCode}
+						</Text>
+					</View>
+					<View className={"w-4/5 flex justify-center mb-px"}>
+						<Input
+							ref={phoneInputRef}
+							keyboardType={"phone-pad"}
+							placeholderTextColor={"#8E8E93"}
+							inputMode={"numeric"}
+							value={phone}
+							onChangeText={handlePhoneChange}
+							className={
+								"border-0 bg-background text-lg font-semibold text-primary-foreground"
+							}
+							style={{ fontFamily: "Jakarta" }}
+						/>
+					</View>
 				</View>
 			</View>
 

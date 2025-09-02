@@ -16,12 +16,7 @@ export default function AuthPage() {
 	}
 
 	return (
-		<MainView
-			disableTouchableWrapper
-			scrollView={true}
-			safeArea={false}
-			className={"pt-0"}
-		>
+		<MainView disableTouchableWrapper safeArea={false} className={"pt-0"}>
 			<View className="relative h-screen">
 				<View className={"h-2/3 items-center justify-end"}>
 					<View className={"absolute top-0 h-full w-screen"}>
@@ -55,6 +50,7 @@ export default function AuthPage() {
 								className={
 									"font-bold text-4xl text-primary-foreground tracking-tighter"
 								}
+								style={{ fontFamily: "Jakarta" }}
 							>
 								Welcome to
 							</Text>
@@ -62,6 +58,7 @@ export default function AuthPage() {
 								className={
 									"-mt-1.5 font-extrabold text-5xl text-primary-foreground tracking-tighter"
 								}
+								style={{ fontFamily: "Jakarta" }}
 							>
 								JAMLY
 							</Text>

@@ -4,7 +4,7 @@ import { useRegistrationStore } from "@/stores/use-registry-store";
 import React, { useRef } from "react";
 import { TextInput, View } from "react-native";
 
-export default function Name() {
+export default function Username() {
 	const { formState, setFormState } = useRegistrationStore();
 	const { username } = formState;
 

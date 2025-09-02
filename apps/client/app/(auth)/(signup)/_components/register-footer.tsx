@@ -22,7 +22,7 @@ export default function RegisterFooter() {
 	function handleNext() {
 		const nextRoute = nextStep();
 		if (!nextRoute) return;
-		router.push(nextRoute as Href);
+		router.replace(nextRoute as Href);
 	}
 
 	function handlePrev() {

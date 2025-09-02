@@ -168,7 +168,7 @@ function MainScreen() {
 		const verify = async () => {
 			await initializeUser();
 			hasRedirected.current = true;
-			router.replace("/(tabs)/home");
+			router.replace("/(auth)/branding");
 		};
 
 		verify();

@@ -20,23 +20,23 @@ export default function HeaderTabs() {
 	const indicatorStyle = useAnimatedStyle(() => ({
 		transform: [
 			{
-				translateX: interpolate(progress.value, [0, 1], [0, 100]), // 100px = largeur d’un onglet
+				translateX: interpolate(progress.value, [0, 1], [0, 110]), // 100px = largeur d’un onglet
 			},
 		],
 	}));
 
 	return (
-		<View className="h-12 flex-row items-center justify-center">
+		<View className="h-12 flex flex-row items-center justify-center">
 			<TouchableButton
 				sensory={"light"}
-				content={"Friends"}
-				className={"w-[100px] gap-y-1 bg-transparent"}
+				className={"w-[110px]"}
+				variant={"transparent"}
 				onPress={() => {
 					setIndex(0);
 				}}
 			>
 				<Text
-					className={`text-center text-lg tracking-wider ${index === 0 ? "font-semibold text-white" : "font-medium text-muted-foreground"}`}
+					className={`text-lg font-semibold ${index === 0 ? "text-white" : "text-muted-foreground"}`}
 				>
 					Friends
 				</Text>
@@ -44,14 +44,14 @@ export default function HeaderTabs() {
 
 			<TouchableButton
 				sensory={"light"}
-				content={"Discover"}
-				className={"w-[100px] gap-y-1 bg-transparent"}
+				className={"w-[110px]"}
+				variant={"transparent"}
 				onPress={() => {
 					setIndex(1);
 				}}
 			>
 				<Text
-					className={`text-center text-lg tracking-wider ${index === 1 ? "font-semibold text-white" : "font-medium text-muted-foreground"}`}
+					className={`text-lg font-semibold ${index === 1 ? "text-white" : "text-muted-foreground"}`}
 				>
 					Discover
 				</Text>
@@ -59,7 +59,7 @@ export default function HeaderTabs() {
 
 			<Animated.View
 				className="absolute bottom-0.5 h-[2.5px] rounded bg-white"
-				style={[{ width: 30, left: 34 }, indicatorStyle]}
+				style={[{ width: 30, left: 40 }, indicatorStyle]}
 			/>
 		</View>
 	);
