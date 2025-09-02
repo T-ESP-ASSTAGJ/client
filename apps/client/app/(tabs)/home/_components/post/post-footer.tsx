@@ -1,4 +1,4 @@
-import CommentsComponent from "@/app/(tabs)/home/_components/post/comments-component";
+import CommentsList from "@/app/(tabs)/home/_components/comment/comments-list";
 import type { IMusic, IStats } from "@/app/(tabs)/home/_types/post.types";
 import AlertComponent from "@/components/ui/bottom-sheet/alert";
 import {
@@ -61,9 +61,7 @@ export default function PostFooter({
 
 	const sheetRef = useRef<BottomSheetComponentRef>(null);
 
-	const commentComponent = (
-		<CommentsComponent music={music} comments={comments} />
-	);
+	const commentComponent = <CommentsList music={music} comments={comments} />;
 
 	const openComments = useCallback(() => {
 		sheetRef.current?.present();

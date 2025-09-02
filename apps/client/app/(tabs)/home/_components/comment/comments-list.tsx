@@ -1,4 +1,4 @@
-import Commentary from "@/app/(tabs)/home/_components/post/commentary";
+import Commentary from "@/app/(tabs)/home/_components/comment/commentary";
 import type { IMusic } from "@/app/(tabs)/home/_types/post.types";
 import { Button } from "@/components/rnr-ui/button";
 import { getYearFromDate } from "@/helpers/format-date-helper";
@@ -19,7 +19,7 @@ interface CommentsProps {
 	comments: ICommentResponse;
 }
 
-export default function CommentsComponent({ music, comments }: CommentsProps) {
+export default function CommentsList({ music, comments }: CommentsProps) {
 	return (
 		<View className={"flex gap-3"}>
 			<View className={"flex flex-row justify-between text-center px-1"}>
