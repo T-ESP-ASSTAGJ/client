@@ -1,6 +1,7 @@
 import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { MainView } from "@/components/ui/MainView";
+import { TouchableButton } from "@/components/ui/touchable-button";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
@@ -50,13 +51,12 @@ export default function AuthPage() {
 								className={
 									"font-bold text-4xl text-primary-foreground tracking-tighter"
 								}
-								style={{ fontFamily: "Jakarta" }}
 							>
 								Welcome to
 							</Text>
 							<Text
 								className={
-									"-mt-1.5 font-extrabold text-5xl text-primary-foreground tracking-tighter"
+									"-mt-2.5 font-extrabold text-5xl text-primary-foreground tracking-tighter"
 								}
 								style={{ fontFamily: "Jakarta" }}
 							>
@@ -71,13 +71,11 @@ export default function AuthPage() {
 						</Text>
 					</View>
 					<View className={"mb-8 flex w-full items-center justify-end"}>
-						<Button
+						<TouchableButton
+							variant={"primary"}
 							onPress={onPress}
-							className="w-full bg-primary-foreground"
-							variant="default"
-						>
-							<Text className={"text-primary"}>{"Join us!"}</Text>
-						</Button>
+							content={"Join us!"}
+						/>
 						<View className="my-4 flex flex-row items-center">
 							<Text className={"text-primary-foreground"}>
 								{"Already with us?"}
