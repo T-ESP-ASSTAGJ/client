@@ -1,5 +1,6 @@
 import TouchableBounce from "@/components/ui/TouchableBounce";
 import { Loader } from "@/components/ui/loader/loader";
+import { fontFamily } from "@/dimensions/font-family";
 import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
 import React, { forwardRef, type ReactNode } from "react";
@@ -15,14 +16,17 @@ import type { GestureResponderEvent } from "react-native/Libraries/Types/CoreEve
 const buttonVariants = cva(
 	// Shrink-to-content by default; keep row layout and center.
 	// Add `relative` to allow centered overlay label.
-	"relative w-full self-start native:h-[4.5rem] rounded-full transition-all duration-300 flex-row items-center justify-center",
+	"relative self-start rounded-full transition-all duration-300 flex-row items-center justify-center",
 	{
 		variants: {
 			variant: {
 				primary: "bg-white",
-				secondary: "bg-primary/10",
-				icon: "bg-white !size-14 px-0",
+				secondary: "border border-white/10 bg-primary",
 				transparent: "bg-transparent",
+			},
+			size: {
+				default: "w-full native:h-[4rem]",
+				icon: "size-[4rem]",
 			},
 			state: {
 				default: "opacity-100",
@@ -65,6 +69,7 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 		{
 			sensory = "light",
 			variant = "primary",
+			size = "default",
 			block,
 			isLoading = false,
 			disabled: disabledProp,
@@ -100,11 +105,14 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 				accessibilityState={accessibilityState}
 			>
 				<View
-					className={cn(buttonVariants({ variant, state, block }), className)}
+					className={cn(
+						buttonVariants({ variant, state, size, block }),
+						className,
+					)}
 				>
 					{isLoading ? (
 						<ActivityIndicator />
-					) : variant === "icon" ? (
+					) : size === "icon" ? (
 						icon
 					) : (
 						<View className="w-full flex flex-row items-center">
@@ -122,13 +130,9 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 									<Text
 										className={cn(
 											variant === "primary" ? "text-primary" : "text-white",
-											"text-[16.5px]",
+											"text-xl",
 										)}
-										style={{
-											fontFamily: "Jakarta",
-											fontWeight: "600",
-											textAlign: "center",
-										}}
+										style={{ fontFamily: fontFamily.bold }}
 									>
 										{content}
 									</Text>

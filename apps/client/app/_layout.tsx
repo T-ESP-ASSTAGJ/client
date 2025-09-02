@@ -12,6 +12,7 @@ import {
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
+import { fontFamily } from "@/dimensions/font-family";
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
@@ -73,7 +74,11 @@ export function SplashVideo({ onLoaded, onFinish }) {
 export default function App() {
 	// Chargez vos polices ici
 	const [fontsLoaded, fontError] = useFonts({
-		...FontAwesome.font,
+		[fontFamily.regular]: require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
+		[fontFamily.medium]: require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
+		[fontFamily.semibold]: require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+		[fontFamily.bold]: require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
+		[fontFamily.extrabold]: require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
 	});
 
 	return (
@@ -168,7 +173,7 @@ function MainScreen() {
 		const verify = async () => {
 			await initializeUser();
 			hasRedirected.current = true;
-			router.replace("/(tabs)/home");
+			router.replace("/(auth)/branding");
 		};
 
 		verify();

@@ -32,7 +32,7 @@ export const MainView: FC<MainViewProps> = ({
 	const content = avoidingView ? (
 		<KeyboardAvoidingView
 			behavior={Platform.OS === "ios" ? "padding" : "height"}
-			className={"w-full flex-1 transition-all"} // Ajout de w-full ici
+			className={"w-full flex-1 transition-all duration-300"} // Ajout de w-full ici
 			keyboardVerticalOffset={20}
 		>
 			{children}

@@ -1,34 +1,18 @@
-import ContinueButton from "@/app/(auth)/(signup)/_components/continue-button";
+import PhoneOtpInput from "@/app/(auth)/(signup)/_components/inputs/phone/phone-otp-input";
+import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
+import RegisterTimer from "@/app/(auth)/(signup)/_components/register-timer";
 import { Text } from "@/components/rnr-ui/text";
-import PhoneOtpInput from "@/components/ui/inputs/phone/phone-otp-input";
+import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
-
+import React, { useState } from "react";
+import { Alert, View } from "react-native";
 export default function PhoneConfirmation() {
 	const { formState, setFormState, nextStep } = useRegistrationStore();
 	const [otp, setOtp] = useState("");
 	const [error, setError] = useState("");
 	const [isVerifying, setIsVerifying] = useState(false);
-	const [countdown, setCountdown] = useState(30);
-	const [canResend, setCanResend] = useState(false);
 	const phoneNumber = formState.phoneNumber;
-
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setCountdown((prev) => {
-				if (prev <= 1) {
-					setCanResend(true);
-					clearInterval(timer);
-					return 0;
-				}
-				return prev - 1;
-			});
-		}, 1000);
-
-		return () => clearInterval(timer);
-	}, [formState.phoneNumber, router]);
 
 	const handleOTPComplete = async (code: string) => {
 		setError("");
@@ -38,7 +22,8 @@ export default function PhoneConfirmation() {
 			await new Promise((resolve) => setTimeout(resolve, 1500));
 			if (code === "123456") {
 				setFormState((prev) => ({ ...prev, isPhoneConfirmed: true }));
-				nextStep();
+				const next = nextStep();
+				if (next) router.push(next);
 			} else {
 				setError("Invalid verification code. Please try again.");
 			}
@@ -50,30 +35,13 @@ export default function PhoneConfirmation() {
 	};
 
 	const handleResendCode = async () => {
-		if (!canResend) return;
-
 		try {
-			// filler pour le moment, call api nécéssaire, à définir dans une collection
 			await new Promise((resolve) => setTimeout(resolve, 1000));
-
-			setCountdown(30);
-			setCanResend(false);
 			setError("");
 			Alert.alert(
 				"Code Sent",
 				"A new verification code has been sent to your phone.",
 			);
-
-			const timer = setInterval(() => {
-				setCountdown((prev) => {
-					if (prev <= 1) {
-						setCanResend(true);
-						clearInterval(timer);
-						return 0;
-					}
-					return prev - 1;
-				});
-			}, 1000);
 		} catch (err) {
 			Alert.alert("Error", "Failed to resend code. Please try again.");
 		}
@@ -81,19 +49,31 @@ export default function PhoneConfirmation() {
 
 	return (
 		<View className="flex-1 items-center bg-background px-6">
-			<View className="mt-12 w-full">
-				<Text className="mb-4 font-bold text-3xl text-primary-foreground">
+			<View className="mt-10 w-full">
+				<Text
+					className="mb-2 font-bold text-3xl text-primary-foreground tracking-tighter"
+					style={{ fontFamily: fontFamily.semibold }}
+				>
 					Verify Your Phone
 				</Text>
-				<Text className="mb-2 text-lg text-muted">
-					We've sent a 6-digit verification code to number finishing by
+				<Text
+					className="text-lg text-muted"
+					style={{ fontFamily: fontFamily.regular }}
+				>
+					We've sent a 6-digit verification code to number finishing by{" "}
+					<Text
+						className={"text-white text-lg"}
+						style={{ fontFamily: fontFamily.bold }}
+					>
+						{phoneNumber}
+					</Text>
 				</Text>
-				<Text className="mt-12 rounded-full border bg-primary p-4 text-center font-bold text-2xl text-primary-foreground">
+				{/*<Text className="mt-12 rounded-full border bg-primary p-4 text-center font-bold text-2xl text-primary-foreground">
 					{phoneNumber}
-				</Text>
+				</Text>*/}
 			</View>
 
-			<View className="mb-8 flex-1 items-center justify-end gap-y-4">
+			<View className="mt-16 flex items-center justify-end gap-y-4">
 				<PhoneOtpInput
 					length={6}
 					onComplete={handleOTPComplete}
@@ -103,30 +83,19 @@ export default function PhoneConfirmation() {
 					autoFocus={true}
 				/>
 			</View>
-			<View className="w-full flex-1 items-center justify-center">
-				<Text className="mb-4 text-center text-muted">
-					Didn't receive a code?
-				</Text>
 
-				{canResend ? (
-					<TouchableOpacity
-						onPress={handleResendCode}
-						className="rounded-full bg-muted px-6 py-3"
-					>
-						<Text className="font-semibold text-primary">Resend Code</Text>
-					</TouchableOpacity>
-				) : (
-					<Text className="text-muted">Resend code in {countdown}s</Text>
-				)}
+			<View className="w-full items-center justify-center mt-8">
+				<RegisterTimer
+					onResendCode={handleResendCode}
+					promptMessage="Didn't receive a code?"
+					resendButtonText="Resend Code"
+					countdownMessage="Resend code in {countdown}s"
+				/>
 			</View>
 
 			{isVerifying && (
 				<Text className="mb-4 text-center text-muted">Verifying code...</Text>
 			)}
-
-			<View className={"mb-16 w-full gap-y-4 pt-4"}>
-				<ContinueButton />
-			</View>
 		</View>
 	);
 }

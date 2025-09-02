@@ -1,19 +1,24 @@
 import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { MainView } from "@/components/ui/MainView";
+import { TouchableButton } from "@/components/ui/touchable-button";
+import { fontFamily } from "@/dimensions/font-family";
+import { useRegistrationStore } from "@/stores/use-registry-store";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, router } from "expo-router";
 import { View } from "react-native";
 
 export default function AuthPage() {
+	const { getCurrentStep } = useRegistrationStore();
+	function onPress() {
+		const currentStep = getCurrentStep();
+		if (!currentStep) return;
+		router.push(currentStep);
+	}
+
 	return (
-		<MainView
-			disableTouchableWrapper
-			scrollView={true}
-			safeArea={false}
-			className={"pt-0"}
-		>
+		<MainView disableTouchableWrapper safeArea={false} className={"pt-0"}>
 			<View className="relative h-screen">
 				<View className={"h-2/3 items-center justify-end"}>
 					<View className={"absolute top-0 h-full w-screen"}>
@@ -42,37 +47,36 @@ export default function AuthPage() {
 					}
 				>
 					<View className={"mt-12 flex items-start gap-y-6"}>
-						<View className={""}>
+						<View>
 							<Text
-								className={
-									"font-bold text-4xl text-primary-foreground tracking-tighter"
-								}
+								className={"text-4xl text-primary-foreground tracking-tighter"}
+								style={{ fontFamily: fontFamily.semibold }}
 							>
 								Welcome to
 							</Text>
 							<Text
 								className={
-									"-mt-1.5 font-extrabold text-5xl text-primary-foreground tracking-tighter"
+									"-mt-2.5 text-5xl text-primary-foreground tracking-tighter"
 								}
+								style={{ fontFamily: fontFamily.extrabold }}
 							>
 								JAMLY
 							</Text>
 						</View>
 						<Text
-							className={"font-medium text-secondary text-xl tracking-tighter"}
+							className={"text-secondary text-xl tracking-tight -mt-2.5"}
+							style={{ fontFamily: fontFamily.regular }}
 						>
 							Explore your friends new musical discoveries, and share your mood
 							with them.
 						</Text>
 					</View>
-					<View className={"mb-8 flex w-full items-center justify-end"}>
-						<Button
-							onPress={() => router.push("/(auth)/(signup)/phone")}
-							className="w-full bg-primary-foreground"
-							variant="default"
-						>
-							<Text className={"text-primary"}>{"Join us!"}</Text>
-						</Button>
+					<View className={"mb-4 flex w-full items-center justify-end"}>
+						<TouchableButton
+							variant={"primary"}
+							onPress={onPress}
+							content={"Join us!"}
+						/>
 						<View className="my-4 flex flex-row items-center">
 							<Text className={"text-primary-foreground"}>
 								{"Already with us?"}

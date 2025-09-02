@@ -34,8 +34,8 @@ module.exports = {
 					foreground: "hsl(var(--destructive-foreground))",
 				},
 				muted: {
-					DEFAULT: "hsl(var(--muted))",
-					foreground: "hsl(var(--muted-foreground))",
+					DEFAULT: "#7a7c83",
+					foreground: "#D1D5DB",
 				},
 				accent: {
 					DEFAULT: "hsl(var(--accent))",

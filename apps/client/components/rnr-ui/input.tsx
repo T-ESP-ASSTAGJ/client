@@ -23,7 +23,9 @@ const Input = React.forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
 				<View
 					className={cn(
 						"w-full rounded-2xl bg-input py-1",
-						props.error ? "border border-red-500" : "border border-inputBorder",
+						props.error
+							? "border border-red-500"
+							: "border border-muted-foreground/20",
 						label ? "pb-1.5" : "",
 						containerClassName,
 					)}
