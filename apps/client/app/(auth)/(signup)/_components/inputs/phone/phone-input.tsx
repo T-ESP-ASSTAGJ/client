@@ -1,6 +1,6 @@
 import { Input } from "@/components/rnr-ui/input";
 import { IconSymbol } from "@/components/ui/IconSymbol";
-import PhoneInputCountryItem from "@/components/ui/inputs/phone/phone-input-country-item";
+import PhoneInputCountryItem from "@/app/(auth)/(signup)/_components/inputs/phone/phone-input-country-item";
 import { type Country, countries } from "@/constants/countries";
 import { Portal } from "@rn-primitives/portal";
 import { type RefObject, useEffect, useRef, useState } from "react";
@@ -142,11 +142,11 @@ export default function PhoneInput({
 
 	return (
 		<>
-			<View className="flex w-full flex-row items-center justify-center rounded-full border border-primary-foreground/30 px-5">
+			<View className="flex w-full flex-row items-center justify-center rounded-2xl border border-primary-foreground/30 px-5">
 				<TouchableOpacity
 					onPress={openBottomSheet}
 					className={
-						"flex h-full flex-row items-center justify-center gap-x-2 rounded-full border p-2"
+						"flex h-full flex-row items-center justify-center gap-x-2 rounded-2xl border p-2"
 					}
 				>
 					<Text className="text-lg">{country.flag}</Text>
@@ -159,13 +159,13 @@ export default function PhoneInput({
 						}
 					>
 						<Text
-							className={"text-xl font-bold text-muted-foreground"}
+							className={"text-xl font-bold text-muted"}
 							style={{ fontFamily: "Jakarta" }}
 						>
 							{country.dialCode}
 						</Text>
 					</View>
-					<View className={"w-4/5 flex justify-center mb-px"}>
+					<View className={"w-4/5 flex justify-center mb-0.5 -ml-px"}>
 						<Input
 							ref={phoneInputRef}
 							keyboardType={"phone-pad"}

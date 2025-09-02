@@ -24,7 +24,7 @@ export default function AlertComponent({
 	secondaryButton,
 }: AlertProps) {
 	return (
-		<View className={"flex flex-col items-center justify-center gap-4"}>
+		<View className={"flex flex-col items-center justify-center gap-4 mb-10"}>
 			<View className={"flex flex-col items-center justify-center gap-4 p-3"}>
 				{alertIcon}
 				<Text className={"text-center font-bold text-3xl"}>{title}</Text>

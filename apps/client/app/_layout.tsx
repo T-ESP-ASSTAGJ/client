@@ -32,6 +32,7 @@ import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
 } from "react-native-reanimated";
+import {fontFamily} from "@/dimensions/font-family";
 
 // Instruct SplashScreen not to hide yet, we want to do this manually
 SplashScreen.preventAutoHideAsync().catch(() => {
@@ -72,9 +73,13 @@ export function SplashVideo({ onLoaded, onFinish }) {
 
 export default function App() {
 	// Chargez vos polices ici
-	const [fontsLoaded, fontError] = useFonts({
-		...FontAwesome.font,
-	});
+    const [fontsLoaded, fontError] = useFonts({
+        [fontFamily.regular]: require('../assets/fonts/PlusJakartaSans-Regular.ttf'),
+        [fontFamily.medium]: require('../assets/fonts/PlusJakartaSans-Medium.ttf'),
+        [fontFamily.semibold]: require('../assets/fonts/PlusJakartaSans-SemiBold.ttf'),
+        [fontFamily.bold]: require('../assets/fonts/PlusJakartaSans-Bold.ttf'),
+        [fontFamily.extrabold]: require('../assets/fonts/PlusJakartaSans-ExtraBold.ttf'),
+    });
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>

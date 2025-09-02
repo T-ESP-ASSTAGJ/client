@@ -6,6 +6,7 @@ import { Text } from "@/components/rnr-ui/text";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { useCallback } from "react";
+import {TouchableButton} from "@/components/ui/touchable-button";
 
 export default function RegisterFooter() {
 	const router = useRouter();
@@ -22,7 +23,7 @@ export default function RegisterFooter() {
 	function handleNext() {
 		const nextRoute = nextStep();
 		if (!nextRoute) return;
-		router.replace(nextRoute as Href);
+		router.push(nextRoute as Href);
 	}
 
 	function handlePrev() {
@@ -31,28 +32,25 @@ export default function RegisterFooter() {
 			return;
 		}
 		const prevRoute = prevStep();
-		router.replace(prevRoute);
+		router.back();
 		return;
 	}
 
 	return (
-		<View className={"flex flex-row justify-between"}>
-			<Button
-				onPress={handlePrev}
-				className={"w-1/4 rounded-2xl bg-primary "}
-				variant="default"
-			>
-				<IconSymbol name={"chevron.left"} color={"white"} size={12} />
-			</Button>
-			<Button
-				disabled={!canGoNext()}
-				onPress={handleNext}
-				className={"flex flex-row gap-x-4 rounded-2xl bg-primary-foreground"}
-				variant="default"
-			>
-				<Text className={"text-primary"}>{"Continue"}</Text>
+		<View className={"w-full flex flex-row justify-between items-center"}>
+            <TouchableButton onPress={handlePrev} className={"rounded-xl"} size={"icon"} variant={"secondary"} icon={<IconSymbol name={"chevron.left"} color={"white"} size={15} weight={"bold"} />}/>
+			<View className={"w-3/6"}>
+                <TouchableButton
+                    disabled={!canGoNext()}
+                    onPress={handleNext}
+                    variant={"primary"}
+                    content={"Continue"}
+                    className={"rounded-xl"}
+                />
+            </View>
+				{/*<Text className={"text-primary"}>{"Continue"}</Text>
 				<IconSymbol name={"chevron.right"} color={"black"} size={12} />
-			</Button>
+			</TouchableButton>*/}
 		</View>
 	);
 }

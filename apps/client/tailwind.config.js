@@ -9,7 +9,8 @@ module.exports = {
 		extend: {
 			colors: {
 				border: "#4D4B6C",
-				input: "#373546",
+				input: "#232323",
+				inputBorder: "#373546",
 				ring: "hsl(var(--ring))",
 				background: "#030303",
 				/*foreground: 'hsl(var(--foreground))',*/
@@ -33,8 +34,8 @@ module.exports = {
 					foreground: "hsl(var(--destructive-foreground))",
 				},
 				muted: {
-					DEFAULT: "hsl(var(--muted))",
-					foreground: "hsl(var(--muted-foreground))",
+					DEFAULT: "#7a7c83",
+					foreground: "#D1D5DB",
 				},
 				accent: {
 					DEFAULT: "hsl(var(--accent))",

@@ -113,7 +113,7 @@ export default function PhoneOtpInput({
 						caretHidden={true}
 						cursorColor="transparent"
 						selectionColor="transparent"
-						className={`h-8 w-8 transform rounded-full text-center font-bold text-3xl text-primary-foreground transition-transform duration-300 ease-out ${otp[index] ? "bg-transparent" : "border-4 bg-muted-foreground"} ${focusedIndex === index ? "scale-125 border-0" : "scale-100"}`}
+						className={`h-6 w-6 transform rounded-2xl text-center font-bold text-3xl text-primary-foreground transition-transform duration-300 ease-out ${otp[index] ? "bg-transparent" : "bg-muted-foreground"}`}
 					/>
 				))}
 			</View>

@@ -7,6 +7,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link, router } from "expo-router";
 import { View } from "react-native";
+import {fontFamily} from "@/dimensions/font-family";
 
 export default function AuthPage() {
 	const { getCurrentStep } = useRegistrationStore();
@@ -46,31 +47,33 @@ export default function AuthPage() {
 					}
 				>
 					<View className={"mt-12 flex items-start gap-y-6"}>
-						<View className={""}>
+						<View>
 							<Text
 								className={
-									"font-bold text-4xl text-primary-foreground tracking-tighter"
+									"text-4xl text-primary-foreground tracking-tighter"
 								}
+                                style={{ fontFamily: fontFamily.semibold }}
 							>
 								Welcome to
 							</Text>
 							<Text
 								className={
-									"-mt-2.5 font-extrabold text-5xl text-primary-foreground tracking-tighter"
+									"-mt-2.5 text-5xl text-primary-foreground tracking-tighter"
 								}
-								style={{ fontFamily: "Jakarta" }}
+                                style={{ fontFamily: fontFamily.extrabold }}
 							>
 								JAMLY
 							</Text>
 						</View>
 						<Text
-							className={"font-medium text-secondary text-xl tracking-tighter"}
+							className={"text-secondary text-xl tracking-tight -mt-2.5"}
+                            style={{ fontFamily: fontFamily.regular }}
 						>
 							Explore your friends new musical discoveries, and share your mood
 							with them.
 						</Text>
 					</View>
-					<View className={"mb-8 flex w-full items-center justify-end"}>
+					<View className={"mb-4 flex w-full items-center justify-end"}>
 						<TouchableButton
 							variant={"primary"}
 							onPress={onPress}

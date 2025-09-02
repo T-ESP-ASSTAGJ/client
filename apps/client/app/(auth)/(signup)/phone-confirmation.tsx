@@ -1,11 +1,12 @@
 import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
 import RegisterTimer from "@/app/(auth)/(signup)/_components/register-timer";
 import { Text } from "@/components/rnr-ui/text";
-import PhoneOtpInput from "@/components/ui/inputs/phone/phone-otp-input";
+import PhoneOtpInput from "@/app/(auth)/(signup)/_components/inputs/phone/phone-otp-input";
 import { useRegistrationStore } from "@/stores/use-registry-store";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Alert, View } from "react-native";
+import {fontFamily} from "@/dimensions/font-family";
 export default function PhoneConfirmation() {
 	const { formState, setFormState, nextStep } = useRegistrationStore();
 	const [otp, setOtp] = useState("");
@@ -49,18 +50,24 @@ export default function PhoneConfirmation() {
 	return (
 		<View className="flex-1 items-center bg-background px-6">
 			<View className="mt-12 w-full">
-				<Text className="mb-4 font-bold text-3xl text-primary-foreground">
+				<Text
+                    className="mb-2 font-bold text-3xl text-primary-foreground"
+                    style={{ fontFamily: fontFamily.semibold}}
+                >
 					Verify Your Phone
 				</Text>
-				<Text className="mb-2 text-lg text-muted">
-					We've sent a 6-digit verification code to number finishing by
+				<Text
+                    className="text-lg text-muted"
+                    style={{ fontFamily: fontFamily.regular }}
+                >
+                    We've sent a 6-digit verification code to number finishing by <Text className={"text-white text-lg"} style={{ fontFamily: fontFamily.bold}}>{phoneNumber}</Text>
 				</Text>
-				<Text className="mt-12 rounded-full border bg-primary p-4 text-center font-bold text-2xl text-primary-foreground">
+				{/*<Text className="mt-12 rounded-full border bg-primary p-4 text-center font-bold text-2xl text-primary-foreground">
 					{phoneNumber}
-				</Text>
+				</Text>*/}
 			</View>
 
-			<View className="mb-8 flex-1 items-center justify-end gap-y-4">
+			<View className="mt-16 flex items-center justify-end gap-y-4">
 				<PhoneOtpInput
 					length={6}
 					onComplete={handleOTPComplete}
@@ -71,7 +78,7 @@ export default function PhoneConfirmation() {
 				/>
 			</View>
 
-			<View className="w-full flex-1 items-center justify-center">
+			<View className="w-full items-center justify-center mt-8">
 				<RegisterTimer
 					onResendCode={handleResendCode}
 					promptMessage="Didn't receive a code?"
@@ -83,10 +90,6 @@ export default function PhoneConfirmation() {
 			{isVerifying && (
 				<Text className="mb-4 text-center text-muted">Verifying code...</Text>
 			)}
-
-			<View className={"mb-16 w-full gap-y-4 pt-4"}>
-				<RegisterFooter />
-			</View>
 		</View>
 	);
 }

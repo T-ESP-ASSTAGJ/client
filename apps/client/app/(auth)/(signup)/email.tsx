@@ -42,9 +42,6 @@ export default function Email() {
 						}
 					/>
 				</View>
-				<View className={"mb-16 w-full gap-y-4 pt-4"}>
-					<RegisterFooter />
-				</View>
 			</View>
 		</View>
 	);
