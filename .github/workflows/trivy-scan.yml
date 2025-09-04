@@ -1,0 +1,22 @@
+name: Trivy Scan - Client
+
+on:
+  push:
+    branches: [main, staging, TEM-151]
+  pull_request:
+    branches: [main, staging]
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    name: Trivy Security Scan
+    uses: T-ESP-ASSTAGJ/infra/.github/workflows/trivy-scan.yml@TEM-71
+    permissions:
+      security-events: write
+      contents: read
+      pull-requests: write
+    with:
+      trivy_config_file: '.github/trivy.yaml'
+    secrets:
+      DISCORD_WEBHOOK_URL: ${{ secrets.PR_EMERGENCY_WEBHOOK_URL }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
