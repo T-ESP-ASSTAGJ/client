@@ -17,6 +17,7 @@ jobs:
       pull-requests: write
     with:
       trivy_config_file: '.github/trivy.yaml'
+      custom_message: "Project: CLIENT | Branch: ${{ github.ref_name }}"
     secrets:
       DISCORD_WEBHOOK_URL: ${{ secrets.PR_EMERGENCY_WEBHOOK_URL }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
