@@ -4,7 +4,7 @@ import {
 	AvatarImage,
 } from "@/components/rnr-ui/avatar";
 import { timeAgo } from "@/helpers/format-date-helper";
-import type { IComment } from "@/types/Comment/comment.types";
+import type { IComment } from "@/types/comments/comment.types";
 import { Heart, LucideThumbsUp as ThumbUp } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 

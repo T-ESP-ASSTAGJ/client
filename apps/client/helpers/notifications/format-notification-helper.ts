@@ -1,5 +1,5 @@
 import { mock_posts } from "@/mock-data/post";
-import type { INotification } from "@/types/Notification/notification.types";
+import type { INotification } from "@/types/notifications/notification.types";
 
 export function formatNotificationMessage(notification: INotification) {
 	switch (notification.target_type) {

@@ -5,9 +5,9 @@ import {
 } from "@/components/rnr-ui/avatar";
 import { fontFamily } from "@/dimensions/font-family";
 import { timeAgoFullString } from "@/helpers/format-date-helper";
-import { formatNotificationMessage } from "@/helpers/format-notification-helper";
-import { getNotificationIcon } from "@/helpers/get-notifications-icon-helper";
-import type { INotification } from "@/types/Notification/notification.types";
+import { formatNotificationMessage } from "@/helpers/notifications/format-notification-helper";
+import { getNotificationIcon } from "@/helpers/notifications/get-notifications-icon-helper";
+import type { INotification } from "@/types/notifications/notification.types";
 import { Image } from "expo-image";
 import { Text, View } from "react-native";
 

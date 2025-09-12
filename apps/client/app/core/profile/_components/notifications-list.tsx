@@ -6,7 +6,7 @@ import { mock_notifications_response } from "@/mock-data/notification";
 import type {
 	INotification,
 	INotificationsResponse,
-} from "@/types/Notification/notification.types";
+} from "@/types/notifications/notification.types";
 import { FlashList } from "@shopify/flash-list";
 import { ChevronLeft, LucideHistory, Sparkles } from "lucide-react-native";
 import React, { useEffect, useMemo, useState } from "react";

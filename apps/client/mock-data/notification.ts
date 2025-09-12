@@ -1,4 +1,4 @@
-import type { INotificationsResponse } from "@/types/Notification/notification.types";
+import type { INotificationsResponse } from "@/types/notifications/notification.types";
 
 export const mock_notifications_response: INotificationsResponse = {
 	notifications: [

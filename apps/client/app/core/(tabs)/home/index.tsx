@@ -7,7 +7,7 @@ import { MainView } from "@/components/ui/MainView";
 import { HeaderAuth } from "@/components/ui/header/header-auth";
 import { mock_comments } from "@/mock-data/comment";
 import { mock_pagination, mock_posts } from "@/mock-data/post";
-import type { ICommentResponse } from "@/types/Comment/comment.types";
+import type { ICommentResponse } from "@/types/comments/comment.types";
 import { FlashList } from "@shopify/flash-list";
 import { useCallback, useEffect, useState } from "react";
 import { Platform, RefreshControl, View } from "react-native";

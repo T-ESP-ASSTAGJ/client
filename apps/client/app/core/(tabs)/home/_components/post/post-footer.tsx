@@ -6,7 +6,7 @@ import {
 	type BottomSheetComponentRef,
 } from "@/components/ui/bottom-sheet/bottom-sheet-component";
 import { getYearFromDate } from "@/helpers/format-date-helper";
-import type { ICommentResponse } from "@/types/Comment/comment.types";
+import type { ICommentResponse } from "@/types/comments/comment.types";
 import {
 	Dot,
 	LucideCircleCheck,
