@@ -1,4 +1,4 @@
-name: Trivy Scan - Client
+name: Trivy Scan Client
 
 on:
   push:
