@@ -1,6 +1,6 @@
 export const mock_posts = [
 	{
-		id: 201,
+		id: 1,
 		user_post: {
 			id: 501,
 			username: "melody_life",
@@ -27,7 +27,7 @@ export const mock_posts = [
 		},
 	},
 	{
-		id: 202,
+		id: 2,
 		user_post: {
 			id: 502,
 			username: "travel_guru",

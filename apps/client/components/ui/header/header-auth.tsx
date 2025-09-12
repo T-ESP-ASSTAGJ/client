@@ -3,6 +3,7 @@ import HeaderTabs from "@/components/ui/header/header-tabs";
 import { TouchableButton } from "@/components/ui/touchable-button";
 import { cn } from "@/lib/utils";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import { Search } from "lucide-react-native";
 import React, { useState } from "react";
 import { View } from "react-native";
@@ -13,6 +14,10 @@ type HeaderAuthProps = {
 };
 
 export const HeaderAuth = ({ className }: HeaderAuthProps) => {
+	const redirectToProfile = () => {
+		router.push("/core/profile/notifications");
+	};
+
 	return (
 		<View
 			className={cn(
@@ -21,7 +26,11 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 			)}
 		>
 			<View className={"flex h-full w-1/6 justify-center items-start"}>
-				<TouchableButton sensory={"light"} className={"bg-transparent"}>
+				<TouchableButton
+					onPress={redirectToProfile}
+					sensory={"light"}
+					className={"bg-transparent"}
+				>
 					<Avatar
 						className={"flex size-11 items-center justify-center rounded-full"}
 						alt={"Profile picture"}
@@ -45,7 +54,7 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 					onPress={() => {
 						console.log("Search");
 					}}
-					variant={"icon"}
+					variant={"primary"}
 					icon={<Search color={"#FFF"} size={25} />}
 				/>
 			</View>
