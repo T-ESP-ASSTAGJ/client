@@ -1,5 +1,5 @@
 import { getUserProfile } from "@/actions/account/user.action";
-import { login } from "@/actions/auth/logins.action";
+import { login } from "@/actions/auth/auth.action";
 import { Input } from "@/components/rnr-ui/input";
 import { MainView } from "@/components/ui/MainView";
 import { TouchableButton } from "@/components/ui/touchable-button";

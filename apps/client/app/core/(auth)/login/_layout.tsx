@@ -5,7 +5,6 @@ export default function Layout() {
 		<>
 			<Stack screenOptions={{ headerShown: false }}>
 				<Stack.Screen name="login" />
-				<Stack.Screen name="forgot-password" />
 			</Stack>
 		</>
 	);
