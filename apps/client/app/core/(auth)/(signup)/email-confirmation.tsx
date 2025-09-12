@@ -1,5 +1,5 @@
-import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
-import RegisterTimer from "@/app/(auth)/(signup)/_components/register-timer";
+import RegisterFooter from "@/app/core/(auth)/(signup)/_components/register-footer";
+import RegisterTimer from "@/app/core/(auth)/(signup)/_components/register-timer";
 import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { fontFamily } from "@/dimensions/font-family";

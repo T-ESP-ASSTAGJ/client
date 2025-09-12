@@ -1,7 +1,7 @@
-import PostBody from "@/app/(tabs)/home/_components/post/post-body";
-import PostFooter from "@/app/(tabs)/home/_components/post/post-footer";
-import PostHeader from "@/app/(tabs)/home/_components/post/post-header";
-import type { IPost } from "@/app/(tabs)/home/_types/post.types";
+import PostBody from "@/app/core/(tabs)/home/_components/post/post-body";
+import PostFooter from "@/app/core/(tabs)/home/_components/post/post-footer";
+import PostHeader from "@/app/core/(tabs)/home/_components/post/post-header";
+import type { IPost } from "@/app/core/(tabs)/home/_types/post.types";
 import type { ICommentResponse } from "@/types/Comment/comment.types";
 import { View } from "react-native";
 

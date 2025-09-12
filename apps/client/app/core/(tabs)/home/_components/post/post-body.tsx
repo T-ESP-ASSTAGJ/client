@@ -1,4 +1,4 @@
-import type { IMusic } from "@/app/(tabs)/home/_types/post.types";
+import type { IMusic } from "@/app/core/(tabs)/home/_types/post.types";
 import { Image } from "expo-image";
 import { Pressable, StyleSheet, View } from "react-native";
 import Animated, {
@@ -6,7 +6,6 @@ import Animated, {
 	useSharedValue,
 	withTiming,
 } from "react-native-reanimated";
-import absoluteFillObject = StyleSheet.absoluteFillObject;
 
 type PostBodyProps = {
 	music: IMusic;

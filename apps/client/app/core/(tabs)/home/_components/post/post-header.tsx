@@ -1,4 +1,4 @@
-import type { IUserPost } from "@/app/(tabs)/home/_types/post.types";
+import type { IUserPost } from "@/app/core/(tabs)/home/_types/post.types";
 import {
 	Avatar,
 	AvatarFallback,
@@ -21,8 +21,11 @@ export default function PostHeader({
 	return (
 		<View className={"flex flex-row justify-between gap-3 pt-5 pr-1 pb-5 pl-1"}>
 			<Pressable className={"flex flex-1 flex-row gap-3"}>
-				<Avatar alt={"User avatar"}>
-					<AvatarImage source={{ uri: user_post.profile_picture }} />
+				<Avatar alt={"User avatar"} className="w-14 h-14">
+					<AvatarImage
+						source={{ uri: user_post.profile_picture }}
+						className="w-14 h-14"
+					/>
 					<AvatarFallback>
 						<Text>Avatar</Text>
 					</AvatarFallback>

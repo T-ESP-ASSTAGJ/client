@@ -85,7 +85,7 @@ export default function AuthPage() {
 								className={
 									"ml-2 font-semibold text-primary-foreground underline"
 								}
-								href={"/(auth)/login"}
+								href={"/core/(auth)/login"}
 							>
 								{"Login"}
 							</Link>

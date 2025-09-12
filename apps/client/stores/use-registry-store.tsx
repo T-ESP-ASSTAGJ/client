@@ -5,11 +5,11 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export const REGISTER_ROUTES = [
-	"/(auth)/(signup)/phone",
-	"/(auth)/(signup)/phone-confirmation",
-	"/(auth)/(signup)/email",
-	"/(auth)/(signup)/email-confirmation",
-	"/(auth)/(signup)/username",
+	"/core/(auth)/(signup)/phone",
+	"/core/(auth)/(signup)/phone-confirmation",
+	"/core/(auth)/(signup)/email",
+	"/core/(auth)/(signup)/email-confirmation",
+	"/core/(auth)/(signup)/username",
 ] as const;
 
 export const createSecureStorage = () => ({

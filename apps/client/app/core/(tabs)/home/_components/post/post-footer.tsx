@@ -1,5 +1,5 @@
-import CommentsList from "@/app/(tabs)/home/_components/comment/comments-list";
-import type { IMusic, IStats } from "@/app/(tabs)/home/_types/post.types";
+import CommentsList from "@/app/core/(tabs)/home/_components/comment/comments-list";
+import type { IMusic, IStats } from "@/app/core/(tabs)/home/_types/post.types";
 import AlertComponent from "@/components/ui/bottom-sheet/alert";
 import {
 	BottomSheetComponent,

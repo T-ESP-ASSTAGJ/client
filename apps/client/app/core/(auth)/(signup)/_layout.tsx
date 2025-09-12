@@ -1,5 +1,5 @@
-import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
-import RegisterProgress from "@/app/(auth)/(signup)/_components/register-progress";
+import RegisterFooter from "@/app/core/(auth)/(signup)/_components/register-footer";
+import RegisterProgress from "@/app/core/(auth)/(signup)/_components/register-progress";
 import { MainView } from "@/components/ui/MainView";
 import { Stack } from "expo-router";
 import { View } from "react-native";

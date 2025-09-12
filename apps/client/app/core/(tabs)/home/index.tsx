@@ -1,8 +1,8 @@
-import Post from "@/app/(tabs)/home/_components/post/post";
+import Post from "@/app/core/(tabs)/home/_components/post/post";
 import type {
 	IPost,
 	IUserPostsResponse,
-} from "@/app/(tabs)/home/_types/post.types";
+} from "@/app/core/(tabs)/home/_types/post.types";
 import { MainView } from "@/components/ui/MainView";
 import { HeaderAuth } from "@/components/ui/header/header-auth";
 import { mock_comments } from "@/mock-data/comment";

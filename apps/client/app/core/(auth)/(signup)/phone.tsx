@@ -1,5 +1,5 @@
-import PhoneInput from "@/app/(auth)/(signup)/_components/inputs/phone/phone-input";
-import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
+import PhoneInput from "@/app/core/(auth)/(signup)/_components/inputs/phone/phone-input";
+import RegisterFooter from "@/app/core/(auth)/(signup)/_components/register-footer";
 import { Text } from "@/components/rnr-ui/text";
 import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";

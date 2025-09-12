@@ -1,4 +1,4 @@
-import PhoneInputCountryItem from "@/app/(auth)/(signup)/_components/inputs/phone/phone-input-country-item";
+import PhoneInputCountryItem from "@/app/core/(auth)/(signup)/_components/inputs/phone/phone-input-country-item";
 import { Input } from "@/components/rnr-ui/input";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { type Country, countries } from "@/constants/countries";

@@ -1,4 +1,4 @@
-import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
+import RegisterFooter from "@/app/core/(auth)/(signup)/_components/register-footer";
 import { Input } from "@/components/rnr-ui/input";
 import { Text } from "@/components/rnr-ui/text";
 import { fontFamily } from "@/dimensions/font-family";

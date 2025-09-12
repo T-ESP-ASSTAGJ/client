@@ -1,6 +1,6 @@
-import PhoneOtpInput from "@/app/(auth)/(signup)/_components/inputs/phone/phone-otp-input";
-import RegisterFooter from "@/app/(auth)/(signup)/_components/register-footer";
-import RegisterTimer from "@/app/(auth)/(signup)/_components/register-timer";
+import PhoneOtpInput from "@/app/core/(auth)/(signup)/_components/inputs/phone/phone-otp-input";
+import RegisterFooter from "@/app/core/(auth)/(signup)/_components/register-footer";
+import RegisterTimer from "@/app/core/(auth)/(signup)/_components/register-timer";
 import { Text } from "@/components/rnr-ui/text";
 import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";

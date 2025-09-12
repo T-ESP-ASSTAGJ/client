@@ -1,5 +1,5 @@
-import Commentary from "@/app/(tabs)/home/_components/comment/commentary";
-import type { IMusic } from "@/app/(tabs)/home/_types/post.types";
+import Commentary from "@/app/core/(tabs)/home/_components/comment/commentary";
+import type { IMusic } from "@/app/core/(tabs)/home/_types/post.types";
 import { Button } from "@/components/rnr-ui/button";
 import { getYearFromDate } from "@/helpers/format-date-helper";
 import type { IComment, ICommentResponse } from "@/types/Comment/comment.types";

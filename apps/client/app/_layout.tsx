@@ -173,7 +173,7 @@ function MainScreen() {
 		const verify = async () => {
 			await initializeUser();
 			hasRedirected.current = true;
-			router.replace("/(auth)/branding");
+			router.replace("/core/(tabs)/home");
 		};
 
 		verify();
@@ -197,7 +197,7 @@ function MainScreen() {
 			<GestureHandlerRootView>
 				<BottomSheetModalProvider>
 					<Stack screenOptions={{ headerShown: false }}>
-						<Stack.Screen name={"(tabs)"} />
+						<Stack.Screen name={"/core/(tabs)"} />
 					</Stack>
 
 					<PortalHost />
