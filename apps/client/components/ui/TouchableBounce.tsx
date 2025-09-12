@@ -1,5 +1,3 @@
-"use client";
-
 import RNTouchableBounce from "react-native/Libraries/Components/Touchable/TouchableBounce";
 
 import {

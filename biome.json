@@ -37,7 +37,7 @@
 			},
 			"nursery": {
 				"useSortedClasses": {
-					"level": "warn",
+					"level": "off",
 					"fix": "safe",
 					"options": {
 						"functions": ["clsx", "cva", "cn"]
@@ -48,7 +48,8 @@
 				"noUselessFragments": "off"
 			},
 			"suspicious": {
-				"noArrayIndexKey": "off"
+				"noArrayIndexKey": "off",
+				"noExplicitAny": "off"
 			}
 		}
 	},

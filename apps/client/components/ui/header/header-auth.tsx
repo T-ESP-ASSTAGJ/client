@@ -16,12 +16,12 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 	return (
 		<View
 			className={cn(
-				"mx-auto flex h-20 w-11/12 flex-row items-center justify-between px-1.5",
+				"mx-auto w-full h-20 flex flex-row items-center justify-between px-2",
 				className,
 			)}
 		>
-			<View className={"flex h-full w-1/6 justify-center"}>
-				<TouchableButton sensory={"light"}>
+			<View className={"flex h-full w-1/6 justify-center items-start"}>
+				<TouchableButton sensory={"light"} className={"bg-transparent"}>
 					<Avatar
 						className={"flex size-11 items-center justify-center rounded-full"}
 						alt={"Profile picture"}
@@ -38,16 +38,16 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 
 			<HeaderTabs />
 
-			<View className={"flex h-full w-1/6 items-end justify-center"}>
+			<View className={"flex h-full w-1/6 items-center justify-center"}>
 				<TouchableButton
 					sensory={"light"}
 					className={"gap-y-1 bg-transparent"}
 					onPress={() => {
 						console.log("Search");
 					}}
-				>
-					<Search color={"#FFF"} size={25} />
-				</TouchableButton>
+					variant={"icon"}
+					icon={<Search color={"#FFF"} size={25} />}
+				/>
 			</View>
 		</View>
 	);

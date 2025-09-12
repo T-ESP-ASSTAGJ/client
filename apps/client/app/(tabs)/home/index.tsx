@@ -5,13 +5,16 @@ import type {
 } from "@/app/(tabs)/home/_types/post.types";
 import { MainView } from "@/components/ui/MainView";
 import { HeaderAuth } from "@/components/ui/header/header-auth";
+import { mock_comments } from "@/mock-data/comment";
 import { mock_pagination, mock_posts } from "@/mock-data/post";
+import type { ICommentResponse } from "@/types/Comment/comment.types";
 import { FlashList } from "@shopify/flash-list";
 import { useCallback, useEffect, useState } from "react";
 import { Platform, RefreshControl, View } from "react-native";
 
 export default function HomePage() {
 	const [posts, setPosts] = useState<IUserPostsResponse>();
+	const [comments, setComments] = useState<ICommentResponse>();
 	const [refreshing, setRefreshing] = useState(false);
 
 	useEffect(() => {
@@ -19,6 +22,8 @@ export default function HomePage() {
 			posts: mock_posts,
 			pagination: mock_pagination,
 		});
+
+		setComments(mock_comments);
 	}, []);
 
 	const onRefresh = useCallback(() => {
@@ -33,13 +38,14 @@ export default function HomePage() {
 	return (
 		<MainView safeArea disableTouchableWrapper={true}>
 			<HeaderAuth searchIcon />
+
 			<View className={"h-full w-full"}>
 				<FlashList<IPost>
 					data={posts?.posts ?? []}
 					numColumns={1}
 					renderItem={({ item }) => (
 						<View className="m-auto">
-							<Post key={item.id} post={item} />
+							<Post key={item.id} post={item} comments={comments} />
 						</View>
 					)}
 					contentContainerStyle={{ paddingBottom: 180 }}

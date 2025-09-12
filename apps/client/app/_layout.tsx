@@ -1,19 +1,34 @@
 import "../styles/globals.css";
 
 import { useUserStore } from "@/stores/use-user-store";
+
+import { FontAwesome } from "@expo/vector-icons";
+import {
+	DarkTheme,
+	DefaultTheme,
+	Theme,
+	ThemeProvider,
+} from "@react-navigation/native";
+
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+
+import { fontFamily } from "@/dimensions/font-family";
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
-import { Redirect, Stack, router, useRouter } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
 	Animated,
 	LogBox,
+	Platform,
 	StyleSheet,
 	View,
+	useColorScheme,
 	useWindowDimensions,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
 	ReanimatedLogLevel,
 	configureReanimatedLogger,
@@ -59,17 +74,19 @@ export function SplashVideo({ onLoaded, onFinish }) {
 export default function App() {
 	// Chargez vos polices ici
 	const [fontsLoaded, fontError] = useFonts({
-		"Urbanist-Light": require("@/assets/fonts/Urbanist-Light.ttf"),
-		"Urbanist-Regular": require("@/assets/fonts/Urbanist-Regular.ttf"),
-		"Urbanist-Medium": require("@/assets/fonts/Urbanist-Medium.ttf"),
-		"Urbanist-SemiBold": require("@/assets/fonts/Urbanist-SemiBold.ttf"),
-		"Urbanist-Bold": require("@/assets/fonts/Urbanist-Bold.ttf"),
+		[fontFamily.regular]: require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
+		[fontFamily.medium]: require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
+		[fontFamily.semibold]: require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+		[fontFamily.bold]: require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
+		[fontFamily.extrabold]: require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
 	});
 
 	return (
-		<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
-			<MainScreen />
-		</AnimatedSplashScreen>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
+				<MainScreen />
+			</AnimatedSplashScreen>
+		</GestureHandlerRootView>
 	);
 }
 
@@ -142,6 +159,7 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 
 function MainScreen() {
 	const { user } = useUserStore();
+	const colorScheme = useColorScheme();
 	/* Hook automatique pour synchroniser l'utilisateur (5 minutes / fermeture ou mise en arrière plan | si "dirty")*/
 	/*useUserSync();*/
 
@@ -155,7 +173,7 @@ function MainScreen() {
 		const verify = async () => {
 			await initializeUser();
 			hasRedirected.current = true;
-			router.replace("/(tabs)/home");
+			router.replace("/(auth)/branding");
 		};
 
 		verify();
@@ -175,12 +193,16 @@ function MainScreen() {
 	]);
 
 	return (
-		<>
-			<Stack screenOptions={{ headerShown: false }}>
-				<Stack.Screen name={"(tabs)"} />
-			</Stack>
+		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+			<GestureHandlerRootView>
+				<BottomSheetModalProvider>
+					<Stack screenOptions={{ headerShown: false }}>
+						<Stack.Screen name={"(tabs)"} />
+					</Stack>
 
-			<PortalHost />
-		</>
+					<PortalHost />
+				</BottomSheetModalProvider>
+			</GestureHandlerRootView>
+		</ThemeProvider>
 	);
 }

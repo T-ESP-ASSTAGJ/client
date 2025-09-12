@@ -6,22 +6,18 @@ const fs = require("node:fs");
 const commitMsgFile = process.argv[2];
 const commitMsg = fs.readFileSync(commitMsgFile, "utf8").trim();
 
-// Regex pattern matching your CaptainHook config
-const gitmoji_regex =
-	/^(:(zap|sparkles|bug|rocket|recycle|art|ambulance|white_check_mark|wrench|memo):) .+/;
+// Regex pattern: TEM-number, space, any gitmoji, space, message
+const gitmoji_regex = /^:[a-zA-Z_]+:\s+TEM-\d+\s+.+/;
 
 if (!gitmoji_regex.test(commitMsg)) {
 	console.error(
-		"❌ Commit message must start with a valid gitmoji followed by a space and a message.",
-	);
-	console.error(
-		"Allowed: :zap: :sparkles: :bug: :rocket: :recycle: :art: :ambulance: :white_check_mark: :wrench: :memo:",
+		"❌ Commit message must follow format: :gitmoji: TEM-number message",
 	);
 	console.error("");
 	console.error("Examples:");
-	console.error("  :sparkles: add new user authentication");
-	console.error("  :bug: fix login validation error");
-	console.error("  :zap: improve database query performance");
+	console.error("  :sparkles: TEM-123 add new user authentication");
+	console.error("  :bug: TEM-456 fix login schemas error");
+	console.error("  :zap: TEM-789 improve database query performance");
 	process.exit(1);
 }
 
