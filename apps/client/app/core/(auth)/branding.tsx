@@ -1,4 +1,3 @@
-import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { MainView } from "@/components/ui/MainView";
 import { TouchableButton } from "@/components/ui/touchable-button";
