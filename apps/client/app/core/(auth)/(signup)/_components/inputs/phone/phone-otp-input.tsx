@@ -2,124 +2,109 @@ import React, { useState, useRef, useEffect } from "react";
 import { Text, TextInput, View } from "react-native";
 
 interface OTPInputProps {
-	length?: number;
-	onComplete: (code: string) => void;
-	onChangeText?: (text: string) => void;
-	value?: string;
-	error?: string;
-	autoFocus?: boolean;
+    length?: number;
+    onComplete: (code: string) => void;
+    onChangeText?: (text: string) => void;
+    value?: string;
+    error?: string;
+    autoFocus?: boolean;
 }
 
 export default function PhoneOtpInput({
-	length = 6,
-	onComplete,
-	onChangeText,
-	value = "",
-	error,
-	autoFocus = true,
-}: OTPInputProps) {
-	const [otp, setOtp] = useState(value);
-	const [focusedIndex, setFocusedIndex] = useState(autoFocus ? 0 : -1);
-	const inputRefs = useRef<TextInput[]>([]);
+                                          length = 6,
+                                          onComplete,
+                                          onChangeText,
+                                          value = "",
+                                          error,
+                                          autoFocus = true,
+                                      }: OTPInputProps) {
+    const [digits, setDigits] = useState<string[]>(Array(length).fill(""));
+    const inputRefs = useRef<TextInput[]>([]);
 
-	useEffect(() => {
-		setOtp(value);
-	}, [value]);
+    useEffect(() => {
+        // Initialize digits from value prop
+        const newDigits = Array(length).fill("");
+        for (let i = 0; i < Math.min(value.length, length); i++) {
+            newDigits[i] = value[i];
+        }
+        setDigits(newDigits);
+    }, [value, length]);
 
-	useEffect(() => {
-		if (autoFocus && inputRefs.current[0]) {
-			inputRefs.current[0].focus();
-		}
-	}, [autoFocus]);
+    useEffect(() => {
+        if (autoFocus && inputRefs.current[0]) {
+            inputRefs.current[0].focus();
+        }
+    }, [autoFocus]);
 
-	const handleChangeText = (input: string, index: number) => {
-		const numericValue = input.replace(/[^0-9]/g, "");
+    const handleChangeText = (text: string, index: number) => {
+        const digit = text.replace(/[^0-9]/g, "").slice(-1); // Only last digit
 
-		if (!numericValue) {
-			const newOtp = otp.split("");
-			newOtp[index] = "";
-			const result = newOtp.join("");
-			setOtp(result);
-			onChangeText?.(result);
-			return;
-		}
+        const newDigits = [...digits];
+        newDigits[index] = digit;
+        setDigits(newDigits);
 
-		const newOtp = otp.split("");
+        const result = newDigits.join("");
+        onChangeText?.(result);
 
-		if (numericValue.length > 1) {
-			const availableSlots = length - index;
-			const textToInsert = numericValue.slice(0, availableSlots);
+        // Auto-focus next input
+        if (digit && index < length - 1) {
+            inputRefs.current[index + 1]?.focus();
+        }
 
-			for (let i = 0; i < textToInsert.length; i++) {
-				newOtp[index + i] = textToInsert[i];
-			}
+        // Check if complete
+        if (newDigits.every(d => d)) {
+            onComplete(result);
+        }
+    };
 
-			const nextIndex = Math.min(index + textToInsert.length, length - 1);
-			inputRefs.current[nextIndex]?.focus();
-		}
+    const handleKeyPress = (key: string, index: number) => {
+        if (key === "Backspace") {
+            const newDigits = [...digits];
 
-		if (numericValue.length === 1) {
-			newOtp[index] = numericValue;
-			if (index < length - 1) {
-				inputRefs.current[index + 1]?.focus();
-			}
-		}
+            if (digits[index]) {
+                // Clear current digit only
+                newDigits[index] = "";
+                setDigits(newDigits);
+                onChangeText?.(newDigits.join(""));
+            } else if (index > 0) {
+                // Move to previous input if current is empty
+                inputRefs.current[index - 1]?.focus();
+            }
+        }
+    };
 
-		const result = newOtp.join("");
-		setOtp(result);
-		onChangeText?.(result);
-
-		if (result.length === length) {
-			onComplete(result);
-			if (numericValue.length > 1) inputRefs.current[length - 1]?.blur();
-		}
-	};
-
-	const handleKeyPress = (key: string, index: number) => {
-		if (key === "Backspace" && !otp[index] && index > 0) {
-			inputRefs.current[index - 1]?.focus();
-		}
-	};
-
-	const handleFocus = (index: number) => {
-		setFocusedIndex(index);
-	};
-
-	const handleBlur = () => {
-		setFocusedIndex(-1);
-	};
-
-	return (
-		<View className="w-full">
-			<View className="mb-4 flex flex-row justify-center gap-8">
-				{Array.from({ length }, (_, index) => (
-					<TextInput
-						inputMode={"numeric"}
-						key={`otp-${index}`}
-						ref={(ref) => {
-							if (ref) inputRefs.current[index] = ref;
-						}}
-						value={otp[index] || ""}
-						onChangeText={(text) => handleChangeText(text, index)}
-						onKeyPress={({ nativeEvent }) =>
-							handleKeyPress(nativeEvent.key, index)
-						}
-						onFocus={() => handleFocus(index)}
-						onBlur={handleBlur}
-						keyboardType="number-pad"
-						textContentType="oneTimeCode"
-						autoComplete="sms-otp"
-						maxLength={length}
-						caretHidden={true}
-						cursorColor="transparent"
-						selectionColor="transparent"
-						className={`h-6 w-6 transform rounded-2xl text-center font-bold text-3xl text-primary-foreground transition-transform duration-300 ease-out ${otp[index] ? "bg-transparent" : "bg-muted-foreground"}`}
-					/>
-				))}
-			</View>
-			{error && (
-				<Text className="mt-2 text-center text-red-500 text-sm">{error}</Text>
-			)}
-		</View>
-	);
+    return (
+        <View className="w-full">
+            <View className="mb-4 flex flex-row gap-8">
+                {digits.map((digit, index) => (
+                    <TextInput
+                        inputMode={"numeric"}
+                        key={`otp-${index}`}
+                        ref={(ref) => {
+                            if (ref) inputRefs.current[index] = ref;
+                        }}
+                        value={digit}
+                        onChangeText={(text) => handleChangeText(text, index)}
+                        onKeyPress={({ nativeEvent }) =>
+                            handleKeyPress(nativeEvent.key, index)
+                        }
+                        keyboardType="number-pad"
+                        textContentType="oneTimeCode"
+                        autoComplete="sms-otp"
+                        selectTextOnFocus
+                        // clearTextOnFocus
+                        cursorColor={null}
+                        selectionColor={null}
+                        maxLength={1}
+                        caretHidden={true}
+                        textAlign={"center"}
+                        className={`h-6 w-6 transform rounded-2xl font-bold text-3xl text-primary-foreground transition-transform duration-300 ease-out ${digit ? "bg-transparent" : "bg-muted-foreground"}`}
+                    />
+                ))}
+            </View>
+            {error && (
+                <Text className="mt-2 text-center text-red-500 text-sm">{error}</Text>
+            )}
+        </View>
+    );
 }
