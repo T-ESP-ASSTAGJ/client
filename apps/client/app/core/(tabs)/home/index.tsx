@@ -9,13 +9,28 @@ import { mock_comments } from "@/mock-data/comment";
 import { mock_pagination, mock_posts } from "@/mock-data/post";
 import type { ICommentResponse } from "@/types/comments/comment.types";
 import { FlashList } from "@shopify/flash-list";
-import { useCallback, useEffect, useState } from "react";
-import { Platform, RefreshControl, View } from "react-native";
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
+import { Platform, RefreshControl, Text, View } from "react-native";
+
+const PAGE_SIZE = 3;
 
 export default function HomePage() {
-	const [posts, setPosts] = useState<IUserPostsResponse>();
+	const [posts, setPosts] = useState<IUserPostsResponse>({
+		posts: [],
+		pagination: { page: 1, limit: 0, has_next: false, last_post_id: 0 },
+	});
 	const [comments, setComments] = useState<ICommentResponse>();
-	const [refreshing, setRefreshing] = useState(false);
+	const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
+	const [refreshing, setRefreshing] = useState<boolean>(false);
+	const hasScrolledRef = useRef<boolean>(false);
+	const isLoadingMoreRef = useRef<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		setPosts({
@@ -24,6 +39,8 @@ export default function HomePage() {
 		});
 
 		setComments(mock_comments);
+		setVisibleCount(PAGE_SIZE);
+		setLoading(false);
 	}, []);
 
 	const onRefresh = useCallback(() => {
@@ -35,13 +52,33 @@ export default function HomePage() {
 		}, 1000);
 	}, []);
 
+	const data = useMemo(
+		() =>
+			(posts?.posts ?? []).slice(
+				0,
+				Math.min(visibleCount, posts?.posts.length ?? 0),
+			),
+		[visibleCount, posts.posts],
+	);
+	const canLoadMore = visibleCount < (posts?.posts.length ?? 0);
+	const loadMore = () => {
+		if (!hasScrolledRef.current) return;
+		if (isLoadingMoreRef.current) return;
+		if (!canLoadMore) return;
+
+		isLoadingMoreRef.current = true;
+		setVisibleCount((c) => Math.min(c + PAGE_SIZE, posts.posts.length));
+		console.log("loadMore called");
+		isLoadingMoreRef.current = false;
+	};
+
 	return (
 		<MainView safeArea disableTouchableWrapper={true}>
 			<HeaderAuth searchIcon />
 
 			<View className={"h-full w-full"}>
 				<FlashList<IPost>
-					data={posts?.posts ?? []}
+					data={data ?? []}
 					numColumns={1}
 					renderItem={({ item }) => (
 						<View className="m-auto">
@@ -49,7 +86,30 @@ export default function HomePage() {
 						</View>
 					)}
 					contentContainerStyle={{ paddingBottom: 180 }}
-					estimatedItemSize={60}
+					estimatedItemSize={data.length}
+					onMomentumScrollBegin={() => {
+						hasScrolledRef.current = true;
+					}}
+					onScrollBeginDrag={() => {
+						hasScrolledRef.current = true;
+					}}
+					onEndReachedThreshold={0.2}
+					onEndReached={loadMore}
+					ListFooterComponent={
+						canLoadMore ? (
+							<Text
+								style={{
+									color: "#9aa0a6",
+									textAlign: "center",
+									paddingVertical: 12,
+								}}
+							>
+								Load more...
+							</Text>
+						) : (
+							<View style={{ height: 12 }} />
+						)
+					}
 					refreshControl={
 						<RefreshControl
 							onRefresh={onRefresh}

@@ -1,12 +1,13 @@
+import FriendsList from "@/app/core/(tabs)/friends/_components/friends-list";
 import { MainView } from "@/components/ui/MainView";
-import { Text, View } from "react-native";
+import { Header } from "@/components/ui/header/header";
+import { HeaderAuth } from "@/components/ui/header/header-auth";
 
 export default function FriendsPage() {
 	return (
 		<MainView disableTouchableWrapper>
-			<View>
-				<Text>Friends</Text>
-			</View>
+			<Header title={"Friends"} />
+			<FriendsList />
 		</MainView>
 	);
 }
