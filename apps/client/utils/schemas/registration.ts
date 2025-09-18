@@ -7,7 +7,7 @@ const phoneSchema = z
 	.min(1, { error: "Phone number is required" })
 	.regex(/^(?=.*\d)\+?[0-9\s\-()]+$/, { error: "Invalid phone number" });
 
-const isPhoneNumberValidSchema = z.literal(true);
+const isConfirmed = z.literal(true);
 
 // v4: on compose trim/lowercase AVANT la validation email
 const emailSchema = z.string().trim().toLowerCase().pipe(z.email({}));
@@ -22,10 +22,14 @@ export const stepSchemas = [
 	z.object({ phoneNumber: phoneSchema }),
 	z.object({
 		phoneNumber: phoneSchema,
-		isPhoneConfirmed: isPhoneNumberValidSchema,
+		isPhoneConfirmed: isConfirmed,
 	}),
 	z.object({ phoneNumber: phoneSchema, email: emailSchema }),
-	z.object({ phoneNumber: phoneSchema, email: emailSchema }),
+	z.object({
+		phoneNumber: phoneSchema,
+		email: emailSchema,
+		isEmailConfirmed: isConfirmed,
+	}),
 	z.object({
 		phoneNumber: phoneSchema,
 		email: emailSchema,

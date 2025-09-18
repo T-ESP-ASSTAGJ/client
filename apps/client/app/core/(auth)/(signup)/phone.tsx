@@ -1,5 +1,4 @@
 import PhoneInput from "@/app/core/(auth)/(signup)/_components/inputs/phone/phone-input";
-import RegisterFooter from "@/app/core/(auth)/(signup)/_components/register-footer";
 import { Text } from "@/components/rnr-ui/text";
 import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";
@@ -14,7 +13,6 @@ export default function Phone() {
 		setFormState((prev) => ({
 			...prev,
 			phoneNumber: phone.length > 0 ? fullNumber : phone,
-			isPhoneConfirmed: false,
 		}));
 	};
 
