@@ -60,25 +60,21 @@ export default function Friend({ friend }: IFriendProps) {
 					</Text>
 				</View>
 			</Pressable>
-			<View>
+			<View className={"flex justify-center"}>
 				{friend.is_following ? (
-					<Button className={"bg-[#5E35E2] rounded-xl w-[100px]"}>
-						<Text
-							className={"text-white text-sm"}
-							style={{ fontFamily: fontFamily.regular }}
-						>
-							Follow
-						</Text>
-					</Button>
+					<TouchableButton
+						content={"Follow"}
+						className={"native:h-10 w-[105px] bg-white"}
+						textClassName={"text-sm"}
+					/>
 				) : (
-					<Button className={"bg-[#1F1B2E] rounded-xl w-[100px]"}>
-						<Text
-							className={"text-white text-sm"}
-							style={{ fontFamily: fontFamily.regular }}
-						>
-							Followed
-						</Text>
-					</Button>
+					<TouchableButton
+						content={"Following"}
+						className={
+							"native:h-11 w-[105px] bg-black border-[1px] border-[#C8C8C8]"
+						}
+						textClassName={"text-sm text-white"}
+					/>
 				)}
 			</View>
 		</View>
