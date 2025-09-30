@@ -7,7 +7,7 @@ export default function withAuth<T>(Component: ComponentType<T>) {
 		const { isAuthenticated } = useUserStore();
 
 		if (!isAuthenticated) {
-			return <Redirect href="/(tabs)/home" />;
+			return <Redirect href="/core/(tabs)/home" />;
 		}
 
 		return <Component {...props} />;

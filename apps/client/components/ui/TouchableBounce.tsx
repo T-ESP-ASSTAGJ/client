@@ -1,6 +1,5 @@
-import RNTouchableBounce from "react-native/Libraries/Components/Touchable/TouchableBounce";
-
 import {
+	Pressable,
 	type TouchableOpacityProps as RNTouchableOpacityProps,
 	View,
 } from "react-native";
@@ -55,7 +54,7 @@ export default function TouchableBounce({
 	}, [sensory]);
 
 	return (
-		<RNTouchableBounce
+		<Pressable
 			{...props}
 			onPressIn={(ev: GestureResponderEvent) => {
 				onSensory();
@@ -63,6 +62,6 @@ export default function TouchableBounce({
 			}}
 		>
 			{children ? children : <View />}
-		</RNTouchableBounce>
+		</Pressable>
 	);
 }

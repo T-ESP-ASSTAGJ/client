@@ -1,4 +1,5 @@
 import { BackButton } from "@/components/ui/back-button";
+import { fontFamily } from "@/dimensions/font-family";
 import { cn } from "@/lib/utils";
 import type { FC, ReactNode } from "react";
 import { Text, View } from "react-native";
@@ -36,7 +37,7 @@ export const Header: FC<HeaderProps> = ({
 			<View className={"flex h-full w-4/6 items-center justify-center"}>
 				<Text
 					className={"text-[27px] text-white"}
-					style={{ fontFamily: "Urbanist-Medium" }}
+					style={{ fontFamily: fontFamily.medium }}
 				>
 					{title}
 				</Text>

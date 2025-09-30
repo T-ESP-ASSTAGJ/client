@@ -62,6 +62,7 @@ export interface TouchableButtonProps
 	children?: ReactNode; // custom label content
 	onPress?: (event: GestureResponderEvent) => void;
 	className?: string;
+	textClassName?: string;
 }
 
 export const TouchableButton = forwardRef<any, TouchableButtonProps>(
@@ -81,6 +82,7 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 			icon,
 			onPress,
 			role,
+			textClassName,
 			...rest
 		},
 		ref,
@@ -131,6 +133,7 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 										className={cn(
 											variant === "primary" ? "text-primary" : "text-white",
 											"text-xl",
+											textClassName,
 										)}
 										style={{ fontFamily: fontFamily.bold }}
 									>

@@ -93,14 +93,13 @@ export default function App() {
 function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 	const animation = useMemo(() => new Animated.Value(1), []);
 	const [isAppReady, setAppReady] = useState(false);
-	const [isSplashVideoComplete, setSplashVideoComplete] = useState(false);
+	const [isSplashVideoComplete, setSplashVideoComplete] = useState(
+		Platform.OS === "web",
+	); // ✅ web: fini d'office
 	const [isSplashAnimationComplete, setAnimationComplete] = useState(false);
 
-	// Gérer le chargement des polices
 	useEffect(() => {
-		if (fontsLoaded || fontError) {
-			setAppReady(true);
-		}
+		if (fontsLoaded || fontError) setAppReady(true);
 	}, [fontsLoaded, fontError]);
 
 	useEffect(() => {
@@ -116,25 +115,18 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 	const onImageLoaded = useCallback(async () => {
 		try {
 			await SplashScreen.hideAsync();
-			// Autres chargements si nécessaire
-			await Promise.all([]);
-		} catch (e) {
-			// handle errors
-		} finally {
-			// Ne pas appeler setAppReady ici, c'est géré par l'effet des polices
-		}
+		} catch {}
 	}, []);
 
 	const videoElement = useMemo(() => {
+		if (Platform.OS === "web") return null; // ✅ pas de vidéo sur web
 		return (
 			<SplashVideo
 				onLoaded={onImageLoaded}
-				onFinish={() => {
-					setSplashVideoComplete(true);
-				}}
+				onFinish={() => setSplashVideoComplete(true)}
 			/>
 		);
-	}, [onImageLoaded, setSplashVideoComplete]);
+	}, [onImageLoaded]);
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -144,10 +136,7 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 					pointerEvents="none"
 					style={[
 						StyleSheet.absoluteFill,
-						{
-							backgroundColor: "black",
-							opacity: animation,
-						},
+						{ backgroundColor: "black", opacity: animation },
 					]}
 				>
 					{videoElement}
@@ -197,7 +186,9 @@ function MainScreen() {
 			<GestureHandlerRootView>
 				<BottomSheetModalProvider>
 					<Stack screenOptions={{ headerShown: false }}>
-						<Stack.Screen name={"/core/(tabs)"} />
+						<Stack.Screen name={"core/(tabs)"} />
+						<Stack.Screen name={"core/(auth)"} />
+						<Stack.Screen name={"core/(account)"} />
 					</Stack>
 
 					<PortalHost />

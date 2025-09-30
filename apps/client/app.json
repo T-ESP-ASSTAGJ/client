@@ -16,9 +16,14 @@
 				"ITSAppUsesNonExemptEncryption": false
 			}
 		},
+		"web": {
+			"bundler": "metro",
+			"output": "static",
+			"favicon": "./assets/images/favicon.png"
+		},
 		"assetBundlePatterns": ["**/*"],
 		"plugins": [
-			"expo-router",
+			["expo-router", { "root": "." }],
 			"expo-font",
 			"expo-secure-store",
 			"expo-build-properties",

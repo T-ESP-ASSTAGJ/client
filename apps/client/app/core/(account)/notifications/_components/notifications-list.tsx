@@ -1,6 +1,4 @@
-import Notification from "@/app/core/profile/_components/notification";
-import { MainView } from "@/components/ui/MainView";
-import { Header } from "@/components/ui/header/header";
+import Notification from "@/app/core/(account)/notifications/_components/notification";
 import { fontFamily } from "@/dimensions/font-family";
 import { mock_notifications_response } from "@/mock-data/notification";
 import type {
