@@ -1,6 +1,6 @@
 import TabBar from "@/components/tabs/tab-bar";
 import Tabs from "@/components/ui/Tabs";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function Layout() {
 	return (
@@ -8,6 +8,7 @@ export default function Layout() {
 			<Tabs tabBar={(props) => <TabBar {...props} />}>
 				<Tabs.Screen name="home" />
 				<Tabs.Screen name="explore" />
+				<Tabs.Screen name="post" />
 				<Tabs.Screen name="friends" />
 				<Tabs.Screen name="chats" />
 				{/*<Tabs.Screen name="profile" />*/}
