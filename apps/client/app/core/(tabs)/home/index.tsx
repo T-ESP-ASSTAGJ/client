@@ -31,6 +31,8 @@ export default function HomePage() {
 	const hasScrolledRef = useRef<boolean>(false);
 	const isLoadingMoreRef = useRef<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [containerHeight, setContainerHeight] = useState(0);
+	const [itemHeight, setItemHeight] = useState(0);
 
 	useEffect(() => {
 		setPosts({
@@ -60,7 +62,9 @@ export default function HomePage() {
 			),
 		[visibleCount, posts.posts],
 	);
+
 	const canLoadMore = visibleCount < (posts?.posts.length ?? 0);
+
 	const loadMore = () => {
 		if (!hasScrolledRef.current) return;
 		if (isLoadingMoreRef.current) return;
@@ -76,51 +80,79 @@ export default function HomePage() {
 		<MainView safeArea disableTouchableWrapper={true}>
 			<HeaderAuth searchIcon />
 
-			<View className={"h-full w-full"}>
-				<FlashList<IPost>
-					data={data ?? []}
-					numColumns={1}
-					renderItem={({ item }) => (
-						<View className="m-auto">
-							<Post key={item.id} post={item} comments={comments} />
-						</View>
-					)}
-					contentContainerStyle={{ paddingBottom: 180 }}
-					estimatedItemSize={data.length}
-					onMomentumScrollBegin={() => {
-						hasScrolledRef.current = true;
-					}}
-					onScrollBeginDrag={() => {
-						hasScrolledRef.current = true;
-					}}
-					onEndReachedThreshold={0.2}
-					onEndReached={loadMore}
-					ListFooterComponent={
-						canLoadMore ? (
-							<Text
+			<View
+				className="w-full flex-1"
+				onLayout={(e) => {
+					setContainerHeight(e.nativeEvent.layout.height);
+				}}
+			>
+				{containerHeight > 0 && (
+					<FlashList<IPost>
+						data={data ?? []}
+						keyExtractor={(item) => item.id.toString()}
+						renderItem={({ item }) => (
+							<View
+								onLayout={(e) => {
+									if (!itemHeight) {
+										setItemHeight(e.nativeEvent.layout.height);
+									}
+								}}
 								style={{
-									color: "#9aa0a6",
-									textAlign: "center",
-									paddingVertical: 12,
+									justifyContent: "center",
+									alignItems: "center",
 								}}
 							>
-								Load more...
-							</Text>
-						) : (
-							<View style={{ height: 12 }} />
-						)
-					}
-					refreshControl={
-						<RefreshControl
-							onRefresh={onRefresh}
-							refreshing={refreshing}
-							tintColor="#ffffff"
-							colors={["#ffffff"]}
-							progressBackgroundColor="#ffffff"
-							progressViewOffset={Platform.select({ ios: 24, android: 16 })}
-						/>
-					}
-				/>
+								<View
+									style={{
+										width: "91%",
+									}}
+								>
+									<Post post={item} comments={comments} />
+								</View>
+							</View>
+						)}
+						pagingEnabled={false}
+						snapToInterval={itemHeight || containerHeight}
+						snapToAlignment="start"
+						decelerationRate="fast"
+						disableIntervalMomentum
+						estimatedItemSize={itemHeight || containerHeight}
+						onMomentumScrollBegin={() => {
+							hasScrolledRef.current = true;
+						}}
+						onScrollBeginDrag={() => {
+							hasScrolledRef.current = true;
+						}}
+						onEndReachedThreshold={0.8}
+						onEndReached={loadMore}
+						contentContainerStyle={{}}
+						ListFooterComponent={
+							canLoadMore ? (
+								<Text
+									style={{
+										color: "#9aa0a6",
+										textAlign: "center",
+										paddingVertical: 12,
+									}}
+								>
+									Load more...
+								</Text>
+							) : (
+								<View style={{ height: 12 }} />
+							)
+						}
+						refreshControl={
+							<RefreshControl
+								onRefresh={onRefresh}
+								refreshing={refreshing}
+								tintColor="#ffffff"
+								colors={["#ffffff"]}
+								progressBackgroundColor="#ffffff"
+								progressViewOffset={Platform.select({ ios: 24, android: 16 })}
+							/>
+						}
+					/>
+				)}
 			</View>
 		</MainView>
 	);
