@@ -1,3 +1,4 @@
+import type React from "react";
 import { ChatIcon } from "@/assets/svg/tab-icons/chat-icon";
 import { CompasIcon } from "@/assets/svg/tab-icons/compas-icon";
 import { FriendsIcon } from "@/assets/svg/tab-icons/friends-icon";
@@ -10,6 +11,7 @@ import Animated, {
 	interpolate,
 	withTiming,
 } from "react-native-reanimated";
+import {PlusCircleIcon} from "lucide-react-native";
 
 interface TabBarButtonProps extends PressableProps {
 	isFocused: boolean;
@@ -59,6 +61,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 	const renderIcon = () => {
 		const color = isFocused ? "#FFFFFF" : "#C9C8C9";
 		const size = 24;
+		const plusIconSize = 32;
 
 		switch (routeName) {
 			case "home":
@@ -94,6 +97,15 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 						stroke={`${isFocused ? "#FFF" : "#777777"}`}
 					/>
 				);
+			case "post":
+				return (
+					<PlusCircleIcon
+						width={plusIconSize}
+						height={plusIconSize}
+						// strokeColor={isFocused ? "#000000" : "#C9C8C9"}
+						fill={`${isFocused ? "#C9C8C9" : color}`}
+					/>
+				);
 			default:
 				return null;
 		}
@@ -122,11 +134,13 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 			<Animated.View style={animatedIconStyle}>{renderIcon()}</Animated.View>
 
 			{/* Label */}
-			<Text
-				className={`text-center font-semibold text-[12px] ${isFocused ? "text-[#FFFFFF]" : "text-gray-500"}`}
-			>
-				{label}
-			</Text>
+			{label.length > 0 ? (
+				<Text
+					className={`text-center font-semibold text-[12px] ${isFocused ? "text-[#FFFFFF]" : "text-gray-500"}`}
+				>
+					{label}
+				</Text>
+			) : null}
 		</Pressable>
 	);
 };
