@@ -12,7 +12,8 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop", // casque/cover chill
 			release_date: "2009-12-04T00:00:00Z",
-			preview_url: "https://example.com/preview1.mp3",
+			preview_url:
+				"https://cdn.pixabay.com/audio/2025/06/09/audio_ce7b7c1612.mp3",
 			streaming_links: {
 				spotify: "https://open.spotify.com/track/abc123",
 				apple_music: "https://music.apple.com/track/xyz456",
@@ -38,7 +39,7 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1483412033650-1015ddeb83d1?q=80&w=1200&auto=format&fit=crop", // cover route/voyage
 			release_date: "2023-02-13T00:00:00Z",
-			preview_url: "https://example.com/preview2.mp3",
+			preview_url: null,
 			streaming_links: {
 				deezer: "https://www.deezer.com/track/def789",
 			},
@@ -63,7 +64,7 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop", // pochette douce/bois
 			release_date: "2021-06-20T00:00:00Z",
-			preview_url: "https://example.com/preview3.mp3",
+			preview_url: null,
 			streaming_links: { spotify: "https://open.spotify.com/track/lofi001" },
 		},
 		description: "Matin studieux, cappuccino à la main ☕",
@@ -86,7 +87,7 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1200&auto=format&fit=crop", // vague/bleu
 			release_date: "2018-07-12T00:00:00Z",
-			preview_url: "https://example.com/preview4.mp3",
+			preview_url: null,
 			streaming_links: {
 				apple_music: "https://music.apple.com/track/ocean456",
 			},
@@ -111,7 +112,7 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?q=80&w=1200&auto=format&fit=crop", // néons/city pop
 			release_date: "2020-10-10T00:00:00Z",
-			preview_url: "https://example.com/preview5.mp3",
+			preview_url: null,
 			streaming_links: { spotify: "https://open.spotify.com/track/neon789" },
 		},
 		description: "Run nocturne au bord du fleuve 🏃‍♂️",
@@ -134,7 +135,7 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1495567720989-cebdbdd97913?q=80&w=1200&auto=format&fit=crop", // abstrait/galerie
 			release_date: "2017-03-14T00:00:00Z",
-			preview_url: "https://example.com/preview6.mp3",
+			preview_url: null,
 			streaming_links: { deezer: "https://www.deezer.com/track/gallery001" },
 		},
 		description: "Expo immersive 🔮",
@@ -157,7 +158,7 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1758005533981-a37616a64a5f?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 			release_date: "2019-05-02T00:00:00Z",
-			preview_url: "https://example.com/preview7.mp3",
+			preview_url: null,
 			streaming_links: { spotify: "https://open.spotify.com/track/kitchen007" },
 		},
 		description: "Noodles maison (et playlist qui tue) 🍜",
