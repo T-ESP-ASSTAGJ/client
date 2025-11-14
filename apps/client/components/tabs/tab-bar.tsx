@@ -51,13 +51,13 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 				let displayLabel: string;
 				switch (route.name) {
 					case "home":
-						displayLabel = "Accueil";
+						displayLabel = "Home";
 						break;
 					case "explore":
-						displayLabel = "Explore";
+						displayLabel = "Discover";
 						break;
 					case "friends":
-						displayLabel = "Amis";
+						displayLabel = "Friends";
 						break;
 					case "chats":
 						displayLabel = "Chats";

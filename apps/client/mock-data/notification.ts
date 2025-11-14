@@ -12,7 +12,7 @@ export const mock_notifications_response: INotificationsResponse = {
 			target_type: "post_like",
 			target_id: 1,
 			is_read: false,
-			created_at: "2025-09-02T14:10:00Z",
+			created_at: "2025-11-14T10:10:00Z",
 		},
 		{
 			id: 2,
@@ -24,7 +24,7 @@ export const mock_notifications_response: INotificationsResponse = {
 			target_id: 2,
 			content: "Perfect for studying ✨",
 			is_read: false,
-			created_at: "2025-09-02T13:42:00Z",
+			created_at: "2025-11-13T13:42:00Z",
 		},
 		{
 			id: 6,
@@ -36,7 +36,7 @@ export const mock_notifications_response: INotificationsResponse = {
 			target_id: 0,
 			content: "Check out my new beat 🔥",
 			is_read: false,
-			created_at: "2025-09-02T12:10:00Z",
+			created_at: "2025-11-02T12:10:00Z",
 		},
 		{
 			id: 7,
@@ -47,7 +47,7 @@ export const mock_notifications_response: INotificationsResponse = {
 			target_type: "post_like",
 			target_id: 2,
 			is_read: false,
-			created_at: "2025-09-02T11:50:00Z",
+			created_at: "2025-10-02T11:50:00Z",
 		},
 		{
 			id: 8,
@@ -58,7 +58,7 @@ export const mock_notifications_response: INotificationsResponse = {
 			target_type: "follow",
 			target_id: 0,
 			is_read: false,
-			created_at: "2025-09-02T10:30:00Z",
+			created_at: "2025-10-02T10:30:00Z",
 		},
 
 		// --- Old notifications (read) ---

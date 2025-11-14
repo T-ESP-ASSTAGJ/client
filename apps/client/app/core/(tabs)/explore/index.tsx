@@ -19,7 +19,7 @@ export default function ExplorePage() {
 					rightIcon={<ArrowRight />}
 				/>
 				<TouchableButton variant={"primary"} isLoading />
-				<TouchableButton variant={"icon"} icon={<Info />} />
+				<TouchableButton icon={<Info />} />
 			</View>
 		</MainView>
 	);

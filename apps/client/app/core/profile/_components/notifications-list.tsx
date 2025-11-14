@@ -23,61 +23,17 @@ export default function NotificationsList() {
 		setNotifications(mock_notifications_response);
 	}, []);
 
-	const newNotifications = useMemo(
-		() => notifications.notifications.filter((n) => !n.is_read),
-		[notifications.notifications],
-	);
-
-	const oldNotifications = useMemo(
-		() => notifications.notifications.filter((n) => n.is_read),
-		[notifications.notifications],
-	);
-
-	const headerLeftIcon = <ChevronLeft color={"white"} size={24} />;
-
 	return (
-		<View className={"mt-3 mx-5 flex flex-col gap-2"}>
-			<View>
-				<View className={"flex flex-row gap-2 items-center"}>
-					<Sparkles color={"white"} size={20} />
-					<Text
-						className={"text-white text-xl"}
-						style={{ fontFamily: fontFamily.semibold }}
-					>
-						New
-					</Text>
-				</View>
-				<View className={"h-[320px] w-[400px] overflow-hidden pt-6 pb-4"}>
-					<FlashList<INotification>
-						data={newNotifications}
-						numColumns={1}
-						renderItem={({ item }) => <Notification notification={item} />}
-						estimatedItemSize={60}
-						ItemSeparatorComponent={() => <View style={{ height: 24 }} />}
-						showsVerticalScrollIndicator={false}
-					/>
-				</View>
-			</View>
-			<View>
-				<View className={"flex flex-row gap-2 items-center"}>
-					<LucideHistory color={"white"} size={20} />
-					<Text
-						className={"text-white text-xl"}
-						style={{ fontFamily: fontFamily.semibold }}
-					>
-						History
-					</Text>
-				</View>
-				<View className={"h-[320px] w-[400px] overflow-hidden pt-6 pb-4"}>
-					<FlashList<INotification>
-						data={oldNotifications}
-						numColumns={1}
-						renderItem={({ item }) => <Notification notification={item} />}
-						estimatedItemSize={60}
-						ItemSeparatorComponent={() => <View style={{ height: 24 }} />}
-						showsVerticalScrollIndicator={false}
-					/>
-				</View>
+		<View className={"mx-5 flex flex-col gap-2"}>
+			<View className={"h-full w-[400px] overflow-hidden pt-6 pb-24"}>
+				<FlashList<INotification>
+					data={notifications.notifications}
+					numColumns={1}
+					renderItem={({ item }) => <Notification notification={item} />}
+					estimatedItemSize={60}
+					ItemSeparatorComponent={() => <View style={{ height: 24 }} />}
+					showsVerticalScrollIndicator={false}
+				/>
 			</View>
 		</View>
 	);

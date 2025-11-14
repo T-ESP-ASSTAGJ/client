@@ -21,7 +21,7 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 	return (
 		<View
 			className={cn(
-				"mx-auto w-full h-20 flex flex-row items-center justify-between px-2",
+				"mx-auto w-full h-[70px] flex flex-row items-center justify-between px-2",
 				className,
 			)}
 		>

@@ -1,9 +1,7 @@
-import ChatIcon from "@/assets/svg/tab-icons/chat-icon.svg";
-import { CompasIcon } from "@/assets/svg/tab-icons/compas-icon.jsx";
-import { FriendsIcon } from "@/assets/svg/tab-icons/friends-icon.jsx";
-import HomeIcon from "@/assets/svg/tab-icons/home-icon.svg";
-import * as Haptics from "expo-haptics";
-import type React from "react";
+import { ChatIcon } from "@/assets/svg/tab-icons/chat-icon";
+import { CompasIcon } from "@/assets/svg/tab-icons/compas-icon";
+import { FriendsIcon } from "@/assets/svg/tab-icons/friends-icon";
+import { HomeIcon } from "@/assets/svg/tab-icons/home-icon";
 import { useEffect, useState } from "react";
 import { Pressable, type PressableProps, StyleSheet, Text } from "react-native";
 import Animated, {
@@ -12,6 +10,7 @@ import Animated, {
 	interpolate,
 	withTiming,
 } from "react-native-reanimated";
+
 interface TabBarButtonProps extends PressableProps {
 	isFocused: boolean;
 	label: string;
@@ -67,7 +66,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 					<HomeIcon
 						width={size}
 						height={size}
-						fill={`${isFocused ? color : "none"}`}
+						stroke={`${isFocused ? "#FFF" : "#777777"}`}
 					/>
 				);
 			case "explore":
@@ -75,8 +74,8 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 					<CompasIcon
 						width={size}
 						height={size}
-						strokeColor={isFocused ? "#000000" : "#C9C8C9"}
-						fill={isFocused ? color : "none"}
+						strokeExteriorColor={isFocused ? "#FFFFFF" : "#777777"}
+						strokeColorInterior={isFocused ? "#FFF" : "#777777"}
 					/>
 				);
 			case "friends":
@@ -84,7 +83,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 					<FriendsIcon
 						width={size}
 						height={size}
-						fill={`${isFocused ? "#FFFFFF" : "#777777"}`}
+						fill={`${isFocused ? "#FFF" : "#777777"}`}
 					/>
 				);
 			case "chats":
@@ -92,17 +91,11 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 					<ChatIcon
 						width={size}
 						height={size}
-						fill={`${isFocused ? color : "none"}`}
+						stroke={`${isFocused ? "#FFF" : "#777777"}`}
 					/>
 				);
 			default:
-				return (
-					<HomeIcon
-						width={size}
-						height={size}
-						fill={`${isFocused ? color : "none"}`}
-					/>
-				);
+				return null;
 		}
 	};
 

@@ -65,7 +65,7 @@ export default function FriendsList() {
 	};
 
 	return (
-		<View className={"m-5 h-[650px] overflow-hidden"}>
+		<View className={"mx-5 h-[650px] overflow-hidden"}>
 			<View className={"mb-8"}>
 				<Input
 					value={value}

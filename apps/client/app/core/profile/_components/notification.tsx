@@ -67,8 +67,8 @@ export default function Notification({ notification }: NotificationProps) {
 					</>
 				)}
 			</View>
-			<View className={"flex flex-col gap-2 w-full"}>
-				<View className={"flex flex-row justify-between"}>
+			<View className={"flex flex-col gap-1 w-full"}>
+				<View className={"flex flex-col"}>
 					{notification.target_type === "message" ? (
 						<View className={"flex flex-row flex-wrap"}>
 							<Text
@@ -105,12 +105,6 @@ export default function Notification({ notification }: NotificationProps) {
 							</Text>
 						</View>
 					)}
-					<Text
-						className={"text-sm text-gray-400"}
-						style={{ fontFamily: fontFamily.regular }}
-					>
-						{timeAgoFullString(notification.created_at)}
-					</Text>
 				</View>
 				<Text
 					className="text-white text-sm font-light"
@@ -119,6 +113,12 @@ export default function Notification({ notification }: NotificationProps) {
 					style={{ fontFamily: fontFamily.regular }}
 				>
 					{subtitle}
+				</Text>
+				<Text
+					className={"text-sm text-gray-400"}
+					style={{ fontFamily: fontFamily.regular }}
+				>
+					{timeAgoFullString(notification.created_at)} ago
 				</Text>
 			</View>
 		</View>

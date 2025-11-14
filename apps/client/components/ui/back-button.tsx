@@ -17,6 +17,7 @@ export const BackButton: FC<BackButtonProps> = ({ cross }) => {
 		router.canGoBack() && (
 			<TouchableButton
 				sensory={"light"}
+				variant={"transparent"}
 				onPress={() => {
 					router.back();
 				}}
@@ -29,11 +30,11 @@ export const BackButton: FC<BackButtonProps> = ({ cross }) => {
 						<IconSymbol
 							name={"xmark"}
 							size={25}
-							color="#090909"
+							color="#fff"
 							weight={"medium"}
 						/>
 					) : (
-						<ArrowLeft size={28} strokeWidth={2.5} color="#090909" />
+						<ArrowLeft size={25} strokeWidth={2} color="#fff" />
 					)}
 				</RNAvatar>
 			</TouchableButton>

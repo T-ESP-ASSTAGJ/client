@@ -197,7 +197,7 @@ function MainScreen() {
 			<GestureHandlerRootView>
 				<BottomSheetModalProvider>
 					<Stack screenOptions={{ headerShown: false }}>
-						<Stack.Screen name={"/core/(tabs)"} />
+						<Stack.Screen name={"core/(tabs)"} />
 					</Stack>
 
 					<PortalHost />
