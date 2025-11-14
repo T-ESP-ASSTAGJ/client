@@ -25,7 +25,7 @@ interface IMusic {
 	artist: string;
 	music_cover: string;
 	release_date: string;
-	preview_url: string;
+	preview_url: string | null;
 	streaming_links: Record<string, string>; // dynamic key (spotify, apple_music, deezer, etc.)
 }
 
