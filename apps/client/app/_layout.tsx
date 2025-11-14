@@ -83,9 +83,10 @@ export default function App() {
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
-			<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
-				<MainScreen />
-			</AnimatedSplashScreen>
+			<MainScreen />
+			{/*<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
+
+			</AnimatedSplashScreen>*/}
 		</GestureHandlerRootView>
 	);
 }

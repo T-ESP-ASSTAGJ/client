@@ -54,9 +54,10 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 					onPress={() => {
 						console.log("Search");
 					}}
-					variant={"primary"}
-					icon={<Search color={"#FFF"} size={25} />}
-				/>
+					variant={"transparent"}
+				>
+					<Search color={"#FFF"} size={24} strokeWidth={2.5} />
+				</TouchableButton>
 			</View>
 		</View>
 	);

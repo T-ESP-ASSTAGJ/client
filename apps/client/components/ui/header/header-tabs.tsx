@@ -21,7 +21,7 @@ export default function HeaderTabs() {
 	const indicatorStyle = useAnimatedStyle(() => ({
 		transform: [
 			{
-				translateX: interpolate(progress.value, [0, 1], [0, 115]), // 100px = largeur d’un onglet
+				translateX: interpolate(progress.value, [0, 1], [0, 112]), // 100px = largeur d’un onglet
 			},
 		],
 	}));
@@ -30,7 +30,7 @@ export default function HeaderTabs() {
 		<View className="h-12 flex flex-row items-center justify-center">
 			<TouchableButton
 				sensory={"light"}
-				className={"w-[115px]"}
+				className={"w-[112px]"}
 				variant={"transparent"}
 				onPress={() => {
 					setIndex(0);
@@ -47,7 +47,7 @@ export default function HeaderTabs() {
 
 			<TouchableButton
 				sensory={"light"}
-				className={"w-[115px]"}
+				className={"w-[112px]"}
 				variant={"transparent"}
 				onPress={() => {
 					setIndex(1);
@@ -64,7 +64,7 @@ export default function HeaderTabs() {
 
 			<Animated.View
 				className="absolute bottom-0.5 h-[2.5px] rounded bg-white"
-				style={[{ width: 32, left: 40 }, indicatorStyle]}
+				style={[{ width: 35, left: 37 }, indicatorStyle]}
 			/>
 		</View>
 	);

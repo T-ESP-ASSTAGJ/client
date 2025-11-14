@@ -1,9 +1,9 @@
-export interface IUserPostsResponse {
+interface IUserPostsResponse {
 	posts: IPost[];
 	pagination: IPagination;
 }
 
-export interface IPost {
+interface IPost {
 	id: number;
 	user_post: IUserPost;
 	music: IMusic;
@@ -14,13 +14,13 @@ export interface IPost {
 	stats: IStats;
 }
 
-export interface IUserPost {
+interface IUserPost {
 	id: number;
 	username: string;
 	profile_picture: string;
 }
 
-export interface IMusic {
+interface IMusic {
 	title: string;
 	artist: string;
 	music_cover: string;
@@ -29,14 +29,23 @@ export interface IMusic {
 	streaming_links: Record<string, string>; // dynamic key (spotify, apple_music, deezer, etc.)
 }
 
-export interface IStats {
+interface IStats {
 	likes: number;
 	comments: number;
 }
 
-export interface IPagination {
+interface IPagination {
 	page: number;
 	limit: number;
 	has_next: boolean;
 	last_post_id: number;
 }
+
+export type {
+	IUserPostsResponse,
+	IPost,
+	IUserPost,
+	IMusic,
+	IStats,
+	IPagination,
+};

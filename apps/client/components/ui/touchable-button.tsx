@@ -22,7 +22,7 @@ const buttonVariants = cva(
 			variant: {
 				primary: "bg-white",
 				secondary: "border border-white/10 bg-primary",
-				transparent: "bg-transparent",
+				transparent: "bg-transparent rounded-none",
 			},
 			size: {
 				default: "w-full native:h-[4rem]",
