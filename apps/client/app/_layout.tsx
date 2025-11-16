@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 
+import { AudioProvider } from "@/components/Audio-context";
 import { useUserStore } from "@/stores/use-user-store";
-
 import { FontAwesome } from "@expo/vector-icons";
 import {
 	DarkTheme,
@@ -194,16 +194,18 @@ function MainScreen() {
 	]);
 
 	return (
-		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-			<GestureHandlerRootView>
-				<BottomSheetModalProvider>
-					<Stack screenOptions={{ headerShown: false }}>
-						<Stack.Screen name={"core/(tabs)"} />
-					</Stack>
+		<AudioProvider>
+			<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+				<GestureHandlerRootView>
+					<BottomSheetModalProvider>
+						<Stack screenOptions={{ headerShown: false }}>
+							<Stack.Screen name={"core/(tabs)"} />
+						</Stack>
 
-					<PortalHost />
-				</BottomSheetModalProvider>
-			</GestureHandlerRootView>
-		</ThemeProvider>
+						<PortalHost />
+					</BottomSheetModalProvider>
+				</GestureHandlerRootView>
+			</ThemeProvider>
+		</AudioProvider>
 	);
 }

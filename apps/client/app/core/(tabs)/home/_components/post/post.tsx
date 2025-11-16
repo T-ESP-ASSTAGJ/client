@@ -20,7 +20,7 @@ export default function Post({ post, comments }: PostProps) {
 						created_at={post.created_at}
 						location={post.location}
 					/>
-					<PostBody music={post.music} photo={post.photo} />
+					<PostBody postId={post.id} music={post.music} photo={post.photo} />
 				</View>
 				<PostFooter music={post.music} stats={post.stats} comments={comments} />
 			</View>
