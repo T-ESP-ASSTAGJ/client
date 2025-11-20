@@ -63,10 +63,8 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 		opacity: pauseButtonOpacity.value,
 		transform: [
 			{
-				scale: pauseButtonOpacity.value === 0
-					? 0.8
-					: pauseButtonOpacity.value
-			}
+				scale: pauseButtonOpacity.value === 0 ? 0.8 : pauseButtonOpacity.value,
+			},
 		],
 	}));
 
