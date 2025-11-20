@@ -19,9 +19,25 @@ type PostBodyProps = {
 export default function PostBody({ postId, music, photo }: PostBodyProps) {
 	const { playPost, pausePost, isPlaying: isPostPlaying } = useAudio();
 	const coverProgress = useSharedValue(0);
+	const pauseButtonOpacity = useSharedValue(0);
+	const [userPaused, setUserPaused] = React.useState(false);
 	const FILL = StyleSheet.absoluteFillObject;
 
 	const isPlaying = isPostPlaying(postId);
+
+	useEffect(() => {
+		if (isPlaying) {
+			setUserPaused(false);
+		}
+	}, [isPlaying]);
+
+	useEffect(() => {
+		if (userPaused) {
+			pauseButtonOpacity.value = withTiming(1, { duration: 300 });
+		} else {
+			pauseButtonOpacity.value = withTiming(0, { duration: 200 });
+		}
+	}, [userPaused]);
 
 	const toggleCover = () => {
 		coverProgress.value =
@@ -43,13 +59,26 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 		opacity: coverProgress.value,
 	}));
 
+	const pauseButtonStyle = useAnimatedStyle(() => ({
+		opacity: pauseButtonOpacity.value,
+		transform: [
+			{
+				scale: pauseButtonOpacity.value === 0
+					? 0.8
+					: pauseButtonOpacity.value
+			}
+		],
+	}));
+
 	const togglePlayPause = async () => {
 		if (!music.preview_url) return;
 
 		if (isPlaying) {
 			await pausePost(postId);
+			setUserPaused(true);
 		} else {
 			await playPost(postId, music.preview_url);
+			setUserPaused(false);
 		}
 	};
 
@@ -88,6 +117,28 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 					<Image style={FILL} source={photo} alt="Photo" contentFit="cover" />
 				</Animated.View>
 
+				{music.preview_url && userPaused && (
+					<Animated.View
+						style={[
+							{
+								position: "absolute",
+								alignSelf: "center",
+								top: "42%",
+								width: 60,
+								height: 60,
+								borderRadius: 30,
+								alignItems: "center",
+								justifyContent: "center",
+								backgroundColor: "rgba(0, 0, 0, 0.6)",
+							},
+							pauseButtonStyle,
+						]}
+						pointerEvents="none"
+					>
+						<Ionicons name={"pause"} size={32} color="#fff" />
+					</Animated.View>
+				)}
+
 				{music.preview_url && (
 					<Pressable
 						onPress={togglePlayPause}
@@ -98,16 +149,9 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 							width: 60,
 							height: 60,
 							borderRadius: 30,
-							alignItems: "center",
-							justifyContent: "center",
-							backgroundColor: !isPlaying ? "rgba(0, 0, 0, 0.6)" : "",
 						}}
 						hitSlop={15}
-					>
-						{!isPlaying ? (
-							<Ionicons name={"pause"} size={32} color="#fff" />
-						) : null}
-					</Pressable>
+					/>
 				)}
 
 				{isPlaying && (
