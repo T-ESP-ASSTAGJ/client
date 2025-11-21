@@ -1,4 +1,5 @@
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { fontFamily } from "@/dimensions/font-family";
 import { cn } from "@/lib/utils";
 import type { SFSymbol } from "expo-symbols";
 import * as React from "react";
@@ -32,8 +33,11 @@ const Input = React.forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
 				>
 					{label ? (
 						<Text
-							className={"px-3 pt-2 text-base font-bold text-muted-foreground"}
-							style={{ fontFamily: "Urbanist-semibold" }}
+							className={cn(
+								"px-3 pt-2 text-base font-bold text-muted-foreground",
+								label ? "max-h-10 opacity-100" : "max-h-0 opacity-0",
+							)}
+							style={{ fontFamily: fontFamily.semibold }}
 						>
 							{label}
 						</Text>
@@ -53,10 +57,11 @@ const Input = React.forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
 
 						<TextInput
 							ref={ref}
+							style={{ fontFamily: fontFamily.semibold }}
 							className={cn(
 								"text-primary-foreground flex-1 web:flex h-10 native:h-11 web:w-full px-3 web:py-2 native:text-xl text-base native:leading-[1.25] web:ring-offset-background transition-all duration-300 file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2 lg:text-sm",
 								props.editable === false && "web:cursor-not-allowed opacity-50",
-								label ? "" : "p-2 mx-4",
+								label ? "" : "p-2 px-3",
 								className,
 							)}
 							placeholderTextColor={"#6B7280"}
