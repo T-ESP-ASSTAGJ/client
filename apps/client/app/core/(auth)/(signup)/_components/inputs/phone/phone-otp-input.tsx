@@ -18,13 +18,17 @@ export default function PhoneOtpInput({
 	error,
 	autoFocus = true,
 }: OTPInputProps) {
-	const [otp, setOtp] = useState(value);
-	const [focusedIndex, setFocusedIndex] = useState(autoFocus ? 0 : -1);
+	const [digits, setDigits] = useState<string[]>(Array(length).fill(""));
 	const inputRefs = useRef<TextInput[]>([]);
 
 	useEffect(() => {
-		setOtp(value);
-	}, [value]);
+		// Initialize digits from value prop
+		const newDigits = Array(length).fill("");
+		for (let i = 0; i < Math.min(value.length, length); i++) {
+			newDigits[i] = value[i];
+		}
+		setDigits(newDigits);
+	}, [value, length]);
 
 	useEffect(() => {
 		if (autoFocus && inputRefs.current[0]) {
@@ -32,88 +36,68 @@ export default function PhoneOtpInput({
 		}
 	}, [autoFocus]);
 
-	const handleChangeText = (input: string, index: number) => {
-		const numericValue = input.replace(/[^0-9]/g, "");
+	const handleChangeText = (text: string, index: number) => {
+		const digit = text.replace(/[^0-9]/g, "").slice(-1); // Only last digit
 
-		if (!numericValue) {
-			const newOtp = otp.split("");
-			newOtp[index] = "";
-			const result = newOtp.join("");
-			setOtp(result);
-			onChangeText?.(result);
-			return;
-		}
+		const newDigits = [...digits];
+		newDigits[index] = digit;
+		setDigits(newDigits);
 
-		const newOtp = otp.split("");
-
-		if (numericValue.length > 1) {
-			const availableSlots = length - index;
-			const textToInsert = numericValue.slice(0, availableSlots);
-
-			for (let i = 0; i < textToInsert.length; i++) {
-				newOtp[index + i] = textToInsert[i];
-			}
-
-			const nextIndex = Math.min(index + textToInsert.length, length - 1);
-			inputRefs.current[nextIndex]?.focus();
-		}
-
-		if (numericValue.length === 1) {
-			newOtp[index] = numericValue;
-			if (index < length - 1) {
-				inputRefs.current[index + 1]?.focus();
-			}
-		}
-
-		const result = newOtp.join("");
-		setOtp(result);
+		const result = newDigits.join("");
 		onChangeText?.(result);
 
-		if (result.length === length) {
+		// Auto-focus next input
+		if (digit && index < length - 1) {
+			inputRefs.current[index + 1]?.focus();
+		}
+
+		// Check if complete
+		if (newDigits.every((d) => d)) {
 			onComplete(result);
-			if (numericValue.length > 1) inputRefs.current[length - 1]?.blur();
 		}
 	};
 
 	const handleKeyPress = (key: string, index: number) => {
-		if (key === "Backspace" && !otp[index] && index > 0) {
-			inputRefs.current[index - 1]?.focus();
+		if (key === "Backspace") {
+			const newDigits = [...digits];
+
+			if (digits[index]) {
+				// Clear current digit only
+				newDigits[index] = "";
+				setDigits(newDigits);
+				onChangeText?.(newDigits.join(""));
+			} else if (index > 0) {
+				// Move to previous input if current is empty
+				inputRefs.current[index - 1]?.focus();
+			}
 		}
-	};
-
-	const handleFocus = (index: number) => {
-		setFocusedIndex(index);
-	};
-
-	const handleBlur = () => {
-		setFocusedIndex(-1);
 	};
 
 	return (
 		<View className="w-full">
-			<View className="mb-4 flex flex-row justify-center gap-8">
-				{Array.from({ length }, (_, index) => (
+			<View className="mb-4 flex flex-row gap-8">
+				{digits.map((digit, index) => (
 					<TextInput
 						inputMode={"numeric"}
 						key={`otp-${index}`}
 						ref={(ref) => {
 							if (ref) inputRefs.current[index] = ref;
 						}}
-						value={otp[index] || ""}
+						value={digit}
 						onChangeText={(text) => handleChangeText(text, index)}
 						onKeyPress={({ nativeEvent }) =>
 							handleKeyPress(nativeEvent.key, index)
 						}
-						onFocus={() => handleFocus(index)}
-						onBlur={handleBlur}
 						keyboardType="number-pad"
 						textContentType="oneTimeCode"
 						autoComplete="sms-otp"
-						maxLength={length}
+						selectTextOnFocus
+						cursorColor={null}
+						selectionColor={null}
+						maxLength={1}
 						caretHidden={true}
-						cursorColor="transparent"
-						selectionColor="transparent"
-						className={`h-6 w-6 transform rounded-2xl text-center font-bold text-3xl text-primary-foreground transition-transform duration-300 ease-out ${otp[index] ? "bg-transparent" : "bg-muted-foreground"}`}
+						textAlign={"center"}
+						className={`h-6 w-6 transform rounded-2xl font-bold text-3xl text-primary-foreground transition-transform duration-300 ease-out ${digit ? "bg-transparent" : "bg-muted-foreground"}`}
 					/>
 				))}
 			</View>
