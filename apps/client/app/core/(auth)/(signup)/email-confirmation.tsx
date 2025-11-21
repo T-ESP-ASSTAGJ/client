@@ -1,20 +1,34 @@
-import RegisterFooter from "@/app/core/(auth)/(signup)/_components/register-footer";
+import PhoneOtpInput from "@/app/core/(auth)/(signup)/_components/inputs/phone/phone-otp-input";
 import RegisterTimer from "@/app/core/(auth)/(signup)/_components/register-timer";
-import { Button } from "@/components/rnr-ui/button";
 import { Text } from "@/components/rnr-ui/text";
 import { fontFamily } from "@/dimensions/font-family";
 import { useRegistrationStore } from "@/stores/use-registry-store";
+import { router } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Linking, View } from "react-native";
+import { Alert, View } from "react-native";
 
 export default function EmailConfirmation() {
-	const { formState } = useRegistrationStore();
+	const { formState, setFormState, nextStep } = useRegistrationStore();
+	const [otp, setOtp] = useState("");
 	const email = formState.email;
-	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState("");
+
+	const handleOTPComplete = async (code: string) => {
+		try {
+			await new Promise((resolve) => setTimeout(resolve, 1500));
+			if (code === "123456") {
+				setFormState((prev) => ({ ...prev, isEmailConfirmed: true }));
+				const next = nextStep();
+				if (next) router.push(next);
+			} else {
+				setError("Invalid verification code. Please try again.");
+			}
+		} catch (err) {
+			setError("Verification failed. Please try again.");
+		}
+	};
 
 	const handleResendEmail = async () => {
-		setIsLoading(true);
-
 		try {
 			// TODO: Replace with actual API call
 			await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -28,8 +42,6 @@ export default function EmailConfirmation() {
 				"Error",
 				"Failed to resend confirmation email. Please try again.",
 			);
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
@@ -55,6 +67,16 @@ export default function EmailConfirmation() {
 					>
 						{email}
 					</Text>
+				</View>
+				<View className="mt-10 w-full">
+					<PhoneOtpInput
+						length={6}
+						onComplete={handleOTPComplete}
+						onChangeText={setOtp}
+						value={otp}
+						error={error}
+						autoFocus={true}
+					/>
 				</View>
 			</View>
 

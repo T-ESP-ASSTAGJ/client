@@ -1,5 +1,4 @@
 import PhoneOtpInput from "@/app/core/(auth)/(signup)/_components/inputs/phone/phone-otp-input";
-import RegisterFooter from "@/app/core/(auth)/(signup)/_components/register-footer";
 import RegisterTimer from "@/app/core/(auth)/(signup)/_components/register-timer";
 import { Text } from "@/components/rnr-ui/text";
 import { fontFamily } from "@/dimensions/font-family";
@@ -22,6 +21,7 @@ export default function PhoneConfirmation() {
 			await new Promise((resolve) => setTimeout(resolve, 1500));
 			if (code === "123456") {
 				setFormState((prev) => ({ ...prev, isPhoneConfirmed: true }));
+
 				const next = nextStep();
 				if (next) router.push(next);
 			} else {

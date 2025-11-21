@@ -24,6 +24,7 @@ export interface RegistrationState {
 	phoneNumber: string;
 	isPhoneConfirmed: boolean;
 	email: string;
+	isEmailConfirmed: boolean;
 	username: string;
 	currentStep: number;
 }
@@ -47,6 +48,7 @@ const initialFormState: RegistrationState = {
 	phoneNumber: "",
 	isPhoneConfirmed: false,
 	email: "",
+	isEmailConfirmed: false,
 	username: "",
 	currentStep: 0,
 };
