@@ -39,7 +39,8 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1483412033650-1015ddeb83d1?q=80&w=1200&auto=format&fit=crop", // cover route/voyage
 			release_date: "2023-02-13T00:00:00Z",
-			preview_url: null,
+			preview_url:
+				"https://cdn.pixabay.com/audio/2025/04/29/audio_8a0eeb424c.mp3",
 			streaming_links: {
 				deezer: "https://www.deezer.com/track/def789",
 			},
@@ -64,7 +65,8 @@ export const mock_posts = [
 			music_cover:
 				"https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop", // pochette douce/bois
 			release_date: "2021-06-20T00:00:00Z",
-			preview_url: null,
+			preview_url:
+				"https://cdn.pixabay.com/audio/2025/06/04/audio_cdce856ddb.mp3",
 			streaming_links: { spotify: "https://open.spotify.com/track/lofi001" },
 		},
 		description: "Matin studieux, cappuccino à la main ☕",

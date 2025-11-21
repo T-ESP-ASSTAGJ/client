@@ -3,6 +3,7 @@ import type {
 	IPost,
 	IUserPostsResponse,
 } from "@/app/core/(tabs)/home/_types/post.types";
+import { useAudio } from "@/components/Audio-context";
 import { MainView } from "@/components/ui/MainView";
 import { HeaderAuth } from "@/components/ui/header/header-auth";
 import { mock_comments } from "@/mock-data/comment";
@@ -21,6 +22,7 @@ import { Platform, RefreshControl, Text, View } from "react-native";
 const PAGE_SIZE = 3;
 
 export default function HomePage() {
+	const { stopCurrentPost, playPost } = useAudio();
 	const [posts, setPosts] = useState<IUserPostsResponse>({
 		posts: [],
 		pagination: { page: 1, limit: 0, has_next: false, last_post_id: 0 },
@@ -33,6 +35,9 @@ export default function HomePage() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [itemHeight, setItemHeight] = useState(0);
+	const [visiblePostIndex, setVisiblePostIndex] = useState(0);
+	const previousPostIndexRef = useRef<number>(0);
+	const hasInitializedRef = useRef<boolean>(false);
 
 	useEffect(() => {
 		setPosts({
@@ -44,6 +49,19 @@ export default function HomePage() {
 		setVisibleCount(PAGE_SIZE);
 		setLoading(false);
 	}, []);
+
+	useEffect(() => {
+		if (posts.posts.length > 0 && !hasInitializedRef.current) {
+			hasInitializedRef.current = true;
+
+			if (posts.posts[0]?.music?.preview_url) {
+				const timer = setTimeout(() => {
+					playPost(posts.posts[0].id, posts.posts[0].music.preview_url);
+				}, 500);
+				return () => clearTimeout(timer);
+			}
+		}
+	}, [posts.posts.length, playPost]);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -63,6 +81,30 @@ export default function HomePage() {
 		[visibleCount, posts.posts],
 	);
 
+	useEffect(() => {
+		if (!hasInitializedRef.current && visiblePostIndex === 0) {
+			return;
+		}
+
+		if (visiblePostIndex === previousPostIndexRef.current) {
+			return;
+		}
+
+		const currentPost = data[visiblePostIndex];
+		previousPostIndexRef.current = visiblePostIndex;
+		stopCurrentPost();
+
+		if (currentPost?.music?.preview_url) {
+			const timer = setTimeout(() => {
+				playPost(currentPost.id, currentPost.music.preview_url);
+			}, 150);
+
+			return () => {
+				clearTimeout(timer);
+			};
+		}
+	}, [visiblePostIndex, data, stopCurrentPost, playPost]);
+
 	const canLoadMore = visibleCount < (posts?.posts.length ?? 0);
 
 	const loadMore = () => {
@@ -75,6 +117,21 @@ export default function HomePage() {
 		console.log("loadMore called");
 		isLoadingMoreRef.current = false;
 	};
+
+	const onViewableItemsChanged = useCallback(({ viewableItems }: any) => {
+		if (viewableItems.length > 0) {
+			const firstVisibleItem = viewableItems[0];
+			const index = firstVisibleItem.index;
+			if (index !== null) {
+				setVisiblePostIndex(index);
+			}
+		}
+	}, []);
+
+	const viewabilityConfig = useRef({
+		itemVisiblePercentThreshold: 50,
+		minimumViewTime: 100,
+	}).current;
 
 	return (
 		<MainView safeArea disableTouchableWrapper={true}>
@@ -90,7 +147,7 @@ export default function HomePage() {
 					<FlashList<IPost>
 						data={data ?? []}
 						keyExtractor={(item) => item.id.toString()}
-						renderItem={({ item }) => (
+						renderItem={({ item, index }) => (
 							<View
 								onLayout={(e) => {
 									if (!itemHeight) {
@@ -125,6 +182,8 @@ export default function HomePage() {
 						}}
 						onEndReachedThreshold={0.8}
 						onEndReached={loadMore}
+						onViewableItemsChanged={onViewableItemsChanged}
+						viewabilityConfig={viewabilityConfig}
 						contentContainerStyle={{}}
 						ListFooterComponent={
 							canLoadMore ? (
