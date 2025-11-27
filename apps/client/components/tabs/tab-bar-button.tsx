@@ -1,4 +1,3 @@
-import type React from "react";
 import { ChatIcon } from "@/assets/svg/tab-icons/chat-icon";
 import { CompasIcon } from "@/assets/svg/tab-icons/compas-icon";
 import { FriendsIcon } from "@/assets/svg/tab-icons/friends-icon";
@@ -14,7 +13,6 @@ import Animated, {
 	interpolate,
 	withTiming,
 } from "react-native-reanimated";
-import {PlusCircleIcon} from "lucide-react-native";
 
 interface TabBarButtonProps extends PressableProps {
 	isFocused: boolean;

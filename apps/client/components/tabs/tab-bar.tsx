@@ -62,9 +62,6 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 					case "friends":
 						displayLabel = "Friends";
 						break;
-					case "post":
-						displayLabel = "";
-						break;
 					case "chats":
 						displayLabel = "Chats";
 						break;
