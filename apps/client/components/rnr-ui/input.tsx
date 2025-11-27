@@ -23,18 +23,17 @@ const Input = React.forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
 			<>
 				<View
 					className={cn(
-						"w-full rounded-2xl bg-input py-1",
+						"w-full rounded-2xl bg-input py-px",
 						props.error
 							? "border border-red-500"
 							: "border border-muted-foreground/20",
-						label ? "pb-1.5" : "",
 						containerClassName,
 					)}
 				>
 					{label ? (
 						<Text
 							className={cn(
-								"px-3 pt-2 text-base font-bold text-muted-foreground",
+								"px-3 pt-1.5 text-base font-bold text-muted-foreground",
 								label ? "max-h-10 opacity-100" : "max-h-0 opacity-0",
 							)}
 							style={{ fontFamily: fontFamily.semibold }}
@@ -57,11 +56,10 @@ const Input = React.forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
 
 						<TextInput
 							ref={ref}
-							style={{ fontFamily: fontFamily.semibold }}
+							style={{ fontFamily: fontFamily.medium }}
 							className={cn(
-								"text-primary-foreground flex-1 web:flex h-10 native:h-11 web:w-full px-3 web:py-2 native:text-xl text-base native:leading-[1.25] web:ring-offset-background transition-all duration-300 file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2 lg:text-sm",
+								"text-primary-foreground flex-1 web:flex h-12 px-3 web:w-full native:text-lg native:leading-[1.25] transition-all duration-300 file:border-0 file:bg-transparent file:font-medium web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2",
 								props.editable === false && "web:cursor-not-allowed opacity-50",
-								label ? "" : "p-2 px-3",
 								className,
 							)}
 							placeholderTextColor={"#6B7280"}

@@ -15,7 +15,7 @@ type HeaderAuthProps = {
 
 export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 	const redirectToProfile = () => {
-		router.push("/core/profile/notifications");
+		router.push("/profile/notifications");
 	};
 
 	return (

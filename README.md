@@ -18,13 +18,13 @@
 First, install the dependencies:
 
 ```bash
-pnpm install
+make install
 ```
 
 Then, run the development server:
 
 ```bash
-pnpm dev
+make start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the web application.
