@@ -1,8 +1,10 @@
-import type React from "react";
 import { ChatIcon } from "@/assets/svg/tab-icons/chat-icon";
 import { CompasIcon } from "@/assets/svg/tab-icons/compas-icon";
 import { FriendsIcon } from "@/assets/svg/tab-icons/friends-icon";
 import { HomeIcon } from "@/assets/svg/tab-icons/home-icon";
+import * as Haptics from "expo-haptics";
+import { PlusCircleIcon } from "lucide-react-native";
+import type React from "react";
 import { useEffect, useState } from "react";
 import { Pressable, type PressableProps, StyleSheet, Text } from "react-native";
 import Animated, {
@@ -11,7 +13,6 @@ import Animated, {
 	interpolate,
 	withTiming,
 } from "react-native-reanimated";
-import {PlusCircleIcon} from "lucide-react-native";
 
 interface TabBarButtonProps extends PressableProps {
 	isFocused: boolean;
@@ -117,11 +118,12 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 		<Pressable
 			{...rest}
 			style={styles.container}
-			className={`transition-all duration-300 ${buttonIsPressed ? "scale-90" : "scale-100 pb-6"}`}
+			className={`transition-all duration-300 pb-6 ${buttonIsPressed ? "scale-90" : "scale-100"}`}
 			onPressIn={() => {
 				/*if(user?.preferences?.haptic_touch) {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                 }*/
+				Haptics.selectionAsync();
 				setButtonIsPressed(true);
 			}}
 			onPressOut={() => setButtonIsPressed(false)}

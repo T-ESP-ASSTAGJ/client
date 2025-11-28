@@ -56,11 +56,11 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 					case "explore":
 						displayLabel = "Discover";
 						break;
-					case "friends":
-						displayLabel = "Friends";
-						break;
 					case "post":
 						displayLabel = "";
+						break;
+					case "friends":
+						displayLabel = "Friends";
 						break;
 					case "chats":
 						displayLabel = "Chats";

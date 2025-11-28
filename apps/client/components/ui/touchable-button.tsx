@@ -113,7 +113,9 @@ export const TouchableButton = forwardRef<any, TouchableButtonProps>(
 					)}
 				>
 					{isLoading ? (
-						<ActivityIndicator />
+						<View className={"w-full flex justify-center items-center"}>
+							<ActivityIndicator />
+						</View>
 					) : size === "icon" ? (
 						icon
 					) : (

@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 
-import { AudioProvider } from "@/components/Audio-context";
 import { useUserStore } from "@/stores/use-user-store";
+
 import { FontAwesome } from "@expo/vector-icons";
 import {
 	DarkTheme,
@@ -12,6 +12,7 @@ import {
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
+import { AudioProvider } from "@/contexts/audio-context";
 import { fontFamily } from "@/dimensions/font-family";
 import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
@@ -83,10 +84,9 @@ export default function App() {
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
-			<MainScreen />
-			{/*<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
-
-			</AnimatedSplashScreen>*/}
+			<AnimatedSplashScreen fontsLoaded={fontsLoaded} fontError={fontError}>
+				<MainScreen />
+			</AnimatedSplashScreen>
 		</GestureHandlerRootView>
 	);
 }
@@ -168,17 +168,17 @@ function MainScreen() {
 
 	const hasRedirected = useRef(false);
 
-	useEffect(() => {
+	/*useEffect(() => {
 		if (hasRedirected.current) return;
 
 		const verify = async () => {
 			await initializeUser();
 			hasRedirected.current = true;
-			router.replace("/core/(tabs)/home");
+			router.replace("/branding");
 		};
 
 		verify();
-	}, []);
+	}, []);*/
 
 	/*useEffect(() => {
     console.log("Utilisateur connecté: ", user)
@@ -198,9 +198,7 @@ function MainScreen() {
 			<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
 				<GestureHandlerRootView>
 					<BottomSheetModalProvider>
-						<Stack screenOptions={{ headerShown: false }}>
-							<Stack.Screen name={"core/(tabs)"} />
-						</Stack>
+						<Stack screenOptions={{ headerShown: false }} />
 
 						<PortalHost />
 					</BottomSheetModalProvider>
