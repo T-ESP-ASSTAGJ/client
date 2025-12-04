@@ -20,7 +20,7 @@ const Input = React.forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
 		ref,
 	) => {
 		return (
-			<>
+			<View className={"h-fit w-full"}>
 				<View
 					className={cn(
 						"w-full rounded-2xl bg-input py-px",
@@ -68,12 +68,10 @@ const Input = React.forwardRef<React.ElementRef<typeof TextInput>, InputProps>(
 						/>
 					</View>
 				</View>
-				{props.error ? (
+				{props.error && (
 					<Text className={"text-red-500 mx-2 mt-2"}>{props.errorMessage}</Text>
-				) : (
-					""
 				)}
-			</>
+			</View>
 		);
 	},
 );

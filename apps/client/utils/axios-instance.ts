@@ -1,9 +1,8 @@
-import { forceLogout, refreshAccessToken } from "@/utils/auth-helper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 export const axiosInstance = axios.create({
-	baseURL: "http://192.168.1.125:3001/api/v1",
+	baseURL: "http://10.41.172.95:80/api",
 	timeout: 5000,
 	headers: {
 		"Content-Type": "application/json",
@@ -15,7 +14,7 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
 	async (config) => {
-		const token = await SecureStore.getItemAsync("access_token");
+		const token = await SecureStore.getItemAsync("token");
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}
@@ -24,7 +23,7 @@ axiosInstance.interceptors.request.use(
 	(error) => Promise.reject(error),
 );
 
-axiosInstance.interceptors.response.use(
+/*axiosInstance.interceptors.response.use(
 	async (response) => {
 		if (
 			response.status === 401 &&
@@ -46,11 +45,11 @@ axiosInstance.interceptors.response.use(
 				await forceLogout();
 			} catch (err) {
 				console.error("❌ Refresh token échoué");
-				/*await forceLogout();*/
+				/!*await forceLogout();*!/
 			}
 		}
 
 		return response;
 	},
 	(error) => Promise.reject(error),
-);
+);*/

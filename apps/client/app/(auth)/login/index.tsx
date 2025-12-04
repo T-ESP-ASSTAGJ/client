@@ -1,3 +1,4 @@
+import { login } from "@/actions/auth/auth.action";
 import { Input } from "@/components/rnr-ui/input";
 import { MainView } from "@/components/ui/MainView";
 import { Header } from "@/components/ui/header/header";
@@ -12,30 +13,30 @@ import {
 	type TextInput,
 	View,
 } from "react-native";
+import { z } from "zod";
+
+const Email = z.email();
 
 export default function LoginPage() {
-	const [account, setAccount] = useState("");
+	const [email, setEmail] = useState("");
+	const [errorMessage, setErrorMessage] = useState("");
 	const [isFocused, setFocused] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const inputRef = useRef<TextInput>(null);
 
-	/*async function onLogin() {
-        setIsLoading(true);
+	const handleLogin = async () => {
+		setIsLoading(true);
 
-        function loginFail() {
-            inputRef.current.focus();
-            setIsLoading(false);
-            return;
-        }
-        const req = await login(account);
-        if (req.status !== 200) return loginFail();
+		const res = await login(email);
 
-        const getUserAccount = await getUserProfile();
-
-        if (getUserAccount.status !== 200) return loginFail();
-        setIsLoading(false);
-        router.push("/(tabs)/home");
-    }*/
+		if (res.success) {
+			setIsLoading(false);
+			router.push("/home");
+		} else if (res.error) {
+			setIsLoading(false);
+			setErrorMessage(res.error);
+		}
+	};
 
 	return (
 		<MainView safeArea={false}>
@@ -57,24 +58,26 @@ export default function LoginPage() {
 				</View>
 				<View
 					className={
-						"flex justify-between items-center w-3/4 h-3/5 mx-auto mt-12"
+						"flex justify-between items-center w-5/6 h-3/5 mx-auto mt-12"
 					}
 				>
 					<Input
-						className={"transition delay-150 duration-300 ease-in-out"}
+						className={"mx-auto transition delay-150 duration-300 ease-in-out"}
 						ref={inputRef}
-						value={account}
-						onChangeText={setAccount}
+						value={email}
+						onChangeText={setEmail}
 						placeholder={"user@example.com"}
 						label={"Email"}
 						onFocus={() => setFocused(true)}
 						onBlur={() => setFocused(false)}
+						error={errorMessage !== ""}
+						errorMessage={errorMessage}
 					/>
 
 					<TouchableButton
 						variant={"primary"}
-						disabled={account.length === 0}
-						onPress={() => setIsLoading(true)}
+						disabled={!Email.safeParse(email).success}
+						onPress={handleLogin}
 						content={"Log in"}
 						isLoading={isLoading}
 					/>

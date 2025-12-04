@@ -10,6 +10,7 @@ import { View } from "react-native";
 
 export default function AuthPage() {
 	const { getCurrentStep } = useRegistrationStore();
+
 	function onPress() {
 		const currentStep = getCurrentStep();
 		if (!currentStep) return;
@@ -84,7 +85,7 @@ export default function AuthPage() {
 								className={
 									"ml-2 font-semibold text-primary-foreground underline"
 								}
-								href={"/home"}
+								href={"/login"}
 							>
 								{"Login"}
 							</Link>
