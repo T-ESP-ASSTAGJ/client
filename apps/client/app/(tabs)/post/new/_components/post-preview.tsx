@@ -1,5 +1,5 @@
-import type { ITrack } from "@/app/(tabs)/home/_types/post.types";
 import { useAudio } from "@/contexts/audio-context";
+import type { ITrack } from "@/types/post/post.types";
 import { Image } from "expo-image";
 import {
 	CameraIcon,

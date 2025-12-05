@@ -1,7 +1,7 @@
 import { getTracks } from "@/actions/post/post.action";
-import type { ITrack } from "@/app/(tabs)/home/_types/post.types";
 import { Input } from "@/components/rnr-ui/input";
 import { useAudio } from "@/contexts/audio-context";
+import type { ITrack } from "@/types/post/post.types";
 import { PauseCircle, PlayCircle } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
 import {

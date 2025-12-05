@@ -20,9 +20,9 @@ export default function Post({ post, comments }: PostProps) {
 						created_at={"22/11/2025"}
 						location={post.location}
 					/>
-					<PostBody postId={post.id} music={post.music} photo={post.photo} />
+					<PostBody postId={post.id} music={post.track} photo={post.photoUrl} />
 				</View>
-				<PostFooter music={post.music} stats={post.stats} comments={comments} />
+				<PostFooter music={post.track} stats={post.stats} comments={comments} />
 			</View>
 		</>
 	);
