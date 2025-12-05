@@ -1,8 +1,15 @@
 import { getTracks } from "@/actions/post/post.action";
 import type { ITrack } from "@/app/(tabs)/home/_types/post.types";
 import { Input } from "@/components/rnr-ui/input";
-import { useEffect, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import {
+	ActivityIndicator,
+	FlatList,
+	Image,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native";
 
 interface MusicPickerProps {
 	onMusicSelect: (music: ITrack) => void;
@@ -15,17 +22,55 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 		"collection",
 	);
 	const [tracks, setTracks] = useState<ITrack[]>([]);
+	const [page, setPage] = useState(1);
+	const [isLoading, setIsLoading] = useState(false);
+	const [isLoadingMore, setIsLoadingMore] = useState(false);
+	const [hasNextPage, setHasNextPage] = useState(true);
 
-	const fetchTracksData = async () => {
-		try {
-			const response = await getTracks();
-			setTracks(response.data);
-		} catch (err) {}
-	};
+	const fetchTracksData = useCallback(
+		async (pageNum: number, isLoadMore = false) => {
+			if (isLoadMore && (!hasNextPage || isLoadingMore)) return;
+
+			try {
+				if (isLoadMore) {
+					setIsLoadingMore(true);
+				} else {
+					setIsLoading(true);
+				}
+
+				const response = await getTracks(pageNum);
+
+				if (response.success) {
+					const newTracks = response.data;
+
+					if (newTracks.length === 0) {
+						setHasNextPage(false);
+					} else {
+						setTracks((prev) =>
+							isLoadMore ? [...prev, ...newTracks] : newTracks,
+						);
+						setPage(pageNum);
+					}
+				}
+			} catch (err) {
+				console.error("Failed to fetch tracks:", err);
+			} finally {
+				setIsLoading(false);
+				setIsLoadingMore(false);
+			}
+		},
+		[hasNextPage, isLoadingMore],
+	);
 
 	useEffect(() => {
-		fetchTracksData();
+		fetchTracksData(1);
 	}, []);
+
+	const loadMoreTracks = () => {
+		if (!isLoadingMore && hasNextPage) {
+			fetchTracksData(page + 1, true);
+		}
+	};
 
 	const filteredMusic = tracks.filter(
 		(music) =>
@@ -33,7 +78,7 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 			music.artist.name.toLowerCase().includes(searchQuery.toLowerCase()),
 	);
 
-	const renderMusicItem = ({ item }: { item: ITrack; index: number }) => (
+	const renderMusicItem = ({ item }: { item: ITrack }) => (
 		<TouchableOpacity
 			onPress={() => onMusicSelect(item)}
 			className="flex-row items-center px-4 py-3 active:bg-white/5"
@@ -63,6 +108,33 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 			</TouchableOpacity>
 		</TouchableOpacity>
 	);
+
+	const renderFooter = () => {
+		if (!isLoadingMore) return null;
+
+		return (
+			<View className="py-4 items-center">
+				<ActivityIndicator size="small" color="#ffffff" />
+				<Text className="text-gray-500 mt-2">Loading more...</Text>
+			</View>
+		);
+	};
+
+	const renderEmpty = () => {
+		if (isLoading) {
+			return (
+				<View className="flex-1 items-center justify-center py-10">
+					<ActivityIndicator size="large" color="#ffffff" />
+				</View>
+			);
+		}
+
+		return (
+			<View className="flex-1 items-center justify-center py-10">
+				<Text className="text-gray-500">No tracks found</Text>
+			</View>
+		);
+	};
 
 	return (
 		<View className="flex-1 bg-[#181818]">
@@ -104,8 +176,9 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 					</TouchableOpacity>
 				</View>
 			</View>
+
 			<View className="px-4 py-3 border-b border-gray-800">
-				<View className="flex-row items-center  rounded-lg px-3 py-2">
+				<View className="flex-row items-center rounded-lg px-3 py-2">
 					<Input
 						value={searchQuery}
 						iconLeft={"magnifyingglass"}
@@ -118,16 +191,22 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 				</View>
 			</View>
 
-			<FlatList
-				data={filteredMusic}
-				renderItem={renderMusicItem}
-				keyExtractor={(item, index) => `${item.title}-${item.artist}-${index}`}
-				showsVerticalScrollIndicator={false}
-				contentContainerStyle={{ paddingBottom: 20 }}
-				ItemSeparatorComponent={() => (
-					<View className="h-[1px] bg-gray-800/50 ml-16" />
-				)}
-			/>
+			<View className="h-2/3">
+				<FlatList
+					data={filteredMusic}
+					renderItem={renderMusicItem}
+					keyExtractor={(item, index) => `${item.id || item.title}-${index}`}
+					showsVerticalScrollIndicator={false}
+					contentContainerStyle={{ paddingBottom: 80 }}
+					ItemSeparatorComponent={() => (
+						<View className="h-[1px] bg-gray-800/50 ml-16" />
+					)}
+					onEndReached={loadMoreTracks}
+					onEndReachedThreshold={0.5}
+					ListFooterComponent={renderFooter}
+					ListEmptyComponent={renderEmpty}
+				/>
+			</View>
 		</View>
 	);
 }

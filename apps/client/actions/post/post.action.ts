@@ -10,8 +10,8 @@ export async function createPost(payload: ICreatePost) {
 	};
 }
 
-export async function getTracks() {
-	const res = await axiosInstance.get("/tracks");
+export async function getTracks(page = 1) {
+	const res = await axiosInstance.get(`/tracks?page=${page}`);
 	return {
 		success: true as const,
 		status: res.status,

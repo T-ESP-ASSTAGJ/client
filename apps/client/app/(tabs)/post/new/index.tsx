@@ -204,7 +204,6 @@ export default function PostPage() {
 			const userId = 1;
 			//TODO: fix with proper user ui handling logic
 
-			console.log(post.track);
 			const payload = {
 				userId: userId,
 				trackId: post.track.id,
@@ -224,7 +223,6 @@ export default function PostPage() {
 				setIsPublishing(false);
 			}
 		} catch (error) {
-			console.log(error);
 			Alert.alert("Error", "Failed to publish capsule. Please try again.");
 		} finally {
 			setIsPublishing(false);
@@ -380,8 +378,9 @@ export default function PostPage() {
 				ref={musicSheetRef}
 				radius={23}
 				snapPoints={["90%"]}
-				locked={false}
+				locked={true}
 				backgroundColor="#181818"
+				enableContentPanningGesture={false}
 			/>
 		</MainView>
 	);
