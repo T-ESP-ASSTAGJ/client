@@ -60,14 +60,14 @@ export default function HomePage() {
 		}
 	}, [feed.length, playPost]);*/
 
-	const onRefresh = useCallback(() => {
-		setRefreshing(true);
-		console.log("🔄 refresh feed…");
-		setTimeout(() => {
-			setRefreshing(false);
-			console.log("✅ refresh terminé");
-		}, 1000);
-	}, []);
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        console.log("🔄 refresh feed…");
+        setTimeout(() => {
+            setRefreshing(false);
+            console.log("✅ refresh terminé");
+        }, 1000);
+    }, []);
 
 	const data = useMemo(
 		() => (feed ?? []).slice(0, Math.min(visibleCount, feed.length ?? 0)),
@@ -79,13 +79,13 @@ export default function HomePage() {
 			return;
 		}
 
-		if (visiblePostIndex === previousPostIndexRef.current) {
-			return;
-		}
+        if (visiblePostIndex === previousPostIndexRef.current) {
+            return;
+        }
 
-		const currentPost = data[visiblePostIndex];
-		previousPostIndexRef.current = visiblePostIndex;
-		stopCurrentPost();
+        const currentPost = data[visiblePostIndex];
+        previousPostIndexRef.current = visiblePostIndex;
+        stopCurrentPost();
 
 		if (currentPost?.track?.preview_url) {
 			const timer = setTimeout(() => {
@@ -100,10 +100,10 @@ export default function HomePage() {
 
 	const canLoadMore = visibleCount < (feed.length ?? 0);
 
-	const loadMore = () => {
-		if (!hasScrolledRef.current) return;
-		if (isLoadingMoreRef.current) return;
-		if (!canLoadMore) return;
+    const loadMore = () => {
+        if (!hasScrolledRef.current) return;
+        if (isLoadingMoreRef.current) return;
+        if (!canLoadMore) return;
 
 		isLoadingMoreRef.current = true;
 		setVisibleCount((c) => Math.min(c + PAGE_SIZE, feed.length));
@@ -111,24 +111,24 @@ export default function HomePage() {
 		isLoadingMoreRef.current = false;
 	};
 
-	const onViewableItemsChanged = useCallback(({ viewableItems }: any) => {
-		if (viewableItems.length > 0) {
-			const firstVisibleItem = viewableItems[0];
-			const index = firstVisibleItem.index;
-			if (index !== null) {
-				setVisiblePostIndex(index);
-			}
-		}
-	}, []);
+    const onViewableItemsChanged = useCallback(({viewableItems}: any) => {
+        if (viewableItems.length > 0) {
+            const firstVisibleItem = viewableItems[0];
+            const index = firstVisibleItem.index;
+            if (index !== null) {
+                setVisiblePostIndex(index);
+            }
+        }
+    }, []);
 
-	const viewabilityConfig = useRef({
-		itemVisiblePercentThreshold: 50,
-		minimumViewTime: 100,
-	}).current;
+    const viewabilityConfig = useRef({
+        itemVisiblePercentThreshold: 50,
+        minimumViewTime: 100,
+    }).current;
 
-	return (
-		<MainView safeArea disableTouchableWrapper={true}>
-			<HeaderAuth searchIcon />
+    return (
+        <MainView safeArea disableTouchableWrapper={true}>
+            <HeaderAuth searchIcon/>
 
 			{feed.length > 0 ? (
 				<View
