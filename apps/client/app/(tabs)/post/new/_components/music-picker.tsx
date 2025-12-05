@@ -1,146 +1,46 @@
+import { getTracks } from "@/actions/post/post.action";
+import type { ITrack } from "@/app/(tabs)/home/_types/post.types";
 import { Input } from "@/components/rnr-ui/input";
-import type { IMusic } from "@/types/post/post.types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 interface MusicPickerProps {
-	onMusicSelect: (music: IMusic) => void;
+	onMusicSelect: (music: ITrack) => void;
 	onCancel?: () => void;
 }
-
-const MOCK_MUSIC_DATA: IMusic[] = [
-	{
-		title: "A.C. Milan",
-		artist: "Booba",
-		music_cover: "https://picsum.photos/seed/acmilan1/400/400",
-		release_date: "2023-01-15",
-		preview_url: "https://example.com/preview1.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example1",
-			apple_music: "https://music.apple.com/track/example1",
-		},
-	},
-	{
-		title: "A.C. Milan",
-		artist: "Booba",
-		music_cover: "https://picsum.photos/seed/acmilan2/400/400",
-		release_date: "2023-02-20",
-		preview_url: "https://example.com/preview2.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example2",
-			apple_music: "https://music.apple.com/track/example2",
-		},
-	},
-	{
-		title: "A.C. Milan",
-		artist: "Booba",
-		music_cover: "https://picsum.photos/seed/acmilan3/400/400",
-		release_date: "2023-03-10",
-		preview_url: "https://example.com/preview3.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example3",
-			apple_music: "https://music.apple.com/track/example3",
-		},
-	},
-	{
-		title: "A.C. Milan",
-		artist: "Booba",
-		music_cover: "https://picsum.photos/seed/acmilan4/400/400",
-		release_date: "2023-04-05",
-		preview_url: "https://example.com/preview4.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example4",
-			apple_music: "https://music.apple.com/track/example4",
-		},
-	},
-	{
-		title: "A.C. Milan",
-		artist: "Booba",
-		music_cover: "https://picsum.photos/seed/acmilan5/400/400",
-		release_date: "2023-05-12",
-		preview_url: "https://example.com/preview5.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example5",
-			apple_music: "https://music.apple.com/track/example5",
-		},
-	},
-	{
-		title: "Blinding Lights",
-		artist: "The Weeknd",
-		music_cover: "https://picsum.photos/seed/blinding/400/400",
-		release_date: "2019-11-29",
-		preview_url: "https://example.com/preview6.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example6",
-			apple_music: "https://music.apple.com/track/example6",
-		},
-	},
-	{
-		title: "Save Your Tears",
-		artist: "The Weeknd",
-		music_cover: "https://picsum.photos/seed/tears/400/400",
-		release_date: "2020-03-03",
-		preview_url: "https://example.com/preview7.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example7",
-			apple_music: "https://music.apple.com/track/example7",
-		},
-	},
-	{
-		title: "Starboy",
-		artist: "The Weeknd",
-		music_cover: "https://picsum.photos/seed/starboy/400/400",
-		release_date: "2016-09-21",
-		preview_url: "https://example.com/preview8.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example8",
-			apple_music: "https://music.apple.com/track/example8",
-		},
-	},
-	{
-		title: "DKR",
-		artist: "Booba",
-		music_cover: "https://picsum.photos/seed/dkr/400/400",
-		release_date: "2022-06-10",
-		preview_url: "https://example.com/preview9.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example9",
-			apple_music: "https://music.apple.com/track/example9",
-		},
-	},
-	{
-		title: "Ultra",
-		artist: "Booba",
-		music_cover: "https://picsum.photos/seed/ultra/400/400",
-		release_date: "2021-03-05",
-		preview_url: "https://example.com/preview10.mp3",
-		streaming_links: {
-			spotify: "https://open.spotify.com/track/example10",
-			apple_music: "https://music.apple.com/track/example10",
-		},
-	},
-];
 
 export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [activeTab, setActiveTab] = useState<"search" | "collection">(
 		"collection",
 	);
+	const [tracks, setTracks] = useState<ITrack[]>([]);
 
-	const filteredMusic = MOCK_MUSIC_DATA.filter(
+	const fetchTracksData = async () => {
+		try {
+			const response = await getTracks();
+			setTracks(response.data);
+		} catch (err) {}
+	};
+
+	useEffect(() => {
+		fetchTracksData();
+	}, []);
+
+	const filteredMusic = tracks.filter(
 		(music) =>
 			music.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			music.artist.toLowerCase().includes(searchQuery.toLowerCase()),
+			music.artist.name.toLowerCase().includes(searchQuery.toLowerCase()),
 	);
 
-	const renderMusicItem = ({ item }: { item: IMusic; index: number }) => (
+	const renderMusicItem = ({ item }: { item: ITrack; index: number }) => (
 		<TouchableOpacity
 			onPress={() => onMusicSelect(item)}
 			className="flex-row items-center px-4 py-3 active:bg-white/5"
 		>
 			<View className="w-12 h-12 rounded-md overflow-hidden mr-3 bg-red-600">
 				<Image
-					source={{ uri: item.music_cover }}
+					source={{ uri: item.coverUrl }}
 					className="w-full h-full"
 					resizeMode="cover"
 				/>
@@ -155,7 +55,7 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 						<Text className="text-white text-[10px] font-bold">E</Text>
 					</View>
 				</View>
-				<Text className="text-gray-400 text-sm mt-0.5">{item.artist}</Text>
+				<Text className="text-gray-400 text-sm mt-0.5">{item.artist.name}</Text>
 			</View>
 
 			<TouchableOpacity className="w-8 h-8 rounded-full border border-gray-600 items-center justify-center">

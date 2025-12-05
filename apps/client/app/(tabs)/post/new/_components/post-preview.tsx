@@ -1,4 +1,4 @@
-import type { IMusic } from "@/types/post/post.types";
+import type { ITrack } from "@/app/(tabs)/home/_types/post.types";
 import { Image } from "expo-image";
 import { CameraIcon, MusicIcon } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
@@ -13,7 +13,7 @@ export default function PostPreview({
 	onMusicPress,
 	onPhotoPress,
 }: {
-	music?: IMusic;
+	music?: ITrack;
 	photo?: string;
 	onMusicPress: () => void;
 	onPhotoPress: () => void;
@@ -45,10 +45,10 @@ export default function PostPreview({
 			>
 				<Animated.View style={[FILL, mainCoverStyle]}>
 					<View className={"h-full items-center justify-center"}>
-						{music ? (
+						{music.coverUrl ? (
 							<Image
 								style={FILL}
-								source={music.music_cover}
+								source={music.coverUrl}
 								alt="Music cover"
 								contentFit="cover"
 							/>

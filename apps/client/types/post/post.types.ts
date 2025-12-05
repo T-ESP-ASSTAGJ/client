@@ -26,6 +26,42 @@ interface IPost {
 	location: string;
 	created_at: string | null;
 	stats: IStats | null;
+	stats: IPostStats;
+	createdAt: string;
+	updatedAt: string;
+}
+
+interface IPostStats {
+	likes: number;
+	comments: number;
+}
+
+interface ITrack {
+	id: number;
+	title: string;
+	coverUrl: string;
+	metadata: ITrackMetadata;
+	artist: IPostArtist;
+	length: number;
+	createdAt: string;
+	updatedAt: string;
+}
+
+interface ITrackMetadata {
+	album: string;
+	duration: number;
+	genre: string;
+	platform: string;
+	platformId: string;
+	externalUrl: string;
+	isrc: string;
+	previewUrl: string;
+	release: string;
+}
+
+interface IPostArtist {
+	id: number;
+	name: string;
 }
 
 interface IUserPost {
@@ -50,6 +86,7 @@ export type {
 	IUserPostsResponse,
 	IPost,
 	IUserPost,
+	ITrack,
 	IPostTrack,
 	IStats,
 	IPagination,

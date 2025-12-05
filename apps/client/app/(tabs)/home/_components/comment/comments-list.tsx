@@ -19,11 +19,11 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Commentary from "@/app/(tabs)/home/_components/comment/commentary";
+import type { ITrack } from "@/app/(tabs)/home/_types/post.types";
 import type {
 	IComment,
 	ICommentResponse,
 } from "@/types/comments/comment.types";
-import type { IMusic } from "@/types/post/post.types";
 
 import {
 	Avatar,
@@ -36,7 +36,7 @@ import { TouchableButton } from "@/components/ui/touchable-button";
 import { getYearFromDate } from "@/helpers/format-date-helper";
 
 interface CommentsProps {
-	music: IMusic;
+	music: ITrack;
 	comments: ICommentResponse;
 }
 
@@ -101,7 +101,7 @@ export default function CommentsList({ music, comments }: CommentsProps) {
 							className="text-white text-lg font-medium"
 							style={{ fontFamily: "Jakarta" }}
 						>
-							{music.artist}
+							{music.artist.name}
 						</Text>
 					</View>
 				</View>
@@ -110,7 +110,7 @@ export default function CommentsList({ music, comments }: CommentsProps) {
 						className="text-white font-medium text-lg"
 						style={{ fontFamily: "Jakarta" }}
 					>
-						{getYearFromDate(music.release_date)}
+						{getYearFromDate(music.metadata.release)}
 					</Text>
 				</View>
 			</View>

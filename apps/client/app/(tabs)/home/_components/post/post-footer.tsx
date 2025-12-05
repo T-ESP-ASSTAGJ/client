@@ -8,7 +8,6 @@ import type { ICommentResponse } from "@/types/comments/comment.types";
 import type { IPostTrack, IStats } from "@/types/post/post.types";
 import {
 	Dot,
-	LucideCircleCheck,
 	MessageCircle,
 	LucideThumbsUp as ThumbUp,
 } from "lucide-react-native";
