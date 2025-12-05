@@ -73,6 +73,7 @@ export function SplashVideo({ onLoaded, onFinish }) {
 }
 
 export default function App() {
+	// Chargez vos polices ici
 	const [fontsLoaded, fontError] = useFonts({
 		[fontFamily.regular]: require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
 		[fontFamily.medium]: require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
@@ -141,11 +142,11 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 			{children}
 			{!isSplashAnimationComplete && (
 				<Animated.View
-					pointerEvents="auto"
+					pointerEvents="none"
 					style={[
 						StyleSheet.absoluteFill,
 						{
-							backgroundColor: "white",
+							backgroundColor: "black",
 							opacity: animation,
 						},
 					]}
@@ -198,12 +199,12 @@ function MainScreen() {
 		};
 	}, []);
 	configureReanimatedLogger({
-		level: ReanimatedLogLevel.error,
+		level: ReanimatedLogLevel.warn,
 		strict: false,
 	});
 
 	LogBox.ignoreLogs([
-		"Sending `onAnimatedValueUpdate` with no listeners registered",
+		"Sending `onAnimatedValueUpdate` with no listeners registered.",
 	]);
 
 	return (
@@ -212,6 +213,7 @@ function MainScreen() {
 				<GestureHandlerRootView>
 					<BottomSheetModalProvider>
 						<Stack screenOptions={{ headerShown: false }} />
+
 						<PortalHost />
 					</BottomSheetModalProvider>
 				</GestureHandlerRootView>

@@ -1,12 +1,11 @@
 import CommentsList from "@/app/(tabs)/home/_components/comment/comments-list";
-import AlertComponent from "@/components/ui/bottom-sheet/alert";
 import {
 	BottomSheetComponent,
 	type BottomSheetComponentRef,
 } from "@/components/ui/bottom-sheet/bottom-sheet-component";
 import { getYearFromDate } from "@/helpers/format-date-helper";
 import type { ICommentResponse } from "@/types/comments/comment.types";
-import type { IMusic, IStats } from "@/types/post/post.types";
+import type { IPostTrack, IStats } from "@/types/post/post.types";
 import {
 	Dot,
 	LucideCircleCheck,
@@ -15,8 +14,9 @@ import {
 } from "lucide-react-native";
 import { useCallback, useRef } from "react";
 import { Pressable, Text, View } from "react-native";
+
 type PostFooterProps = {
-	music: IMusic;
+	music: IPostTrack;
 	stats: IStats;
 	comments: ICommentResponse;
 };
@@ -73,17 +73,18 @@ export default function PostFooter({
 				<View className="flex flex-row items-center justify-between pt-2.5 pr-1 pl-1">
 					<View className="flex flex-row items-center">
 						<Text className="items-center pb-1 font-semibold text-2xl text-white">
-							{music.artist}
+							{music.artist.name}
 						</Text>
 						<Dot className={"items-center"} color="white" size={30} />
 						<Text className="font-medium text-white">{music.title}</Text>
 					</View>
 
 					<Text className="text-muted-foreground">
-						{getYearFromDate(music.release_date)}
+						{/*{getYearFromDate(music.release_date)}*/}
+						2023
 					</Text>
 				</View>
-				<View>
+				{/*<View>
 					<View
 						className={"flex flex-row items-center gap-2 pt-3 pr-1 pb-5 pl-1"}
 					>
@@ -100,16 +101,8 @@ export default function PostFooter({
 							</Text>
 						</View>
 					</View>
-				</View>
+				</View>*/}
 			</Pressable>
-			{/*<BottomSheetComponent*/}
-			{/*    bottomSheetContent={alertComponent}*/}
-			{/*    ref={sheetRef}*/}
-			{/*    radius={64}*/}
-			{/*    snapPoints={["40%"]}*/}
-			{/*    locked={true}*/}
-			{/*    hideHandle={true}*/}
-			{/*/>*/}
 			<BottomSheetComponent
 				bottomSheetContent={commentComponent}
 				ref={sheetRef}

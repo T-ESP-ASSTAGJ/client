@@ -3,30 +3,35 @@ interface IUserPostsResponse {
 	pagination: IPagination;
 }
 
+interface IPostTrack {
+	id: number;
+	title: string;
+	coverUrl: string | null;
+	metadata: {
+		duration: number;
+		genre: string;
+	};
+	artist: {
+		id: number;
+		name: string;
+	};
+}
+
 interface IPost {
 	id: number;
-	user_post: IUserPost;
-	music: IMusic;
-	description: string;
-	photo: string;
+	user: IUserPost;
+	caption: string;
+	photoUrl: string;
+	track: IPostTrack;
 	location: string;
-	created_at: string;
-	stats: IStats;
+	created_at: string | null;
+	stats: IStats | null;
 }
 
 interface IUserPost {
 	id: number;
 	username: string;
-	profile_picture: string;
-}
-
-interface IMusic {
-	title: string;
-	artist: string;
-	music_cover: string;
-	release_date: string;
-	preview_url: string | null;
-	streaming_links: Record<string, string>; // dynamic key (spotify, apple_music, deezer, etc.)
+	profilePicture: string;
 }
 
 interface IStats {
@@ -45,7 +50,7 @@ export type {
 	IUserPostsResponse,
 	IPost,
 	IUserPost,
-	IMusic,
+	IPostTrack,
 	IStats,
 	IPagination,
 };
