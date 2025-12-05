@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import { Search } from "lucide-react-native";
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
 
 type HeaderAuthProps = {
@@ -25,7 +25,7 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 				className,
 			)}
 		>
-			<View className={"flex h-full w-1/6 justify-center items-start"}>
+			<View className={"flex h-full w-1/6 justify-center items-start ml-1"}>
 				<TouchableButton
 					onPress={redirectToProfile}
 					sensory={"light"}
@@ -47,7 +47,7 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 
 			<HeaderTabs />
 
-			<View className={"flex h-full w-1/6 items-center justify-center"}>
+			<View className={"flex h-full w-1/6 items-center justify-center mt-1.5"}>
 				<TouchableButton
 					sensory={"light"}
 					className={"gap-y-1 bg-transparent"}

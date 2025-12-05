@@ -3,7 +3,7 @@ import { Text, TextInput, View } from "react-native";
 
 interface OTPInputProps {
 	length?: number;
-	onComplete: (code: string) => void;
+	onComplete?: (code: string) => void;
 	onChangeText?: (text: string) => void;
 	value?: string;
 	error?: string;

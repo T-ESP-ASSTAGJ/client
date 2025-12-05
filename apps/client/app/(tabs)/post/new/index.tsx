@@ -1,4 +1,3 @@
-import type { IMusic } from "@/app/(tabs)/home/_types/post.types";
 import MusicPicker from "@/app/(tabs)/post/new/_components/music-picker";
 import PhotoPicker from "@/app/(tabs)/post/new/_components/photo-picker";
 import PostPreview from "@/app/(tabs)/post/new/_components/post-preview";
@@ -10,6 +9,7 @@ import {
 	type BottomSheetComponentRef,
 } from "@/components/ui/bottom-sheet/bottom-sheet-component";
 import { Header } from "@/components/ui/header/header";
+import type { IMusic } from "@/types/post/post.types";
 import { BlurView } from "expo-blur";
 import { MapPinIcon, RocketIcon, XIcon } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";

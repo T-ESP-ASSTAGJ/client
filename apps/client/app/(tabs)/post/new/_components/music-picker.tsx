@@ -1,5 +1,5 @@
-import type { IMusic } from "@/app/(tabs)/home/_types/post.types";
 import { Input } from "@/components/rnr-ui/input";
+import type { IMusic } from "@/types/post/post.types";
 import { useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 

@@ -1,8 +1,8 @@
 import PostBody from "@/app/(tabs)/home/_components/post/post-body";
 import PostFooter from "@/app/(tabs)/home/_components/post/post-footer";
 import PostHeader from "@/app/(tabs)/home/_components/post/post-header";
-import type { IPost } from "@/app/(tabs)/home/_types/post.types";
 import type { ICommentResponse } from "@/types/comments/comment.types";
+import type { IPost } from "@/types/post/post.types";
 import { View } from "react-native";
 
 type PostProps = {

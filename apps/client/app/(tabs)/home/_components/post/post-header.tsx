@@ -1,10 +1,10 @@
-import type { IUserPost } from "@/app/(tabs)/home/_types/post.types";
 import {
 	Avatar,
 	AvatarFallback,
 	AvatarImage,
 } from "@/components/rnr-ui/avatar";
 import { formatDate } from "@/helpers/format-date-helper";
+import type { IUserPost } from "@/types/post/post.types";
 import { Pressable, Text, View } from "react-native";
 
 type PostHeaderProps = {

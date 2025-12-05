@@ -19,11 +19,11 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Commentary from "@/app/(tabs)/home/_components/comment/commentary";
-import type { IMusic } from "@/app/(tabs)/home/_types/post.types";
 import type {
 	IComment,
 	ICommentResponse,
 } from "@/types/comments/comment.types";
+import type { IMusic } from "@/types/post/post.types";
 
 import {
 	Avatar,

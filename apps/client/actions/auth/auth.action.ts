@@ -4,6 +4,7 @@ import axios from "axios";
 export async function login(email: string) {
 	try {
 		await axiosInstance.post("/auth/request", { email });
+
 		return { success: true as const };
 	} catch (e) {
 		console.error(e);
@@ -14,9 +15,14 @@ export async function login(email: string) {
 	}
 }
 
-export async function verifyOtp(params: { email: string; code: string }) {
+export async function verifyOtp({
+	email,
+	code,
+}: { email: string; code: string }) {
 	try {
-		const res = await axiosInstance.post("/auth/verify", params);
+		const res = await axiosInstance.post("/auth/verify", { email, code });
+
+		console.log(res);
 
 		return {
 			success: true as const,

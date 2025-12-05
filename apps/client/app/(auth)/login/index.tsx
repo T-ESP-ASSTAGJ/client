@@ -3,6 +3,7 @@ import { Input } from "@/components/rnr-ui/input";
 import { MainView } from "@/components/ui/MainView";
 import { Header } from "@/components/ui/header/header";
 import { TouchableButton } from "@/components/ui/touchable-button";
+import { useAuth } from "@/contexts/auth-context";
 import { fontFamily } from "@/dimensions/font-family";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
@@ -18,7 +19,7 @@ import { z } from "zod";
 const Email = z.email();
 
 export default function LoginPage() {
-	const [email, setEmail] = useState("");
+	const { email, setEmail } = useAuth();
 	const [errorMessage, setErrorMessage] = useState("");
 	const [isFocused, setFocused] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,7 +32,7 @@ export default function LoginPage() {
 
 		if (res.success) {
 			setIsLoading(false);
-			router.push("/home");
+			router.push("/login/otp-login");
 		} else if (res.error) {
 			setIsLoading(false);
 			setErrorMessage(res.error);
@@ -72,6 +73,9 @@ export default function LoginPage() {
 						onBlur={() => setFocused(false)}
 						error={errorMessage !== ""}
 						errorMessage={errorMessage}
+						keyboardType={"email-address"}
+						inputMode={"email"}
+						autoCapitalize={"none"}
 					/>
 
 					<TouchableButton

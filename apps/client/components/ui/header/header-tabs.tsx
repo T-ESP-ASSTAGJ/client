@@ -10,7 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 export default function HeaderTabs() {
-	const [index, setIndex] = useState<0 | 1>(0);
+	const [index, setIndex] = useState<0 | 1>(1);
 	const progress = useSharedValue(index);
 
 	// update anim quand index change
