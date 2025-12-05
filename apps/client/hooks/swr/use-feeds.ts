@@ -12,7 +12,6 @@ export const useFeeds = ({
 	const [posts, setPosts] = useState<IPost[]>([]);
 
 	// Only fetch if user exists and has an _id
-	// biome-ignore lint/complexity/useOptionalChain: <explanation>
 	/*const shouldFetch = !!(user && user.id);*/
 
 	const key = `/feed/${option}?page=${page}`;
