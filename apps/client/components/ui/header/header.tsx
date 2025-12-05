@@ -24,18 +24,18 @@ export const Header: FC<HeaderProps> = ({
 	return (
 		<View
 			className={cn(
-				`flex h-[65px] w-screen flex-row items-center ${backButton || headerLeft ? "justify-between px-6" : " px-10"}`,
+				"flex h-[65px] w-screen flex-row items-center",
+				(backButton || headerLeft) && "justify-between",
+				headerLeft ? "px-6" : "",
 				className,
 			)}
 		>
-			{backButton ||
-				(headerLeft && (
-					<View className={"flex h-full w-1/6 justify-center"}>
-						{backButton && <BackButton cross={withCross} />}
-
-						{headerLeft && headerLeft}
-					</View>
-				))}
+			{(backButton || headerLeft) && (
+				<View className={"flex h-full w-1/6 justify-center"}>
+					{backButton && <BackButton cross={withCross} />}
+					{headerLeft}
+				</View>
+			)}
 
 			{title && (
 				<View className={"flex h-full w-4/6 justify-center"}>

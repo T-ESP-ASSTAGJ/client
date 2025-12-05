@@ -16,10 +16,10 @@ import { Header } from "@/components/ui/header/header";
 import { TouchableButton } from "@/components/ui/touchable-button";
 import { fontFamily } from "@/dimensions/font-family";
 import { useUserStore } from "@/stores/use-user-store";
-import type { Route } from "expo-router";
+import { type Route, router } from "expo-router";
 import { Menu, Share2, UserPlus } from "lucide-react-native";
 import type { ReactNode } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 function ProfilePage() {
 	const { user } = useUserStore();
@@ -64,7 +64,10 @@ function ProfilePage() {
 				</View>
 
 				<View className={"flex flex-row items-center gap-4 mt-6 px-2"}>
-					<View className={"gap-1"}>
+					<Pressable
+						className={"gap-1"}
+						onPress={() => router.push("/profile/follows/follows")}
+					>
 						<Text
 							className={"text-white text-xl"}
 							style={{ fontFamily: fontFamily.extrabold }}
@@ -77,9 +80,12 @@ function ProfilePage() {
 						>
 							Followed
 						</Text>
-					</View>
+					</Pressable>
 					<Separator className={"h-5"} orientation={"vertical"} />
-					<View className={"gap-1"}>
+					<Pressable
+						className={"gap-1"}
+						onPress={() => router.push("/profile/followers/followers")}
+					>
 						<Text
 							className={"text-white text-xl"}
 							style={{ fontFamily: fontFamily.extrabold }}
@@ -92,7 +98,7 @@ function ProfilePage() {
 						>
 							Followers
 						</Text>
-					</View>
+					</Pressable>
 					<Separator className={"h-5"} orientation={"vertical"} />
 					<View className={"gap-1"}>
 						<Text
