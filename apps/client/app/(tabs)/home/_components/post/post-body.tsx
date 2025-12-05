@@ -1,5 +1,5 @@
 import { useAudio } from "@/contexts/audio-context";
-import type { IMusic } from "@/types/post/post.types";
+import type { IPostTrack } from "@/types/post/post.types";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useEffect } from "react";
@@ -12,7 +12,7 @@ import Animated, {
 
 type PostBodyProps = {
 	postId: number;
-	music: IMusic;
+	music: IPostTrack;
 	photo: string;
 };
 
@@ -68,7 +68,7 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 		],
 	}));
 
-	const togglePlayPause = async () => {
+	/*const togglePlayPause = async () => {
 		if (!music.preview_url) return;
 
 		if (isPlaying) {
@@ -78,19 +78,21 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 			await playPost(postId, music.preview_url);
 			setUserPaused(false);
 		}
-	};
+	};*/
 
-	const handleCardPress = async () => {
+	/*const handleCardPress = async () => {
 		if (!music.preview_url) return;
 		await togglePlayPause();
-	};
+	};*/
+
+	useEffect(() => {}, []);
 
 	return (
 		<Pressable
 			className={
 				"relative mx-auto flex h-[330px] w-[365px] flex-row justify-center"
 			}
-			onPress={handleCardPress}
+			/*onPress={handleCardPress}*/
 		>
 			<View
 				style={{
@@ -105,7 +107,7 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 				<Animated.View style={[FILL, mainCoverStyle]}>
 					<Image
 						style={FILL}
-						source={music.music_cover}
+						source={{ uri: music.coverUrl }}
 						alt="Music cover"
 						contentFit="cover"
 					/>
@@ -115,7 +117,7 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 					<Image style={FILL} source={photo} alt="Photo" contentFit="cover" />
 				</Animated.View>
 
-				{music.preview_url && userPaused && (
+				{/*{music.preview_url && userPaused && (
 					<Animated.View
 						style={[
 							{
@@ -135,9 +137,9 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 					>
 						<Ionicons name={"pause"} size={32} color="#fff" />
 					</Animated.View>
-				)}
+				)}*/}
 
-				{music.preview_url && (
+				{/*{music.preview_url && (
 					<Pressable
 						onPress={togglePlayPause}
 						style={{
@@ -150,7 +152,7 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 						}}
 						hitSlop={15}
 					/>
-				)}
+				)}*/}
 
 				{isPlaying && (
 					<View
@@ -200,7 +202,7 @@ export default function PostBody({ postId, music, photo }: PostBodyProps) {
 				<Animated.View style={[FILL, thumbCoverStyle]}>
 					<Image
 						style={FILL}
-						source={music.music_cover}
+						source={music.coverUrl}
 						alt="Cover thumb"
 						contentFit="cover"
 					/>

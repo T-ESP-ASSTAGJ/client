@@ -8,22 +8,22 @@ import type { IUserPost } from "@/types/post/post.types";
 import { Pressable, Text, View } from "react-native";
 
 type PostHeaderProps = {
-	user_post: IUserPost;
+	user: IUserPost;
 	created_at: string;
 	location: string;
 };
 
 export default function PostHeader({
-	user_post,
+	user,
 	created_at,
 	location,
 }: PostHeaderProps) {
 	return (
 		<View className={"flex flex-row justify-between gap-3 pt-5 pr-1 pb-5 pl-1"}>
-			<Pressable className={"flex flex-1 flex-row gap-3"}>
+			<Pressable className={"flex flex-1 flex-row items-center gap-3"}>
 				<Avatar alt={"User avatar"} className="w-14 h-14">
 					<AvatarImage
-						source={{ uri: user_post.profile_picture }}
+						source={{ uri: user.profilePicture }}
 						className="w-14 h-14"
 					/>
 					<AvatarFallback>
@@ -33,7 +33,7 @@ export default function PostHeader({
 				<View className={"flex flex-col gap-2"}>
 					<View>
 						<Text className={"font-semibold text-lg text-white"}>
-							{user_post.username}
+							{user.username}
 						</Text>
 						<Text className={"text-muted-foreground text-sm"}>{location}</Text>
 					</View>

@@ -16,13 +16,13 @@ export default function Post({ post, comments }: PostProps) {
 			<View className={"flex flex-col gap-2"}>
 				<View>
 					<PostHeader
-						user_post={post.user_post}
-						created_at={post.created_at}
+						user={post.user}
+						created_at={"22/11/2025"}
 						location={post.location}
 					/>
-					<PostBody postId={post.id} music={post.music} photo={post.photo} />
+					<PostBody postId={post.id} music={post.track} photo={post.photoUrl} />
 				</View>
-				<PostFooter music={post.music} stats={post.stats} comments={comments} />
+				<PostFooter music={post.track} stats={post.stats} comments={comments} />
 			</View>
 		</>
 	);

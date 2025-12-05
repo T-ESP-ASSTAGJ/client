@@ -5,9 +5,8 @@ import { useAudio } from "@/contexts/audio-context";
 import { fontFamily } from "@/dimensions/font-family";
 import { useFeeds } from "@/hooks/swr/use-feeds";
 import { mock_comments } from "@/mock-data/comment";
-import { mock_pagination, mock_posts } from "@/mock-data/post";
 import type { ICommentResponse } from "@/types/comments/comment.types";
-import type { IPost, IUserPostsResponse } from "@/types/post/post.types";
+import type { IPost } from "@/types/post/post.types";
 import { FlashList } from "@shopify/flash-list";
 import React, {
 	useCallback,
@@ -48,7 +47,7 @@ export default function HomePage() {
 		setLoading(false);
 	}, []);
 
-	useEffect(() => {
+	/*useEffect(() => {
 		if (feed.length > 0 && !hasInitializedRef.current) {
 			hasInitializedRef.current = true;
 
@@ -59,7 +58,7 @@ export default function HomePage() {
 				return () => clearTimeout(timer);
 			}
 		}
-	}, [feed.length, playPost]);
+	}, [feed.length, playPost]);*/
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -75,7 +74,7 @@ export default function HomePage() {
 		[visibleCount, feed],
 	);
 
-	useEffect(() => {
+	/*useEffect(() => {
 		if (!hasInitializedRef.current && visiblePostIndex === 0) {
 			return;
 		}
@@ -88,16 +87,16 @@ export default function HomePage() {
 		previousPostIndexRef.current = visiblePostIndex;
 		stopCurrentPost();
 
-		if (currentPost?.music?.preview_url) {
+		if (currentPost?.track?.preview_url) {
 			const timer = setTimeout(() => {
-				playPost(currentPost.id, currentPost.music.preview_url);
+				playPost(currentPost.id, currentPost.track.preview_url);
 			}, 150);
 
 			return () => {
 				clearTimeout(timer);
 			};
 		}
-	}, [visiblePostIndex, data, stopCurrentPost, playPost]);
+	}, [visiblePostIndex, data, stopCurrentPost, playPost]);*/
 
 	const canLoadMore = visibleCount < (feed.length ?? 0);
 
@@ -156,7 +155,7 @@ export default function HomePage() {
 								>
 									<View
 										style={{
-											width: "91%",
+											width: "90%",
 										}}
 									>
 										<Post post={item} comments={comments} />
