@@ -14,10 +14,6 @@ type HeaderAuthProps = {
 };
 
 export const HeaderAuth = ({ className }: HeaderAuthProps) => {
-	const redirectToProfile = () => {
-		router.push("/profile/notifications");
-	};
-
 	return (
 		<View
 			className={cn(
@@ -27,9 +23,9 @@ export const HeaderAuth = ({ className }: HeaderAuthProps) => {
 		>
 			<View className={"flex h-full w-1/6 justify-center items-start ml-1"}>
 				<TouchableButton
-					onPress={redirectToProfile}
+					onPress={() => router.push("/profile")}
 					sensory={"light"}
-					className={"bg-transparent"}
+					className={"bg-transparent mt-2"}
 				>
 					<Avatar
 						className={"flex size-11 items-center justify-center rounded-full"}

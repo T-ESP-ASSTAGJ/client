@@ -36,6 +36,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 					});
 
 					if (!isFocused && !event.defaultPrevented) {
+						console.log(route.name);
 						// Le type ici est générique, donc on peut passer les params sans erreur
 						navigation.navigate(route.name);
 					}
@@ -59,11 +60,11 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 					case "post":
 						displayLabel = "";
 						break;
-					case "friends":
-						displayLabel = "Friends";
-						break;
 					case "chats":
 						displayLabel = "Chats";
+						break;
+					case "profile":
+						displayLabel = "Profile";
 						break;
 					default:
 						displayLabel = label;

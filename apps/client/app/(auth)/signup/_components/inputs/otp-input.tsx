@@ -69,7 +69,7 @@ export default function OtpInput({
 		setOtp(result);
 		onChangeText?.(result);
 
-		if (result.length === length) {
+		if (onComplete && result.length === length) {
 			onComplete(result);
 			if (numericValue.length > 1) inputRefs.current[length - 1]?.blur();
 		}

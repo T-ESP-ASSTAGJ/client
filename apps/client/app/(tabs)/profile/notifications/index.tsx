@@ -1,4 +1,4 @@
-import NotificationsList from "@/app/profile/_components/notifications-list";
+import NotificationsList from "@/app/(tabs)/profile/notifications/_components/notifications-list";
 import { MainView } from "@/components/ui/MainView";
 import { Header } from "@/components/ui/header/header";
 

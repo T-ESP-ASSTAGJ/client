@@ -1,4 +1,4 @@
-import Notification from "@/app/profile/_components/notification";
+import Notification from "@/app/(tabs)/profile/notifications/_components/notification";
 import { MainView } from "@/components/ui/MainView";
 import { Header } from "@/components/ui/header/header";
 import { fontFamily } from "@/dimensions/font-family";
