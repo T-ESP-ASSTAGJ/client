@@ -1,6 +1,5 @@
 import { verifyOtp } from "@/actions/auth/auth.action";
 import OtpInput from "@/app/(auth)/signup/_components/inputs/otp-input";
-import RegisterTimer from "@/app/(auth)/signup/_components/register-timer";
 import { Text } from "@/components/rnr-ui/text";
 import { MainView } from "@/components/ui/MainView";
 import { TouchableButton } from "@/components/ui/touchable-button";
@@ -24,9 +23,8 @@ export default function OtpLogin() {
 			if (res.status === 201) {
 				SecureStore.setItem("token", res.data.token);
 
-				SecureStore.getItem("token");
 				setIsLoading(false);
-				/*router.replace("/home");*/
+				router.replace("/home");
 			} else {
 				setError("Invalid verification code. Please try again.");
 				setIsLoading(false);
@@ -59,7 +57,7 @@ export default function OtpLogin() {
 			<View className="flex-1 items-center bg-background px-6 text-start">
 				<View className="mt-10 w-full">
 					<Text
-						className="mb-2 font-bold text-3xl text-primary-foreground tracking-tighter"
+						className="mb-2 font-bold text-3xl text-primary-foreground tracking-tighter -ml-1"
 						style={{ fontFamily: fontFamily.semibold }}
 					>
 						Check your email
@@ -78,7 +76,7 @@ export default function OtpLogin() {
 							{email}
 						</Text>
 					</View>
-					<View className="mt-10 w-full">
+					<View className="mt-14 w-full">
 						<OtpInput
 							length={6}
 							onChangeText={setOtp}
@@ -90,13 +88,15 @@ export default function OtpLogin() {
 				</View>
 			</View>
 
-			<TouchableButton
-				variant={"primary"}
-				disabled={otp.length !== 6}
-				onPress={handleOTPComplete}
-				content={"Continue"}
-				isLoading={isLoading}
-			/>
+			<View className={"w-11/12 mx-auto mb-5"}>
+				<TouchableButton
+					variant={"primary"}
+					disabled={otp.length !== 6}
+					onPress={handleOTPComplete}
+					content={"Continue"}
+					isLoading={isLoading}
+				/>
+			</View>
 		</MainView>
 	);
 }

@@ -72,9 +72,7 @@ export const AvatarPicker = () => {
 	return (
 		<Pressable onPress={selectProfilePicture}>
 			<Avatar
-				className={
-					"flex size-44 items-center justify-center rounded-3xl border-2 border-[#F5F5F5]"
-				}
+				className={`flex size-24 items-center justify-center rounded-full ${!avatar && "border-2 border-foreground"}`}
 				alt={"Profile picture"}
 			>
 				{avatar ? (
@@ -82,10 +80,10 @@ export const AvatarPicker = () => {
 						style={{ width: "100%", height: "100%" }}
 						source={{ uri: avatar }}
 						contentFit={"cover"}
-						className={"rounded-3xl"}
+						className={"rounded-full"}
 					/>
 				) : (
-					<IconSymbol name={"plus"} color={"#101010"} />
+					<IconSymbol name={"plus"} color={"#FFF"} />
 				)}
 			</Avatar>
 		</Pressable>

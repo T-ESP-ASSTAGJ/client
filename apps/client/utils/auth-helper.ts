@@ -22,9 +22,3 @@ export async function refreshAccessToken(): Promise<string | null> {
 		return null;
 	}
 }
-
-export async function forceLogout() {
-	await SecureStore.deleteItemAsync("token");
-	await SecureStore.deleteItemAsync("refresh_token");
-	router.replace("/login");
-}
