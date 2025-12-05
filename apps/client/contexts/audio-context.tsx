@@ -12,10 +12,12 @@ import {
 interface AudioContextType {
 	currentPostId: number | null;
 	isCurrentlyPlaying: boolean;
+	isMuted: boolean;
 	playPost: (postId: number, musicUrl: string) => Promise<void>;
 	pausePost: (postId: number) => Promise<void>;
 	stopCurrentPost: () => Promise<void>;
 	isPlaying: (postId: number) => boolean;
+	mute: () => Promise<void>;
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
@@ -25,6 +27,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
 	const [currentPostId, setCurrentPostId] = useState<number | null>(null);
 	const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
+	const [isMuted, setIsMuted] = useState(false);
 	const soundRef = useRef<Audio.Sound | null>(null);
 	const currentUrlRef = useRef<string | null>(null);
 	const isLoadingRef = useRef<boolean>(false);
@@ -124,6 +127,15 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
 		[currentPostId, isCurrentlyPlaying],
 	);
 
+	const mute = useCallback(async () => {
+		try {
+			await soundRef.current.setIsMutedAsync(!isMuted);
+			setIsMuted(!isMuted);
+		} catch (e) {
+			console.error("Error pausing:", e);
+		}
+	}, [isMuted]);
+
 	return (
 		<AudioContext.Provider
 			value={{
@@ -133,6 +145,8 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({
 				pausePost,
 				stopCurrentPost,
 				isPlaying,
+				mute,
+				isMuted,
 			}}
 		>
 			{children}

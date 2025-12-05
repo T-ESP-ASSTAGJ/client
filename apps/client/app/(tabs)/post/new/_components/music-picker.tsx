@@ -1,6 +1,8 @@
 import { getTracks } from "@/actions/post/post.action";
 import type { ITrack } from "@/app/(tabs)/home/_types/post.types";
 import { Input } from "@/components/rnr-ui/input";
+import { useAudio } from "@/contexts/audio-context";
+import { PauseCircle, PlayCircle } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
 import {
 	ActivityIndicator,
@@ -26,11 +28,12 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 	const [hasNextPage, setHasNextPage] = useState(true);
+	const { pausePost, playPost, isPlaying, isCurrentlyPlaying, currentPostId } =
+		useAudio();
 
 	const fetchTracksData = useCallback(
 		async (pageNum: number, isLoadMore = false) => {
 			if (isLoadMore && (!hasNextPage || isLoadingMore)) return;
-
 			try {
 				if (isLoadMore) {
 					setIsLoadingMore(true);
@@ -61,6 +64,17 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 		},
 		[hasNextPage, isLoadingMore],
 	);
+
+	async function playTrack(item: ITrack) {
+		if (isPlaying(item.id)) {
+			await pausePost(item.id);
+			return;
+		}
+		if (isCurrentlyPlaying) {
+			await pausePost(currentPostId);
+		}
+		await playPost(item.id, item.metadata.previewUrl);
+	}
 
 	useEffect(() => {
 		fetchTracksData(1);
@@ -103,8 +117,12 @@ export default function MusicPicker({ onMusicSelect }: MusicPickerProps) {
 				<Text className="text-gray-400 text-sm mt-0.5">{item.artist.name}</Text>
 			</View>
 
-			<TouchableOpacity className="w-8 h-8 rounded-full border border-gray-600 items-center justify-center">
-				<View className="w-0 h-0 ml-0.5 border-l-8 border-l-gray-400 border-t-4 border-t-transparent border-b-4 border-b-transparent" />
+			<TouchableOpacity className="w-8 h-8" onPress={() => playTrack(item)}>
+				{isPlaying(item.id) ? (
+					<PauseCircle size={24} color="#BDBDBD" />
+				) : (
+					<PlayCircle size={24} color="#BDBDBD" />
+				)}
 			</TouchableOpacity>
 		</TouchableOpacity>
 	);
