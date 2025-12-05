@@ -1,7 +1,4 @@
-import { MainView } from "@/components/ui/MainView";
-import { Header } from "@/components/ui/header/header";
-import { fontFamily } from "@/dimensions/font-family";
-import Notification from "@/app/(tabs)/profile/_components/notifications/notification";
+import Notification from "@/app/(tabs)/profile/notifications/_components/notification";
 import { mock_notifications_response } from "@/mock-data/notification";
 import type {
 	INotification,
@@ -9,7 +6,7 @@ import type {
 } from "@/types/profile/notifications/notification.types";
 import { FlashList } from "@shopify/flash-list";
 import React, { useEffect, useMemo, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function NotificationsList() {
 	const [notifications, setNotifications] = useState<INotificationsResponse>({
