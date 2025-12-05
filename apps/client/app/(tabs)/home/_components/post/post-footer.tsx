@@ -1,5 +1,4 @@
 import CommentsList from "@/app/(tabs)/home/_components/comment/comments-list";
-import type { IMusic, IStats } from "@/app/(tabs)/home/_types/post.types";
 import AlertComponent from "@/components/ui/bottom-sheet/alert";
 import {
 	BottomSheetComponent,
@@ -7,6 +6,7 @@ import {
 } from "@/components/ui/bottom-sheet/bottom-sheet-component";
 import { getYearFromDate } from "@/helpers/format-date-helper";
 import type { ICommentResponse } from "@/types/comments/comment.types";
+import type { IMusic, IStats } from "@/types/post/post.types";
 import {
 	Dot,
 	LucideCircleCheck,

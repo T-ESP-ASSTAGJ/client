@@ -1,22 +1,13 @@
+import type { IUser } from "@/types/users/user.types";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { create } from "zustand";
-import {
-	type User,
-	type UserData,
-	UserInfo,
-	type UserPreferences,
-} from "../../../shared/types/user";
 
 interface UserState {
-	user: User | null;
+	user: IUser | null;
 	isDirty: boolean;
 	isAuthenticated: boolean;
-	updateUserLocally: (partialUser: Partial<User>) => void;
-	updateUserDataLocally: (partialUserData: Partial<UserData>) => void;
-	updatePreferencesLocally: (
-		partialPreferences: Partial<UserPreferences>,
-	) => void;
+	updateUserLocally: (partialUser: Partial<IUser>) => void;
 	syncUserToBackend: () => Promise<void>;
 	initializeUser: () => Promise<void>;
 	logout: () => Promise<void>;
@@ -37,7 +28,7 @@ export const useUserStore = create<UserState>((set, get) => ({
 		}));
 	},
 
-	updateUserDataLocally: (partialUserData: Partial<UserData>) => {
+	/*updateUserDataLocally: (partialUserData: Partial<UserData>) => {
 		set((state) => ({
 			user: state.user
 				? {
@@ -50,9 +41,9 @@ export const useUserStore = create<UserState>((set, get) => ({
 				: null,
 			isDirty: true,
 		}));
-	},
+	},*/
 
-	updatePreferencesLocally: (partialPreferences) => {
+	/*updatePreferencesLocally: (partialPreferences) => {
 		set((state) => ({
 			user: state.user
 				? {
@@ -65,7 +56,7 @@ export const useUserStore = create<UserState>((set, get) => ({
 				: null,
 			isDirty: true,
 		}));
-	},
+	},*/
 
 	syncUserToBackend: async () => {
 		const { user, isDirty } = get();
@@ -82,10 +73,10 @@ export const useUserStore = create<UserState>((set, get) => ({
 
 	initializeUser: async () => {
 		try {
-			const token = await SecureStore.getItemAsync("access_token");
+			const token = await SecureStore.getItemAsync("token");
 
 			if (!token) {
-				/*await get().logout();*/
+				await get().logout();
 				return;
 			}
 
@@ -98,9 +89,9 @@ export const useUserStore = create<UserState>((set, get) => ({
 	},
 
 	logout: async () => {
-		await SecureStore.deleteItemAsync("access_token");
+		await SecureStore.deleteItemAsync("token");
 		await SecureStore.deleteItemAsync("refresh_token");
 		set({ user: null, isDirty: false, isAuthenticated: false });
-		/*router.replace('/(auth)/sign-in');*/
+		router.replace("/login");
 	},
 }));

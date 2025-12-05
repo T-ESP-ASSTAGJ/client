@@ -1,5 +1,5 @@
-import type { IMusic } from "@/app/(tabs)/home/_types/post.types";
 import { useAudio } from "@/contexts/audio-context";
+import type { IMusic } from "@/types/post/post.types";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useEffect } from "react";

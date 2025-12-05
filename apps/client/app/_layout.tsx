@@ -2,7 +2,6 @@ import "../styles/globals.css";
 
 import { useUserStore } from "@/stores/use-user-store";
 
-import { FontAwesome } from "@expo/vector-icons";
 import {
 	DarkTheme,
 	DefaultTheme,
@@ -18,6 +17,7 @@ import { PortalHost } from "@rn-primitives/portal";
 import { type AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { useFonts } from "expo-font"; // Importez useFonts
 import { Stack, router } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -73,7 +73,6 @@ export function SplashVideo({ onLoaded, onFinish }) {
 }
 
 export default function App() {
-	// Chargez vos polices ici
 	const [fontsLoaded, fontError] = useFonts({
 		[fontFamily.regular]: require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
 		[fontFamily.medium]: require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
@@ -142,11 +141,11 @@ function AnimatedSplashScreen({ children, fontsLoaded, fontError }) {
 			{children}
 			{!isSplashAnimationComplete && (
 				<Animated.View
-					pointerEvents="none"
+					pointerEvents="auto"
 					style={[
 						StyleSheet.absoluteFill,
 						{
-							backgroundColor: "black",
+							backgroundColor: "white",
 							opacity: animation,
 						},
 					]}
@@ -168,29 +167,43 @@ function MainScreen() {
 
 	const hasRedirected = useRef(false);
 
-	/*useEffect(() => {
-		if (hasRedirected.current) return;
+	useEffect(() => {
+		let isMounted = true;
 
-		const verify = async () => {
-			await initializeUser();
-			hasRedirected.current = true;
-			router.replace("/branding");
+		const bootstrap = async () => {
+			if (hasRedirected.current || !isMounted) return;
+
+			const token = await SecureStore.getItemAsync("token");
+			console.log("Token value:", token);
+
+			if (!isMounted) return;
+
+			try {
+				if (token) {
+					// éventuellement : await initializeUser();
+					router.replace("/home"); // utilisateur déjà logué
+				} else {
+					router.replace("/branding"); // pas de token → login
+				}
+				hasRedirected.current = true;
+			} catch (e) {
+				console.log("Redirect error", e);
+			}
 		};
 
-		verify();
-	}, []);*/
+		bootstrap();
 
-	/*useEffect(() => {
-    console.log("Utilisateur connecté: ", user)
-  }, [user]);*/
-
+		return () => {
+			isMounted = false;
+		};
+	}, []);
 	configureReanimatedLogger({
-		level: ReanimatedLogLevel.warn,
+		level: ReanimatedLogLevel.error,
 		strict: false,
 	});
 
 	LogBox.ignoreLogs([
-		"Sending `onAnimatedValueUpdate` with no listeners registered.",
+		"Sending `onAnimatedValueUpdate` with no listeners registered",
 	]);
 
 	return (
@@ -199,7 +212,6 @@ function MainScreen() {
 				<GestureHandlerRootView>
 					<BottomSheetModalProvider>
 						<Stack screenOptions={{ headerShown: false }} />
-
 						<PortalHost />
 					</BottomSheetModalProvider>
 				</GestureHandlerRootView>

@@ -1,4 +1,4 @@
-import type { IMusic } from "@/app/(tabs)/home/_types/post.types";
+import type { IMusic } from "@/types/post/post.types";
 import { Image } from "expo-image";
 import { CameraIcon, MusicIcon } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
