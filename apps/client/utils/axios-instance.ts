@@ -1,5 +1,5 @@
-import { forceLogout } from "@/utils/auth-helper";
 import axios from "axios";
+import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 
 export const axiosInstance = axios.create({
@@ -33,10 +33,14 @@ axiosInstance.interceptors.response.use(
 			console.log("🔄 Token expiré. Tentative de refresh...");
 
 			try {
-				await forceLogout();
+				await SecureStore.deleteItemAsync("token");
+				await SecureStore.deleteItemAsync("refresh_token");
+				router.replace("/login");
 			} catch (err) {
 				console.error("❌ Refresh token échoué");
-				await forceLogout();
+				await SecureStore.deleteItemAsync("token");
+				await SecureStore.deleteItemAsync("refresh_token");
+				router.replace("/login");
 			}
 		}
 

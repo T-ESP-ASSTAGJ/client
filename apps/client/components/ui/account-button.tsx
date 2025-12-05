@@ -1,4 +1,5 @@
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { fontFamily } from "@/dimensions/font-family";
 import { useUserStore } from "@/stores/use-user-store";
 import * as Haptics from "expo-haptics";
 import { type Route, useRouter } from "expo-router";
@@ -21,7 +22,7 @@ export const AccountButton: FC<AccountButtonProps> = ({ item, onPress }) => {
 
 	return (
 		<TouchableOpacity
-			className={`flex h-[60px] flex-row items-center justify-between gap-x-2 rounded-2xl px-7 py-0.5 pl-5 transition-all ${isPressed ? "bg-foreground/[0.05]" : "bg-white"}`}
+			className={`flex h-[60px] flex-row items-center justify-between gap-x-2 rounded-2xl px-7 py-0.5 pl-5 transition-all ${isPressed ? "bg-[#1C1C1E]/70" : "bg-[#1C1C1E]"}`}
 			activeOpacity={1}
 			onPress={() => {
 				if (item.path) {
@@ -29,9 +30,7 @@ export const AccountButton: FC<AccountButtonProps> = ({ item, onPress }) => {
 				}
 			}}
 			onPressIn={() => {
-				if (user.preferences.haptic_touch) {
-					Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-				}
+				Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 				setIsPressed(true);
 				if (onPress) {
 					onPress();
@@ -42,27 +41,25 @@ export const AccountButton: FC<AccountButtonProps> = ({ item, onPress }) => {
 			}}
 		>
 			<View className={"flex flex-row items-center gap-x-3"}>
-				<View
-					className={`items-center justify-center rounded-xl p-2 ${item.label !== "Déconnexion" ? "bg-primary/10" : "bg-red-500/10"}`}
-				>
+				<View className={"items-center justify-center rounded-xl p-2"}>
 					{item.icon}
 				</View>
 				<Text
-					className={`text-lg ${item.label !== "Déconnexion" ? "text-foreground" : "text-red-500"}`}
-					style={{ fontFamily: "Urbanist-bold" }}
+					className={`text-lg ${item.label !== "Déconnexion" ? "text-white" : "text-red-500"}`}
+					style={{ fontFamily: fontFamily.semibold }}
 				>
 					{item.label}
 				</Text>
 			</View>
 
-			{item.label !== "Déconnexion" && (
+			{/*{item.label !== "Déconnexion" && (
 				<IconSymbol
 					name={"chevron.right"}
 					color={"black"}
 					weight={"medium"}
 					size={18}
 				/>
-			)}
+			)}*/}
 		</TouchableOpacity>
 	);
 };

@@ -21,7 +21,6 @@ interface TabBarButtonProps extends PressableProps {
 }
 
 const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
-	/*const { user } = useUserStore();*/
 	const { isFocused, label, routeName, ...rest } = props;
 
 	// Valeur partagée pour l'animation
@@ -82,20 +81,20 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 						strokeColorInterior={isFocused ? "#FFF" : "#777777"}
 					/>
 				);
-			case "friends":
-				return (
-					<FriendsIcon
-						width={size}
-						height={size}
-						fill={`${isFocused ? "#FFF" : "#777777"}`}
-					/>
-				);
 			case "chats":
 				return (
 					<ChatIcon
 						width={size}
 						height={size}
 						stroke={`${isFocused ? "#FFF" : "#777777"}`}
+					/>
+				);
+			case "profile":
+				return (
+					<FriendsIcon
+						width={size}
+						height={size}
+						fill={`${isFocused ? "#FFF" : "#777777"}`}
 					/>
 				);
 			case "post":

@@ -22,8 +22,6 @@ export async function verifyOtp({
 	try {
 		const res = await axiosInstance.post("/auth/verify", { email, code });
 
-		console.log(res);
-
 		return {
 			success: true as const,
 			status: res.status,
