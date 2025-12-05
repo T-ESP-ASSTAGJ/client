@@ -3,6 +3,7 @@ import { axiosInstance } from "@/utils/axios-instance";
 
 export async function createPost(payload: ICreatePost) {
 	const res = await axiosInstance.post("/posts", payload);
+
 	return {
 		success: true as const,
 		status: res.status,

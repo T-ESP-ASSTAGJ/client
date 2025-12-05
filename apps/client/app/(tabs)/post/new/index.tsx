@@ -201,11 +201,9 @@ export default function PostPage() {
 		setIsPublishing(true);
 		try {
 			const base64 = await getBase64FromUri(post.photoUrl);
-			const userId = 1;
 			//TODO: fix with proper user ui handling logic
 
 			const payload = {
-				userId: userId,
 				trackId: post.track.id,
 				songPreviewUrl: post.track.metadata.previewUrl,
 				photoUrl: "https://placehold.co/400x400/png",
@@ -217,8 +215,9 @@ export default function PostPage() {
 			//TODO: fix payload with base 64 value
 
 			const res = await createPost(payload);
+
 			if (res.success) {
-				router.push("/(tabs)/home");
+				router.push("/home");
 				setPost(initPost());
 				setIsPublishing(false);
 			}
