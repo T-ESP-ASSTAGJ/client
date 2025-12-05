@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 export function useFollowers() {
 	const { data, error, isLoading, mutate } = useSWR<IFollower[]>(
-		'/users?page=1',
+		"/users?page=1",
 		axiosSWRFetcher,
 		{
 			refreshInterval: 60_000,

@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 export function useCurrentUser() {
 	const { data, error, isLoading, mutate } = useSWR<ICurrentUser>(
-		'/users/me',
+		"/users/me",
 		axiosSWRFetcher,
 		{
 			refreshInterval: 60_000,
