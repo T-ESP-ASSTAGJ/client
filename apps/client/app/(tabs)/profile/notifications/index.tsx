@@ -2,7 +2,7 @@ import NotificationsList from "@/app/(tabs)/profile/notifications/_components/no
 import { MainView } from "@/components/ui/MainView";
 import { Header } from "@/components/ui/header/header";
 
-export default function FriendsPage() {
+export default function Notifications() {
 	return (
 		<MainView disableTouchableWrapper>
 			<Header title={"Notifications"} backButton />

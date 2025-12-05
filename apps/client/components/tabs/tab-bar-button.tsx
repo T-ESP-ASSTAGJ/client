@@ -1,7 +1,7 @@
 import { ChatIcon } from "@/assets/svg/tab-icons/chat-icon";
 import { CompasIcon } from "@/assets/svg/tab-icons/compas-icon";
-import { FriendsIcon } from "@/assets/svg/tab-icons/friends-icon";
 import { HomeIcon } from "@/assets/svg/tab-icons/home-icon";
+import { ProfileIcon } from "@/assets/svg/tab-icons/profile-icon";
 import * as Haptics from "expo-haptics";
 import { PlusCircleIcon } from "lucide-react-native";
 import type React from "react";
@@ -91,7 +91,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props) => {
 				);
 			case "profile":
 				return (
-					<FriendsIcon
+					<ProfileIcon
 						width={size}
 						height={size}
 						fill={`${isFocused ? "#FFF" : "#777777"}`}

@@ -176,7 +176,7 @@ export default function CommentsList({ music, comments }: CommentsProps) {
 					>
 						<Input
 							ref={inputRef as any}
-							placeholder="Écrire un commentaire…"
+							placeholder="Write a comment…"
 							returnKeyType="send"
 							value={commentText}
 							onChangeText={setCommentText}
