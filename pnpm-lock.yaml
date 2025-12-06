@@ -231,7 +231,7 @@ importers:
         specifier: ^4.0.1
         version: 4.1.0(expo@53.0.20(@babel/core@7.28.0)(react-native-webview@13.13.5(react-native@0.79.0(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.0(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-gesture-handler@2.26.0(react-native@0.79.0(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.28.0)(react-native@0.79.0(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.0(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       swr:
-        specifier: ^2.3.3
+        specifier: ^2.3.4
         version: 2.3.4(react@19.0.0)
       tailwind-merge:
         specifier: ^3.3.0

@@ -7,7 +7,7 @@ import { fontFamily } from "@/dimensions/font-family";
 import { timeAgoFullString } from "@/helpers/format-date-helper";
 import { formatNotificationMessage } from "@/helpers/notifications/format-notification-helper";
 import { getNotificationIcon } from "@/helpers/notifications/get-notifications-icon-helper";
-import type { INotification } from "@/types/notifications/notification.types";
+import type { INotification } from "@/types/profile/notifications/notification.types";
 import { Image } from "expo-image";
 import { Text, View } from "react-native";
 

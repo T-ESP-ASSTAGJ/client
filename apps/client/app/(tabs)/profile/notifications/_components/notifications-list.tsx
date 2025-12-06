@@ -1,16 +1,12 @@
 import Notification from "@/app/(tabs)/profile/notifications/_components/notification";
-import { MainView } from "@/components/ui/MainView";
-import { Header } from "@/components/ui/header/header";
-import { fontFamily } from "@/dimensions/font-family";
 import { mock_notifications_response } from "@/mock-data/notification";
 import type {
 	INotification,
 	INotificationsResponse,
-} from "@/types/notifications/notification.types";
+} from "@/types/profile/notifications/notification.types";
 import { FlashList } from "@shopify/flash-list";
-import { ChevronLeft, LucideHistory, Sparkles } from "lucide-react-native";
 import React, { useEffect, useMemo, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function NotificationsList() {
 	const [notifications, setNotifications] = useState<INotificationsResponse>({
