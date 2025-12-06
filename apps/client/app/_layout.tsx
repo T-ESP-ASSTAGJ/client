@@ -5,7 +5,6 @@ import { useUserStore } from "@/stores/use-user-store";
 import {
 	DarkTheme,
 	DefaultTheme,
-	Theme,
 	ThemeProvider,
 } from "@react-navigation/native";
 
@@ -23,7 +22,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
 	Animated,
 	LogBox,
-	Platform,
 	StyleSheet,
 	View,
 	useColorScheme,

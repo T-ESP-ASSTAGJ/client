@@ -1,5 +1,4 @@
 import { createPost } from "@/actions/post/post.action";
-import type { IPost, ITrack } from "@/app/(tabs)/home/_types/post.types";
 import MusicPicker from "@/app/(tabs)/post/new/_components/music-picker";
 import PhotoPicker from "@/app/(tabs)/post/new/_components/photo-picker";
 import PostPreview from "@/app/(tabs)/post/new/_components/post-preview";
@@ -14,6 +13,7 @@ import { Header } from "@/components/ui/header/header";
 import { useAudio } from "@/contexts/audio-context";
 import { getBase64FromUri } from "@/lib/base64";
 import { initPost } from "@/lib/data/posts";
+import type { INewPost, ITrack } from "@/types/post/post.types";
 import { BlurView } from "expo-blur";
 import { router, useNavigation } from "expo-router";
 import { MapPinIcon, XIcon } from "lucide-react-native";
@@ -47,7 +47,7 @@ interface LocationData {
 }
 
 export default function PostPage() {
-	const [post, setPost] = useState<IPost>(initPost());
+	const [post, setPost] = useState<INewPost>(initPost());
 	const { playPost, pausePost } = useAudio();
 	const [isPublishing, setIsPublishing] = useState(false);
 	const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
