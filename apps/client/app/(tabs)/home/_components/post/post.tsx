@@ -17,7 +17,7 @@ export default function Post({ post, comments }: PostProps) {
 				<View>
 					<PostHeader
 						user={post.user}
-						created_at={"22/11/2025"}
+						created_at={new Date()}
 						location={post.location}
 					/>
 					<PostBody postId={post.id} music={post.track} photo={post.photoUrl} />
